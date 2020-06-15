@@ -31,9 +31,10 @@ class TodoFormActivity : AppCompatActivity() {
             if (!choreText.isBlank()) {
                 TodoDataService.instance.addTodo(todoChoreEditText.text.toString())
                 finish()
+            } else {
+                Toast.makeText(this, "Please fill in a todo item", Toast.LENGTH_SHORT).show()
             }
 
-            Toast.makeText(this, "Please fill in a todo item", Toast.LENGTH_SHORT).show()
 
         }
 
