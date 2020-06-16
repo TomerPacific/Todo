@@ -4,7 +4,7 @@ import android.content.Context
 
 class TodoDataService private constructor() {
 
-    private var todoData : MutableList<String> = mutableListOf("")
+    private var todoData : MutableList<String> = mutableListOf<String>()
 
     private object HOLDER {
         val INSTANCE = TodoDataService()
@@ -31,7 +31,7 @@ class TodoDataService private constructor() {
 
     private fun getTodoDataFromSharedPreferences(context: Context): List<String> {
         val sharedPref = context.getSharedPreferences("todo_list_pref", Context.MODE_PRIVATE)
-        return sharedPref.getStringSet("todo", listOf("").toSet())!!.toList()
+        return sharedPref.getStringSet("todo", emptyList<String>().toSet())!!.toList()
 
     }
 }
