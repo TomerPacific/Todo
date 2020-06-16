@@ -15,7 +15,9 @@ class TodoDataService private constructor() {
     }
 
     fun getTodoData(context: Context): List<String> {
-        return getTodoDataFromSharedPreferences(context)
+        val todoList : List<String> = getTodoDataFromSharedPreferences(context)
+        todoData = todoList.toMutableList()
+        return todoList
     }
 
     fun addTodo(todoTask : String) {
