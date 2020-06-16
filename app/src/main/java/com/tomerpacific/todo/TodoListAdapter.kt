@@ -6,26 +6,38 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
+import android.widget.CheckBox
 import android.widget.TextView
 
 
 class TodoListAdapter : BaseAdapter {
 
-    private var data: List<String>
+    private var data: MutableList<String>
     private var inflater: LayoutInflater
 
     constructor(context: Context) {
         inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        data = TodoDataService.instance.getTodoData(context)
+        data = TodoDataService.instance.getTodoData(context).toMutableList()
 
     }
 
     override fun getView(position: Int, convertView: View?, container: ViewGroup?): View {
         val rootView = inflater.inflate(R.layout.todo_list_item, container, false)
         val todoName : TextView = rootView.findViewById(R.id.todo_item_name)
+        val todoCheckbox: CheckBox = rootView.findViewById(R.id.todo_item_done_checkbox)
 
         val item = getItem(position) as String
         todoName.text = item
+
+        todoCheckbox.setOnCheckedChangeListener {view, isChanged ->
+            if (isChanged) {
+                val parentView = view.parent as ViewGroup
+                val todoToDelete = parentView.getChildAt(0) as TextView
+                data.remove(todoToDelete.text.toString())
+                TodoDataService.instance.removeTodo(todoToDelete.text.toString())
+                notifyDataSetChanged()
+            }
+        }
 
         return rootView
     }
