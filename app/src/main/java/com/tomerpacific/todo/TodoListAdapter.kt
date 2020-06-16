@@ -16,13 +16,8 @@ class TodoListAdapter : BaseAdapter {
 
     constructor(context: Context) {
         inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        val sharedPref = context.getSharedPreferences("todo_list_pref", Context.MODE_PRIVATE)
-        val saved = sharedPref.getStringSet("todo", listOf("").toSet())
+        data = TodoDataService.instance.getTodoData(context)
 
-        data = when(saved) {
-            null -> listOf("")
-            else -> saved.toList()
-        }
     }
 
     override fun getView(position: Int, convertView: View?, container: ViewGroup?): View {

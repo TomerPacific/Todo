@@ -1,5 +1,6 @@
 package com.tomerpacific.todo
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.KeyEvent
 import android.view.inputmethod.EditorInfo
@@ -30,6 +31,9 @@ class TodoFormActivity : AppCompatActivity() {
         doneButton.setOnClickListener { view ->
             if (!choreText.isBlank()) {
                 TodoDataService.instance.addTodo(todoChoreEditText.text.toString())
+                TodoDataService.instance.saveTodoDataToSharedPreferences(this)
+                val intent : Intent = Intent(this, MainActivity::class.java)
+                startActivity(intent)
                 finish()
             } else {
                 Toast.makeText(this, "Please fill in a todo item", Toast.LENGTH_SHORT).show()
