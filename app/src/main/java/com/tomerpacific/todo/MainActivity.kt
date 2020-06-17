@@ -39,4 +39,9 @@ class MainActivity : AppCompatActivity() {
             else -> super.onOptionsItemSelected(item)
         }
     }
+
+    override fun onStop() {
+        super.onStop()
+        TodoDataService.instance.saveTodoDataToSharedPreferences(this)
+    }
 }
