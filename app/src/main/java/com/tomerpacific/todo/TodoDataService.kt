@@ -28,6 +28,10 @@ class TodoDataService private constructor() {
         todoData.remove(todoTask)
     }
 
+    fun removeAllTodos() {
+        todoData.clear()
+    }
+
     fun saveTodoDataToSharedPreferences(context: Context) {
         val sharedPref = context.getSharedPreferences("todo_list_pref", Context.MODE_PRIVATE)
         sharedPref.edit().putStringSet("todo", todoData.toSet()).apply()

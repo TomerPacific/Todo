@@ -19,7 +19,6 @@ class TodoFormActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_todo_form)
 
-
         doneButton = findViewById(R.id.todo_item_button)
         todoChoreEditText = findViewById(R.id.todo_edit_text)
 
@@ -38,8 +37,6 @@ class TodoFormActivity : AppCompatActivity() {
             } else {
                 Toast.makeText(this, "Please fill in a todo item", Toast.LENGTH_SHORT).show()
             }
-
-
         }
 
         todoChoreEditText.setOnEditorActionListener {view, actionId, keyEvent ->
