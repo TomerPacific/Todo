@@ -26,8 +26,6 @@ class MainActivity : AppCompatActivity() {
             val intent : Intent = Intent(this, TodoFormActivity::class.java)
             startActivity(intent)
             finish()
-//            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                .setAction("Action", null).show()
         }
     }
 
