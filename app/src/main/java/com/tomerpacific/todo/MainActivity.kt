@@ -1,6 +1,10 @@
 package com.tomerpacific.todo
 
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.ColorFilter
+import android.graphics.PorterDuff
+import android.graphics.PorterDuffColorFilter
 import android.os.Bundle
 import android.view.KeyEvent
 import androidx.appcompat.app.AppCompatActivity
@@ -8,6 +12,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.inputmethod.EditorInfo
+import android.widget.Button
 import android.widget.EditText
 import android.widget.ListView
 
@@ -17,11 +22,14 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var list : ListView
     private lateinit var title : EditText
+    private lateinit var clearButton : Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
+
+        clearButton = findViewById(R.id.clearBtn)
 
         title = findViewById(R.id.title)
 
@@ -36,6 +44,10 @@ class MainActivity : AppCompatActivity() {
 
         list = findViewById(R.id.todo_list)
         list.adapter = TodoListAdapter(this)
+
+        clearButton.isClickable = list.adapter.count != 0
+
+        clearButton.background.colorFilter = if(!clearButton.isClickable) PorterDuffColorFilter(Color.GRAY, PorterDuff.Mode.MULTIPLY) else PorterDuffColorFilter(Color.GREEN, PorterDuff.Mode.MULTIPLY)
 
         fab.setOnClickListener { view ->
             val intent : Intent = Intent(this, TodoFormActivity::class.java)
@@ -59,6 +71,8 @@ class MainActivity : AppCompatActivity() {
     fun removeAll(view: View) {
         val adapter = list.adapter as TodoListAdapter
         adapter.removeAllTodos()
+        clearButton.isClickable = false
+        clearButton.background.colorFilter = PorterDuffColorFilter(Color.GRAY, PorterDuff.Mode.MULTIPLY)
     }
 
     override fun onStop() {

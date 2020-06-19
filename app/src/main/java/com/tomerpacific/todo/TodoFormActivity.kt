@@ -32,6 +32,7 @@ class TodoFormActivity : AppCompatActivity() {
                 TodoDataService.instance.addTodo(todoChoreEditText.text.toString())
                 TodoDataService.instance.saveTodoDataToSharedPreferences(this)
                 val intent : Intent = Intent(this, MainActivity::class.java)
+                intent.putExtra("addedNewTodo", true)
                 startActivity(intent)
                 finish()
             } else {

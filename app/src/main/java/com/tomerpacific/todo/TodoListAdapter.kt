@@ -54,7 +54,7 @@ class TodoListAdapter : BaseAdapter {
         return data.size
     }
 
-    public fun removeAllTodos() {
+    fun removeAllTodos() {
         TodoDataService.instance.removeAllTodos()
         data.clear()
         notifyDataSetChanged()
