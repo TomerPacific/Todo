@@ -6,6 +6,9 @@ import android.graphics.ColorFilter
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
 import android.os.Bundle
+import android.os.Handler
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.KeyEvent
 import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
@@ -15,6 +18,7 @@ import android.view.inputmethod.EditorInfo
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ListView
+import android.widget.Toast
 
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -33,6 +37,19 @@ class MainActivity : AppCompatActivity() {
 
         title = findViewById(R.id.title)
 
+        setupListeners()
+
+        list = findViewById(R.id.todo_list)
+        list.adapter = TodoListAdapter(this)
+
+        clearButton.isClickable = list.adapter.count != 0
+
+        clearButton.background.colorFilter = if(!clearButton.isClickable) PorterDuffColorFilter(Color.GRAY, PorterDuff.Mode.MULTIPLY) else PorterDuffColorFilter(Color.GREEN, PorterDuff.Mode.MULTIPLY)
+
+    }
+
+    fun setupListeners() {
+
         title.setOnEditorActionListener {view, actionId, keyEvent ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH ||
                 keyEvent == null ||
@@ -42,12 +59,24 @@ class MainActivity : AppCompatActivity() {
             false
         }
 
-        list = findViewById(R.id.todo_list)
-        list.adapter = TodoListAdapter(this)
+        val handler = Handler()
+        val runnable = Runnable {
+            Toast.makeText(this, "You have changed the title to " + title.text.toString(), Toast.LENGTH_SHORT).show()
+        }
+        title.addTextChangedListener (object : TextWatcher {
+            override fun afterTextChanged(p0: Editable?) {
+                handler.removeCallbacks(runnable)
+                handler.postDelayed(runnable, 5000)
+            }
 
-        clearButton.isClickable = list.adapter.count != 0
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
 
-        clearButton.background.colorFilter = if(!clearButton.isClickable) PorterDuffColorFilter(Color.GRAY, PorterDuff.Mode.MULTIPLY) else PorterDuffColorFilter(Color.GREEN, PorterDuff.Mode.MULTIPLY)
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+        })
 
         fab.setOnClickListener { view ->
             val intent : Intent = Intent(this, TodoFormActivity::class.java)
