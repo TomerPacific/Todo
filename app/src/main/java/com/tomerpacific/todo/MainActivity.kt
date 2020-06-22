@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity() {
         setupListeners()
 
         list = findViewById(R.id.todo_list)
-        list.adapter = TodoListAdapter(this)
+        list.adapter = TodoListAdapter(this, clearButton)
 
         setClearButtonStatus(list.adapter.count != 0)
     }

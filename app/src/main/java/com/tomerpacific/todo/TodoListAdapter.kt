@@ -2,10 +2,14 @@ package com.tomerpacific.todo
 
 
 import android.content.Context
+import android.graphics.Color
+import android.graphics.PorterDuff
+import android.graphics.PorterDuffColorFilter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
+import android.widget.Button
 import android.widget.CheckBox
 import android.widget.TextView
 
@@ -14,11 +18,12 @@ class TodoListAdapter : BaseAdapter {
 
     private var data: MutableList<String>
     private var inflater: LayoutInflater
+    private lateinit var clearButton : Button
 
-    constructor(context: Context) {
+    constructor(context: Context, _clearButton : Button) {
         inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         data = TodoDataService.instance.getTodoData(context).toMutableList()
-
+        clearButton = _clearButton
     }
 
     override fun getView(position: Int, convertView: View?, container: ViewGroup?): View {
@@ -36,6 +41,11 @@ class TodoListAdapter : BaseAdapter {
                 data.remove(todoToDelete.text.toString())
                 TodoDataService.instance.removeTodo(todoToDelete.text.toString())
                 notifyDataSetChanged()
+
+                if (data.size == 0) {
+                    clearButton.isClickable = false
+                    clearButton.background.colorFilter = PorterDuffColorFilter(Color.GRAY, PorterDuff.Mode.MULTIPLY)
+                }
             }
         }
 
