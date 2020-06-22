@@ -42,13 +42,10 @@ class MainActivity : AppCompatActivity() {
         list = findViewById(R.id.todo_list)
         list.adapter = TodoListAdapter(this)
 
-        clearButton.isClickable = list.adapter.count != 0
-
-        clearButton.background.colorFilter = if(!clearButton.isClickable) PorterDuffColorFilter(Color.GRAY, PorterDuff.Mode.MULTIPLY) else PorterDuffColorFilter(Color.GREEN, PorterDuff.Mode.MULTIPLY)
-
+        setClearButtonStatus(list.adapter.count != 0)
     }
 
-    fun setupListeners() {
+    private fun setupListeners() {
 
         title.setOnEditorActionListener {view, actionId, keyEvent ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH ||
@@ -85,6 +82,12 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun setClearButtonStatus(status: Boolean) {
+        clearButton.isClickable = status
+        clearButton.background.colorFilter = if(!clearButton.isClickable)
+            PorterDuffColorFilter(Color.GRAY, PorterDuff.Mode.MULTIPLY) else PorterDuffColorFilter(Color.GREEN, PorterDuff.Mode.MULTIPLY)
+    }
+
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
         return true
@@ -100,8 +103,7 @@ class MainActivity : AppCompatActivity() {
     fun removeAll(view: View) {
         val adapter = list.adapter as TodoListAdapter
         adapter.removeAllTodos()
-        clearButton.isClickable = false
-        clearButton.background.colorFilter = PorterDuffColorFilter(Color.GRAY, PorterDuff.Mode.MULTIPLY)
+        setClearButtonStatus(false)
     }
 
     override fun onStop() {
