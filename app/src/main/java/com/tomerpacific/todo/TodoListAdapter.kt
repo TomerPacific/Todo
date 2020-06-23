@@ -18,7 +18,7 @@ class TodoListAdapter : BaseAdapter {
 
     private var data: MutableList<String>
     private var inflater: LayoutInflater
-    private lateinit var clearButton : Button
+    private var clearButton : Button
 
     constructor(context: Context, _clearButton : Button) {
         inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
