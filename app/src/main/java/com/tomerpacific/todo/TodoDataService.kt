@@ -33,13 +33,13 @@ class TodoDataService private constructor() {
     }
 
     fun saveTodoDataToSharedPreferences(context: Context) {
-        val sharedPref = context.getSharedPreferences("todo_list_pref", Context.MODE_PRIVATE)
-        sharedPref.edit().putStringSet("todo", todoData.toSet()).apply()
+        val sharedPref = context.getSharedPreferences(TodoConstants.TODO_SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE)
+        sharedPref.edit().putStringSet(TodoConstants.TODO_KEY, todoData.toSet()).apply()
     }
 
     private fun getTodoDataFromSharedPreferences(context: Context): List<String> {
-        val sharedPref = context.getSharedPreferences("todo_list_pref", Context.MODE_PRIVATE)
-        return sharedPref.getStringSet("todo", emptyList<String>().toSet())!!.toList()
+        val sharedPref = context.getSharedPreferences(TodoConstants.TODO_SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE)
+        return sharedPref.getStringSet(TodoConstants.TODO_KEY, emptyList<String>().toSet())!!.toList()
 
     }
 }

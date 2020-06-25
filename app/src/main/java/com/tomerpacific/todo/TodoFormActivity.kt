@@ -32,11 +32,11 @@ class TodoFormActivity : AppCompatActivity() {
                 TodoDataService.instance.addTodo(todoChoreEditText.text.toString())
                 TodoDataService.instance.saveTodoDataToSharedPreferences(this)
                 val intent : Intent = Intent(this, MainActivity::class.java)
-                intent.putExtra("addedNewTodo", true)
+                intent.putExtra(TodoConstants.ADD_NEW_TO_DO_ACTION, true)
                 startActivity(intent)
                 finish()
             } else {
-                Toast.makeText(this, "Please fill in a todo item", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, TodoConstants.USER_NOTIFICATION_MISSING_TODO, Toast.LENGTH_SHORT).show()
             }
         }
 
