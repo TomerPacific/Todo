@@ -2,7 +2,6 @@ package com.tomerpacific.todo
 
 import android.content.Intent
 import android.graphics.Color
-import android.graphics.ColorFilter
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
 import android.os.Bundle
@@ -104,6 +103,24 @@ class MainActivity : AppCompatActivity() {
         val adapter = list.adapter as TodoListAdapter
         adapter.removeAllTodos()
         setClearButtonStatus(false)
+    }
+
+    fun shareWithWhatsApp(view: View) {
+
+        val todos : List<String> = TodoDataService.instance.getTodoData(this)
+
+        val whatsappIntent : Intent = Intent()
+        whatsappIntent.action = Intent.ACTION_SEND
+        whatsappIntent.`package`= "com.whatsapp"
+        whatsappIntent.putExtra(Intent.EXTRA_TEXT, todos.toString())
+        whatsappIntent.type = "text/plain"
+
+        if (whatsappIntent.resolveActivity(packageManager) == null) {
+            Toast.makeText(this, "Whatsapp has not been found on the device", Toast.LENGTH_SHORT).show()
+        } else {
+            startActivity(whatsappIntent)
+        }
+
     }
 
     override fun onStop() {
