@@ -34,6 +34,8 @@
         android:textSize="15sp"
         android:textColor="#FFFFFF"
         android:background="@drawable/round_button"
+        android:drawableRight="@drawable/whatsapp"
+        android:drawablePadding="-10dp"
         android:onClick="shareWithWhatsApp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/clearBtn"
