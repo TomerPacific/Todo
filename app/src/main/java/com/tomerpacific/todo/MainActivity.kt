@@ -112,7 +112,7 @@ class MainActivity : AppCompatActivity() {
         val whatsappIntent : Intent = Intent()
         whatsappIntent.action = Intent.ACTION_SEND
         whatsappIntent.`package`= "com.whatsapp"
-        var todoList : String = title.text.toString() + " " + todos.toString()
+        val todoList : String = title.text.toString() + " " + todos.joinToString(prefix = "*", separator = "*")
         whatsappIntent.putExtra(Intent.EXTRA_TEXT, todoList)
         whatsappIntent.type = "text/plain"
 
