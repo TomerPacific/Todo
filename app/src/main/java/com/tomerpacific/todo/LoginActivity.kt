@@ -29,11 +29,9 @@ class LoginActivity : AppCompatActivity() {
 
         val sharedPref = this.getSharedPreferences(TodoConstants.TODO_SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE)
         sharedPref.edit().putBoolean(TodoConstants.FIRST_LOGIN_KEY, false).apply()
+        sharedPref.edit().putString(TodoConstants.SAVE_DATA_PREFERENCE_KEY, switch.text.toString()).apply()
 
-        val mainIntent : Intent = Intent(this, MainActivity::class.java).apply {
-            putExtra(TodoConstants.SAVE_DATA_PREFERENCE_KEY, switch.text.toString())
-        }
-
+        val mainIntent : Intent = Intent(this, MainActivity::class.java)
         startActivity(mainIntent)
         finish()
     }

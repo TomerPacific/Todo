@@ -1,5 +1,6 @@
 package com.tomerpacific.todo
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.PorterDuff
@@ -34,7 +35,9 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
-        shouldSaveDataInSharedPreferences = intent.getStringExtra(TodoConstants.SAVE_DATA_PREFERENCE_KEY)
+        val sharedPref = this.getSharedPreferences(TodoConstants.TODO_SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE)
+
+        shouldSaveDataInSharedPreferences = sharedPref.getString(TodoConstants.SAVE_DATA_PREFERENCE_KEY, TodoConstants.SAVE_DATA_ON_DEVICE)
 
         if (shouldSaveDataInSharedPreferences.isNullOrEmpty() || shouldSaveDataInSharedPreferences.equals(TodoConstants.SAVE_DATA_ON_DEVICE)) {
             isInSharedPreferencesFlow = true
