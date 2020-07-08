@@ -8,4 +8,5 @@ object TodoConstants {
     const val FIRST_LOGIN_KEY = "first_login"
     const val SAVE_DATA_ON_DEVICE = "On Device"
     const val SAVE_DATA_ONLINE = "Online"
+    const val SAVE_DATA_PREFERENCE_KEY = "savePreference"
 }
