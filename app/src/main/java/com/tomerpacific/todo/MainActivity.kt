@@ -26,11 +26,19 @@ class MainActivity : AppCompatActivity() {
     private lateinit var list : ListView
     private lateinit var title : EditText
     private lateinit var clearButton : Button
+    private var shouldSaveDataInSharedPreferences : String? = null
+    private var isInSharedPreferencesFlow : Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
+
+        shouldSaveDataInSharedPreferences = intent.getStringExtra(TodoConstants.SAVE_DATA_PREFERENCE_KEY)
+
+        if (shouldSaveDataInSharedPreferences.isNullOrEmpty() || shouldSaveDataInSharedPreferences.equals(TodoConstants.SAVE_DATA_ON_DEVICE)) {
+            isInSharedPreferencesFlow = true
+        }
 
         clearButton = findViewById(R.id.clearBtn)
 
