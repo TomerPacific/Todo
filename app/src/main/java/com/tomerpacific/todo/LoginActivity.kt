@@ -1,5 +1,6 @@
 package com.tomerpacific.todo
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -25,6 +26,10 @@ class LoginActivity : AppCompatActivity() {
     }
 
     fun moveToMain(view : View) {
+
+        val sharedPref = this.getSharedPreferences(TodoConstants.TODO_SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE)
+        sharedPref.edit().putBoolean(TodoConstants.FIRST_LOGIN_KEY, false).apply()
+
         val mainIntent : Intent = Intent(this, MainActivity::class.java).apply {
             putExtra("savePreference", switch.text.toString())
         }
