@@ -20,7 +20,7 @@ class LoginActivity : AppCompatActivity() {
         switch = findViewById(R.id.switch1)
 
         switch.setOnCheckedChangeListener {_, isChecked ->
-            switch.text = if (isChecked) "Online" else "On Device"
+            switch.text = if (isChecked) TodoConstants.SAVE_DATA_ONLINE else TodoConstants.SAVE_DATA_ON_DEVICE
         }
 
     }
