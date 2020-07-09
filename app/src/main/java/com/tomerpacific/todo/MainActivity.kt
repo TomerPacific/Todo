@@ -35,13 +35,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
-        val sharedPref = this.getSharedPreferences(TodoConstants.TODO_SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE)
-
-        shouldSaveDataInSharedPreferences = sharedPref.getString(TodoConstants.SAVE_DATA_PREFERENCE_KEY, TodoConstants.SAVE_DATA_ON_DEVICE)
-
-        if (shouldSaveDataInSharedPreferences.isNullOrEmpty() || shouldSaveDataInSharedPreferences.equals(TodoConstants.SAVE_DATA_ON_DEVICE)) {
-            isInSharedPreferencesFlow = true
-        }
+        decideOnUserDataSavingFlow()
 
         clearButton = findViewById(R.id.clearBtn)
 
@@ -133,6 +127,16 @@ class MainActivity : AppCompatActivity() {
             startActivity(whatsappIntent)
         }
 
+    }
+
+    private fun decideOnUserDataSavingFlow() {
+        val sharedPref = this.getSharedPreferences(TodoConstants.TODO_SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE)
+
+        shouldSaveDataInSharedPreferences = sharedPref.getString(TodoConstants.SAVE_DATA_PREFERENCE_KEY, TodoConstants.SAVE_DATA_ON_DEVICE)
+
+        if (shouldSaveDataInSharedPreferences.isNullOrEmpty() || shouldSaveDataInSharedPreferences.equals(TodoConstants.SAVE_DATA_ON_DEVICE)) {
+            isInSharedPreferencesFlow = true
+        }
     }
 
     override fun onStop() {
