@@ -14,7 +14,7 @@ class DataSavePreferenceActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_login)
+        setContentView(R.layout.activity_data_save_preference)
         setSupportActionBar(toolbar)
 
         switch = findViewById(R.id.switch1)
