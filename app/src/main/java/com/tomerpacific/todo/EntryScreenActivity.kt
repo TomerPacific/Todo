@@ -20,7 +20,7 @@ class EntryScreenActivity : AppCompatActivity() {
         } else {
             intent = when (savingPreference) {
                 TodoConstants.SAVE_DATA_ON_DEVICE -> Intent(this, MainActivity::class.java)
-                TodoConstants.SAVE_DATA_ONLINE -> Intent(this, DataSavePreferenceActivity::class.java)
+                TodoConstants.SAVE_DATA_ONLINE -> Intent(this, LoginActivity::class.java)
                 else -> null
             }
         }

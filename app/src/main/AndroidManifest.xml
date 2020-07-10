@@ -25,6 +25,7 @@
             android:windowSoftInputMode="adjustPan">
         </activity>
         <activity android:name=".TodoFormActivity"></activity>
+        <activity android:name=".LoginActivity"></activity>
     </application>
 
 </manifest>
