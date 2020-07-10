@@ -16,11 +16,11 @@ class EntryScreenActivity : AppCompatActivity() {
         var intent : Intent?
 
         if (isFirstLogin) {
-            intent = Intent(this, LoginActivity::class.java)
+            intent = Intent(this, DataSavePreferenceActivity::class.java)
         } else {
             intent = when (savingPreference) {
                 TodoConstants.SAVE_DATA_ON_DEVICE -> Intent(this, MainActivity::class.java)
-                TodoConstants.SAVE_DATA_ONLINE -> Intent(this, LoginActivity::class.java)
+                TodoConstants.SAVE_DATA_ONLINE -> Intent(this, DataSavePreferenceActivity::class.java)
                 else -> null
             }
         }

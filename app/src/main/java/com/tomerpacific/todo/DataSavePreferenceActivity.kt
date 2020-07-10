@@ -8,7 +8,7 @@ import android.widget.Switch
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
-class LoginActivity : AppCompatActivity() {
+class DataSavePreferenceActivity : AppCompatActivity() {
 
     private lateinit var switch : Switch
 
