@@ -1,12 +1,46 @@
 package com.tomerpacific.todo
 
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.auth.FirebaseAuth
 
 class LoginActivity : AppCompatActivity() {
+
+    private lateinit var auth: FirebaseAuth
+    private var userEmail : String = ""
+    private var userPassword: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+
+
+    }
+
+    override fun onStart() {
+        super.onStart()
+        val currentUser = auth.currentUser
+    }
+
+    fun loginUser(view : View) {
+
+    }
+
+    fun signupUser(view: View) {
+
+        if (userEmail.isEmpty() || userPassword.isEmpty()) {
+            return
+        }
+
+        auth.createUserWithEmailAndPassword(userEmail, userPassword)
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    // Sign in success, update UI with the signed-in user's information
+                    val user = auth.currentUser
+                } else {
+                    // If sign in fails, display a message to the user.
+                }
+            }
     }
 }
