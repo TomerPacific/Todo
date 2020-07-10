@@ -111,11 +111,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun shareWithWhatsApp(view: View) {
-        var todos : List<String> = listOf()
 
-        if (isInSharedPreferencesFlow) {
-            todos = TodoDataService.instance.getTodoData(this)
-        }
+        val todos = TodoDataService.instance.getTodoData(this)
 
         val whatsappIntent : Intent = Intent()
         whatsappIntent.action = Intent.ACTION_SEND
