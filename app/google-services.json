@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "139032876037",
+    "firebase_url": "https://todo-tomer.firebaseio.com",
+    "project_id": "todo-tomer",
+    "storage_bucket": "todo-tomer.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:139032876037:android:ba6936335f26e3f462786c",
+        "android_client_info": {
+          "package_name": "com.tomerpacific.todo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "139032876037-suoo6c2dr5sg1csfks04oa4ippq71k3r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDtjDS0xeDl5aSnHBgKj1xWaPawL-0eLT0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "139032876037-suoo6c2dr5sg1csfks04oa4ippq71k3r.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
