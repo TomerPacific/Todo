@@ -43,10 +43,11 @@ class LoginActivity : AppCompatActivity() {
         auth.createUserWithEmailAndPassword(userEmail, userPassword)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
-                    // Sign in success, update UI with the signed-in user's information
-                    val user = auth.currentUser
+                    val intent : Intent = Intent(this, MainActivity::class.java)
+                    startActivity(intent)
+                    finish()
                 } else {
-                    // If sign in fails, display a message to the user.
+
                 }
             }
     }
