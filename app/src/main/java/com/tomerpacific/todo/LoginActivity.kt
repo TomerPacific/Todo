@@ -1,5 +1,6 @@
 package com.tomerpacific.todo
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -21,6 +22,11 @@ class LoginActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         val currentUser = auth.currentUser
+        
+        if (currentUser != null) {
+            val intent : Intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     fun loginUser(view : View) {
