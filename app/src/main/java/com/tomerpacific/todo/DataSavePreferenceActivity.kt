@@ -31,7 +31,12 @@ class DataSavePreferenceActivity : AppCompatActivity() {
         sharedPref.edit().putBoolean(TodoConstants.FIRST_LOGIN_KEY, false).apply()
         sharedPref.edit().putString(TodoConstants.SAVE_DATA_PREFERENCE_KEY, switch.text.toString()).apply()
 
-        val mainIntent : Intent = Intent(this, MainActivity::class.java)
+        val mainIntent : Intent? = when(switch.text.toString()) {
+            TodoConstants.SAVE_DATA_ON_DEVICE -> Intent(this, MainActivity::class.java)
+            TodoConstants.SAVE_DATA_ONLINE -> Intent(this, LoginActivity::class.java)
+            else -> null
+        }
+
         startActivity(mainIntent)
         finish()
     }
