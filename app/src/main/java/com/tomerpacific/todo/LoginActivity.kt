@@ -16,13 +16,14 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
+        auth = FirebaseAuth.getInstance()
 
     }
 
     override fun onStart() {
         super.onStart()
         val currentUser = auth.currentUser
-        
+
         if (currentUser != null) {
             val intent : Intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
