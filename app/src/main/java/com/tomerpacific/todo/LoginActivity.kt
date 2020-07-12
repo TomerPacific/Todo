@@ -6,6 +6,7 @@ import android.view.KeyEvent
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.FirebaseAuth
@@ -64,7 +65,7 @@ class LoginActivity : AppCompatActivity() {
                 if (task.isSuccessful) {
                     updateFirebaseUserDisplayName()
                 } else {
-                    // If sign in fails, display a message to the user.
+                    Toast.makeText(this, "An error has occurred during login. Please try again later.", Toast.LENGTH_SHORT).show()
                 }
             }
     }
@@ -72,7 +73,7 @@ class LoginActivity : AppCompatActivity() {
     fun signupUser(view: View) {
 
         if (userEmail.isEmpty() || userPassword.isEmpty()) {
-            return
+            Toast.makeText(this, "Please make sure to fill in your email and password", Toast.LENGTH_SHORT).show()
         }
 
         auth.createUserWithEmailAndPassword(userEmail, userPassword)
@@ -80,7 +81,7 @@ class LoginActivity : AppCompatActivity() {
                 if (task.isSuccessful) {
                     updateFirebaseUserDisplayName()
                 } else {
-
+                    Toast.makeText(this, "An error has occurred during signup. Please try again later.", Toast.LENGTH_SHORT).show()
                 }
             }
     }
