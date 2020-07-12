@@ -132,6 +132,12 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    fun logoutUser(view : View) {
+        FirebaseAuth.getInstance().signOut()
+        val signOutButton : Button = view as Button
+        signOutButton.visibility = View.INVISIBLE
+    }
+
     private fun decideOnUserDataSavingFlow() {
         val sharedPref = this.getSharedPreferences(TodoConstants.TODO_SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE)
 
@@ -141,6 +147,8 @@ class MainActivity : AppCompatActivity() {
             isInSharedPreferencesFlow = true
         } else {
             user = FirebaseAuth.getInstance().currentUser
+            val signOutButton : Button = findViewById(R.id.Logout)
+            signOutButton.visibility = View.VISIBLE
         }
     }
 
