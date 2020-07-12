@@ -25,7 +25,8 @@
             android:windowSoftInputMode="adjustPan">
         </activity>
         <activity android:name=".TodoFormActivity"></activity>
-        <activity android:name=".LoginActivity"></activity>
+        <activity android:name=".LoginActivity"
+            android:finishOnTaskLaunch="true"></activity>
     </application>
 
 </manifest>
