@@ -52,6 +52,7 @@
         android:text="Logout"
         android:background="#ff4d4d"
         android:visibility="invisible"
+        android:onClick="logoutUser"
         app:layout_constraintBottom_toTopOf="@+id/todo_list"
         app:layout_constraintEnd_toStartOf="@+id/clearBtn"
         app:layout_constraintHorizontal_bias="0.408"
