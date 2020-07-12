@@ -14,11 +14,11 @@
         android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:lines="1"
+        android:maxLines="1"
+        android:singleLine="true"
         android:text="Things To Do"
         android:textSize="25dp"
-        android:maxLines="1"
-        android:lines="1"
-        android:singleLine="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -44,6 +44,20 @@
         app:layout_constraintVertical_bias="0.0">
 
     </Button>
+
+    <Button
+        android:id="@+id/Logout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Logout"
+        android:background="#ff4d4d"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/todo_list"
+        app:layout_constraintEnd_toStartOf="@+id/clearBtn"
+        app:layout_constraintHorizontal_bias="0.408"
+        app:layout_constraintStart_toEndOf="@+id/share_whatsapp"
+        app:layout_constraintTop_toBottomOf="@+id/title"
+        app:layout_constraintVertical_bias="0.0" />
 
     <Button
         android:layout_width="wrap_content"
