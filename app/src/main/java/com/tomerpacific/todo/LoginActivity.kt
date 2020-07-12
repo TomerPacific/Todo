@@ -7,7 +7,11 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.UserProfileChangeRequest
 
 class LoginActivity : AppCompatActivity() {
 
@@ -59,8 +63,9 @@ class LoginActivity : AppCompatActivity() {
         auth.signInWithEmailAndPassword(userEmail, userPassword)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
-                    val user = auth.currentUser
+                    val user : FirebaseUser? = auth.currentUser
                     val intent : Intent = Intent(this, MainActivity::class.java)
+
                     startActivity(intent)
                     finish()
                 } else {
@@ -79,11 +84,18 @@ class LoginActivity : AppCompatActivity() {
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     val intent : Intent = Intent(this, MainActivity::class.java)
-                    startActivity(intent)
-                    finish()
+                    val user : FirebaseUser? = auth.currentUser
+                    val profileUpdates : UserProfileChangeRequest = UserProfileChangeRequest.Builder().setDisplayName(userEmail).build()
+                    user?.updateProfile(profileUpdates)?.addOnCompleteListener(OnCompleteListener {
+                        if (it.isSuccessful) {
+                            startActivity(intent)
+                            finish()
+                        }
+                    })
                 } else {
 
                 }
             }
     }
+
 }
