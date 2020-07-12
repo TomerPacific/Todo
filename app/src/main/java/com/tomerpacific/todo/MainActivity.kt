@@ -32,17 +32,18 @@ class MainActivity : AppCompatActivity() {
     private var shouldSaveDataInSharedPreferences : String? = null
     private var isInSharedPreferencesFlow : Boolean = false
     private var user : FirebaseUser? = null
+    private var signOutButton : Button? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
-        decideOnUserDataSavingFlow()
-
         clearButton = findViewById(R.id.clearBtn)
 
         title = findViewById(R.id.title)
+
+        signOutButton = findViewById(R.id.Logout)
 
         setupListeners()
 
@@ -50,6 +51,8 @@ class MainActivity : AppCompatActivity() {
         list.adapter = TodoListAdapter(this, clearButton)
 
         setClearButtonStatus(list.adapter.count != 0)
+
+        decideOnUserDataSavingFlow()
     }
 
     private fun setupListeners() {
@@ -87,6 +90,14 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
             finish()
         }
+
+        signOutButton?.setOnClickListener {
+            FirebaseAuth.getInstance().signOut()
+            val intent : Intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+
     }
 
     private fun setClearButtonStatus(status: Boolean) {
@@ -132,12 +143,6 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    fun logoutUser(view : View) {
-        FirebaseAuth.getInstance().signOut()
-        val signOutButton : Button = view as Button
-        signOutButton.visibility = View.INVISIBLE
-    }
-
     private fun decideOnUserDataSavingFlow() {
         val sharedPref = this.getSharedPreferences(TodoConstants.TODO_SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE)
 
@@ -147,8 +152,7 @@ class MainActivity : AppCompatActivity() {
             isInSharedPreferencesFlow = true
         } else {
             user = FirebaseAuth.getInstance().currentUser
-            val signOutButton : Button = findViewById(R.id.Logout)
-            signOutButton.visibility = View.VISIBLE
+            signOutButton?.visibility = View.VISIBLE
         }
     }
 
