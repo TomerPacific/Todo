@@ -19,6 +19,8 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ListView
 import android.widget.Toast
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -29,6 +31,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var clearButton : Button
     private var shouldSaveDataInSharedPreferences : String? = null
     private var isInSharedPreferencesFlow : Boolean = false
+    private var user : FirebaseUser? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -136,6 +139,8 @@ class MainActivity : AppCompatActivity() {
 
         if (shouldSaveDataInSharedPreferences.isNullOrEmpty() || shouldSaveDataInSharedPreferences.equals(TodoConstants.SAVE_DATA_ON_DEVICE)) {
             isInSharedPreferencesFlow = true
+        } else {
+            user = FirebaseAuth.getInstance().currentUser
         }
     }
 
