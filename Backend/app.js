@@ -32,11 +32,24 @@ app.use(function(req, res, next) {
 });
 
 
-app.get('/todo', function (req, res) {
-    var database = firebase.database();
-    
-    res.status(200).json({ todo_list: {}})
-});
+app.get('/getTodoData', function (req, res) {
+    var database = firebase.database()
+    var username = req.query.username
+    console.log(username)
+    database.ref('/users/' + username).once('value').then(function(snapshot) {
+      var todoData = (snapshot.val() && snapshot.val().todoData)
+      res.status(200).json({ todo_list: todoData})
+    })
+})
+
+app.post('/fetchTodoData', function(req,res) {
+  var data = req.body.data
+  var username = data.username
+  var database = firebase.database()
+  database.ref('/users/' + username).set({
+    todoData: data.todoData
+  })
+})
 
 
 app.listen(port, () => console.log(`Example app listening at http://localhost:${port}`))
