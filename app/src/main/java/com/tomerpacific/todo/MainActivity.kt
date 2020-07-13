@@ -126,7 +126,7 @@ class MainActivity : AppCompatActivity() {
 
     fun shareWithWhatsApp(view: View) {
 
-        val todos = TodoDataService.instance.getTodoData(this)
+        val todos = TodoDataSharedPreferencesService.instance.getTodoData(this)
 
         val whatsappIntent : Intent = Intent()
         whatsappIntent.action = Intent.ACTION_SEND
@@ -159,7 +159,7 @@ class MainActivity : AppCompatActivity() {
     override fun onStop() {
         super.onStop()
         if (isInSharedPreferencesFlow) {
-            TodoDataService.instance.saveTodoDataToSharedPreferences(this)
+            TodoDataSharedPreferencesService.instance.saveTodoDataToSharedPreferences(this)
         }
 
     }

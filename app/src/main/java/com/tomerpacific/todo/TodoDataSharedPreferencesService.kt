@@ -2,16 +2,16 @@ package com.tomerpacific.todo
 
 import android.content.Context
 
-class TodoDataService private constructor() {
+class TodoDataSharedPreferencesService private constructor() {
 
     private var todoData : MutableList<String> = mutableListOf<String>()
 
     private object HOLDER {
-        val INSTANCE = TodoDataService()
+        val INSTANCE = TodoDataSharedPreferencesService()
     }
 
     companion object {
-        val instance : TodoDataService by lazy { HOLDER.INSTANCE }
+        val instance : TodoDataSharedPreferencesService by lazy { HOLDER.INSTANCE }
     }
 
     fun getTodoData(context: Context): List<String> {

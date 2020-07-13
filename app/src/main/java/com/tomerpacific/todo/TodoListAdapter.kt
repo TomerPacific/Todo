@@ -22,7 +22,7 @@ class TodoListAdapter : BaseAdapter {
 
     constructor(context: Context, _clearButton : Button) {
         inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        data = TodoDataService.instance.getTodoData(context).toMutableList()
+        data = TodoDataSharedPreferencesService.instance.getTodoData(context).toMutableList()
         clearButton = _clearButton
     }
 
@@ -39,7 +39,7 @@ class TodoListAdapter : BaseAdapter {
                 val parentView = view.parent as ViewGroup
                 val todoToDelete = parentView.getChildAt(0) as TextView
                 data.remove(todoToDelete.text.toString())
-                TodoDataService.instance.removeTodo(todoToDelete.text.toString())
+                TodoDataSharedPreferencesService.instance.removeTodo(todoToDelete.text.toString())
                 notifyDataSetChanged()
 
                 if (data.size == 0) {
@@ -65,7 +65,7 @@ class TodoListAdapter : BaseAdapter {
     }
 
     fun removeAllTodos() {
-        TodoDataService.instance.removeAllTodos()
+        TodoDataSharedPreferencesService.instance.removeAllTodos()
         data.clear()
         notifyDataSetChanged()
     }

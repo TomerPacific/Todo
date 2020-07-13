@@ -29,8 +29,8 @@ class TodoFormActivity : AppCompatActivity() {
     private fun setupListeners() {
         doneButton.setOnClickListener { view ->
             if (!choreText.isBlank()) {
-                TodoDataService.instance.addTodo(todoChoreEditText.text.toString())
-                TodoDataService.instance.saveTodoDataToSharedPreferences(this)
+                TodoDataSharedPreferencesService.instance.addTodo(todoChoreEditText.text.toString())
+                TodoDataSharedPreferencesService.instance.saveTodoDataToSharedPreferences(this)
                 val intent : Intent = Intent(this, MainActivity::class.java)
                 intent.putExtra(TodoConstants.ADD_NEW_TO_DO_ACTION, true)
                 startActivity(intent)
