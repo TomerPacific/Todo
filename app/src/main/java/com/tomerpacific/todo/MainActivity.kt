@@ -23,6 +23,11 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 
 import kotlinx.android.synthetic.main.activity_main.*
+import org.json.JSONObject
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
 
 class MainActivity : AppCompatActivity() {
 
@@ -153,6 +158,20 @@ class MainActivity : AppCompatActivity() {
         } else {
             user = FirebaseAuth.getInstance().currentUser
             signOutButton?.visibility = View.VISIBLE
+            val retrofit = Retrofit.Builder().baseUrl("https://todo-tomer.herokuapp.com/").build()
+            val service = retrofit.create(DataService::class.java)
+            val call = service.getData("")
+
+            call.enqueue(object: Callback<JSONObject> {
+                override fun onResponse(call: Call<JSONObject>, response: Response<JSONObject>) {
+
+                }
+
+                override fun onFailure(call: Call<JSONObject>, t: Throwable) {
+
+                }
+            })
+
         }
     }
 
