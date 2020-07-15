@@ -160,7 +160,7 @@ class MainActivity : AppCompatActivity() {
             signOutButton?.visibility = View.VISIBLE
             val retrofit = Retrofit.Builder().baseUrl("https://todo-tomer.herokuapp.com/").build()
             val service = retrofit.create(DataService::class.java)
-            val call = service.getData("")
+            val call = service.getData(user?.displayName)
 
             call.enqueue(object: Callback<JSONObject> {
                 override fun onResponse(call: Call<JSONObject>, response: Response<JSONObject>) {
