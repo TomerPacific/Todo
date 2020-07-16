@@ -21,7 +21,7 @@ var firebaseConfig = {
   // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 
-app.use(bodyParser.json())
+app.use(bodyParser.urlencoded())
 
 app.use(function(req, res, next) {
   res.setHeader('Access-Control-Allow-Origin', '*')
@@ -35,7 +35,6 @@ app.use(function(req, res, next) {
 app.get('/getTodoData', function (req, res) {
     var database = firebase.database()
     var username = req.query.username
-    console.log(username)
     database.ref('/users/' + username).once('value').then(function(snapshot) {
       var todoData = (snapshot.val() && snapshot.val().todoData)
       res.status(200).json({ todo_list: todoData})
