@@ -35,9 +35,16 @@ app.use(function(req, res, next) {
 app.get('/getTodoData', function (req, res) {
     var database = firebase.database()
     var username = req.query.username
-    database.ref('/users/' + username).once('value').then(function(snapshot) {
-      var todoData = (snapshot.val() && snapshot.val().todoData)
+    var regex = /[A-z|a-z|0-9]*/g
+    var email = regex.exec(username)
+    
+    database.ref(email[0]).once('value')
+    .then(function(snapshot) {
+      var todoData = snapshot.val() ? snapshot.val() : ""
       res.status(200).json({ todo_list: todoData})
+    }).catch(function(error) {
+      console.log(error)
+      res.status(500).json({ error: error})
     })
 })
 
