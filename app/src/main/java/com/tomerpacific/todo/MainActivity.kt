@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.KeyEvent
 import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
@@ -28,6 +29,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 class MainActivity : AppCompatActivity() {
 
@@ -158,7 +160,8 @@ class MainActivity : AppCompatActivity() {
         } else {
             user = FirebaseAuth.getInstance().currentUser
             signOutButton?.visibility = View.VISIBLE
-            val retrofit = Retrofit.Builder().baseUrl("https://todo-tomer.herokuapp.com/").build()
+            val url :String = "https://todo-tomer.herokuapp.com/"
+            val retrofit = Retrofit.Builder().baseUrl(url).addConverterFactory(GsonConverterFactory.create()).build()
             val service = retrofit.create(DataService::class.java)
             val call = service.getData(user?.displayName)
 
