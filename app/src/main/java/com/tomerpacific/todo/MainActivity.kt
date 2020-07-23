@@ -24,6 +24,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 
 import kotlinx.android.synthetic.main.activity_main.*
+import org.json.JSONArray
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
@@ -161,16 +162,26 @@ class MainActivity : AppCompatActivity() {
             user = FirebaseAuth.getInstance().currentUser
             signOutButton?.visibility = View.VISIBLE
             val url :String = "https://todo-tomer.herokuapp.com/"
-            val retrofit = Retrofit.Builder().baseUrl(url).addConverterFactory(GsonConverterFactory.create()).build()
+            val retrofit = Retrofit.Builder()
+                .baseUrl(url)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
             val service = retrofit.create(DataService::class.java)
             val call = service.getData(user?.displayName)
 
-            call.enqueue(object: Callback<JSONObject> {
-                override fun onResponse(call: Call<JSONObject>, response: Response<JSONObject>) {
+            call.enqueue(object: Callback<TodoData> {
+                override fun onResponse(call: Call<TodoData>, response: Response<TodoData>) {
+                    if (response.isSuccessful) {
+                        val body = response.body()
+
+                    } else {
+
+                    }
+
 
                 }
 
-                override fun onFailure(call: Call<JSONObject>, t: Throwable) {
+                override fun onFailure(call: Call<TodoData>, t: Throwable) {
 
                 }
             })

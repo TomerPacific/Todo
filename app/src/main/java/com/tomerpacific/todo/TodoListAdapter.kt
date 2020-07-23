@@ -70,6 +70,8 @@ class TodoListAdapter : BaseAdapter {
         notifyDataSetChanged()
     }
 
-
+    fun setTodoData(dbData: List<String>) {
+        data = dbData.toMutableList()
+    }
 
 }
