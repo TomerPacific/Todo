@@ -172,8 +172,9 @@ class MainActivity : AppCompatActivity() {
             call.enqueue(object: Callback<TodoData> {
                 override fun onResponse(call: Call<TodoData>, response: Response<TodoData>) {
                     if (response.isSuccessful) {
-                        val body = response.body()
-
+                        val body = response.body() as TodoData
+                        val adapter = list.adapter as TodoListAdapter
+                        adapter.setTodoData(body.data)
                     } else {
 
                     }
