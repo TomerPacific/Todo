@@ -161,9 +161,9 @@ class MainActivity : AppCompatActivity() {
         } else {
             user = FirebaseAuth.getInstance().currentUser
             signOutButton?.visibility = View.VISIBLE
-            val url :String = "https://todo-tomer.herokuapp.com/"
+
             val retrofit = Retrofit.Builder()
-                .baseUrl(url)
+                .baseUrl(TodoConstants.BASE_URL_FOR_REQUEST)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
             val service = retrofit.create(DataService::class.java)

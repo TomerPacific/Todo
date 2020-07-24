@@ -9,4 +9,5 @@ object TodoConstants {
     const val SAVE_DATA_ON_DEVICE = "On Device"
     const val SAVE_DATA_ONLINE = "Online"
     const val SAVE_DATA_PREFERENCE_KEY = "savePreference"
+    const val BASE_URL_FOR_REQUEST = "https://todo-tomer.herokuapp.com/"
 }
