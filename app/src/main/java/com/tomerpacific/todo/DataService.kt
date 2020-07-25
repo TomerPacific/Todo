@@ -1,11 +1,13 @@
 package com.tomerpacific.todo
 
-import org.json.JSONObject
 import retrofit2.Call
-import retrofit2.http.GET
-import retrofit2.http.Query
+import retrofit2.http.*
 
 interface DataService {
     @GET("getTodoData")
     fun getData(@Query("username") username: String?) : Call<TodoData>
+
+    @Headers("Content-type: application/json")
+    @GET("setTodoData")
+    fun setData(@Query("username") username: String?, @Query("data") data: List<String>) : Call<TodoDataSetResult>
 }
