@@ -48,13 +48,17 @@ app.get('/getTodoData', function (req, res) {
     })
 })
 
-app.post('/fetchTodoData', function(req,res) {
-  var data = req.body.data
-  var username = data.username
+app.get('/setTodoData', function(req,res) {
+  var username = req.query.username
+  var data = req.query.data
+  var regex = /[A-z|a-z|0-9]*/g
+  var email = regex.exec(username)
   var database = firebase.database()
-  database.ref('/users/' + username).set({
-    todoData: data.todoData
+  database.ref('/users/' + email[0]).set({
+    todoData: data
   })
+
+  res.status(200).send({message: "Success"})
 })
 
 
