@@ -75,4 +75,8 @@ class TodoListAdapter : BaseAdapter {
         notifyDataSetChanged()
     }
 
+    fun getTodoData() : List<String> {
+        return data
+    }
+
 }

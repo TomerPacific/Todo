@@ -192,9 +192,38 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStop() {
         super.onStop()
-        if (isInSharedPreferencesFlow) {
-            TodoDataSharedPreferencesService.instance.saveTodoDataToSharedPreferences(this)
+        when(isInSharedPreferencesFlow) {
+            true -> TodoDataSharedPreferencesService.instance.saveTodoDataToSharedPreferences(this)
+            false -> saveDataToDB()
         }
+    }
 
+    private fun saveDataToDB() {
+
+        val adapter = list.adapter as TodoListAdapter
+
+        val retrofit = Retrofit.Builder()
+            .baseUrl(TodoConstants.BASE_URL_FOR_REQUEST)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+        val service = retrofit.create(DataService::class.java)
+        val call = service.setData(user?.displayName, adapter.getTodoData())
+
+        call.enqueue(object: Callback<TodoDataSetResult> {
+            override fun onResponse(
+                call: Call<TodoDataSetResult>,
+                response: Response<TodoDataSetResult>
+            ) {
+                val result = when(response.isSuccessful) {
+                    true -> "Success"
+                    false -> "Failure"
+                }
+            }
+
+            override fun onFailure(call: Call<TodoDataSetResult>, t: Throwable) {
+                println("Failure")
+            }
+
+        })
     }
 }
