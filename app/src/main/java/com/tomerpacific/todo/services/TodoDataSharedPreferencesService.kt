@@ -1,6 +1,7 @@
-package com.tomerpacific.todo
+package com.tomerpacific.todo.services
 
 import android.content.Context
+import com.tomerpacific.todo.TodoConstants
 
 class TodoDataSharedPreferencesService private constructor() {
 

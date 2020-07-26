@@ -1,4 +1,4 @@
-package com.tomerpacific.todo
+package com.tomerpacific.todo.activities
 
 import android.content.Context
 import android.content.Intent
@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Switch
 import androidx.appcompat.app.AppCompatActivity
+import com.tomerpacific.todo.R
+import com.tomerpacific.todo.TodoConstants
 import kotlinx.android.synthetic.main.activity_main.*
 
 class DataSavePreferenceActivity : AppCompatActivity() {

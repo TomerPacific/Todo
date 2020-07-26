@@ -1,4 +1,4 @@
-package com.tomerpacific.todo
+package com.tomerpacific.todo.activities
 
 import android.content.Intent
 import android.os.Bundle
@@ -8,6 +8,9 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.tomerpacific.todo.R
+import com.tomerpacific.todo.TodoConstants
+import com.tomerpacific.todo.services.TodoDataSharedPreferencesService
 
 class TodoFormActivity : AppCompatActivity() {
 
@@ -36,7 +39,8 @@ class TodoFormActivity : AppCompatActivity() {
                 startActivity(intent)
                 finish()
             } else {
-                Toast.makeText(this, TodoConstants.USER_NOTIFICATION_MISSING_TODO, Toast.LENGTH_SHORT).show()
+                Toast.makeText(this,
+                    TodoConstants.USER_NOTIFICATION_MISSING_TODO, Toast.LENGTH_SHORT).show()
             }
         }
 

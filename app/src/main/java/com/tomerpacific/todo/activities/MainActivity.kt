@@ -1,4 +1,4 @@
-package com.tomerpacific.todo
+package com.tomerpacific.todo.activities
 
 import android.content.Context
 import android.content.Intent
@@ -9,7 +9,6 @@ import android.os.Bundle
 import android.os.Handler
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.KeyEvent
 import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
@@ -22,10 +21,13 @@ import android.widget.ListView
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.tomerpacific.todo.*
+import com.tomerpacific.todo.Data.TodoData
+import com.tomerpacific.todo.Data.TodoDataSetResult
+import com.tomerpacific.todo.services.DataService
+import com.tomerpacific.todo.services.TodoDataSharedPreferencesService
 
 import kotlinx.android.synthetic.main.activity_main.*
-import org.json.JSONArray
-import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -161,9 +163,14 @@ class MainActivity : AppCompatActivity() {
     private fun decideOnUserDataSavingFlow() {
         val sharedPref = this.getSharedPreferences(TodoConstants.TODO_SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE)
 
-        shouldSaveDataInSharedPreferences = sharedPref.getString(TodoConstants.SAVE_DATA_PREFERENCE_KEY, TodoConstants.SAVE_DATA_ON_DEVICE)
+        shouldSaveDataInSharedPreferences = sharedPref.getString(
+            TodoConstants.SAVE_DATA_PREFERENCE_KEY,
+            TodoConstants.SAVE_DATA_ON_DEVICE
+        )
 
-        if (shouldSaveDataInSharedPreferences.isNullOrEmpty() || shouldSaveDataInSharedPreferences.equals(TodoConstants.SAVE_DATA_ON_DEVICE)) {
+        if (shouldSaveDataInSharedPreferences.isNullOrEmpty() || shouldSaveDataInSharedPreferences.equals(
+                TodoConstants.SAVE_DATA_ON_DEVICE
+            )) {
             isInSharedPreferencesFlow = true
         } else {
             user = FirebaseAuth.getInstance().currentUser
@@ -226,6 +233,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun removeAllTodoDataFromDB() {
-        
+
     }
 }

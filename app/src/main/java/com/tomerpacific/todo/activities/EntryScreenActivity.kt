@@ -1,9 +1,10 @@
-package com.tomerpacific.todo
+package com.tomerpacific.todo.activities
 
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.tomerpacific.todo.TodoConstants
 
 class EntryScreenActivity : AppCompatActivity() {
 

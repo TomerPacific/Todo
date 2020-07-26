@@ -1,5 +1,7 @@
-package com.tomerpacific.todo
+package com.tomerpacific.todo.services
 
+import com.tomerpacific.todo.Data.TodoData
+import com.tomerpacific.todo.Data.TodoDataSetResult
 import retrofit2.Call
 import retrofit2.http.*
 
