@@ -176,25 +176,17 @@ class MainActivity : AppCompatActivity() {
                         val adapter = list.adapter as TodoListAdapter
                         adapter.setTodoData(body.data)
                     } else {
-
+                        Toast.makeText(this@MainActivity, "Failed fetching user data", Toast.LENGTH_SHORT).show()
                     }
 
 
                 }
 
                 override fun onFailure(call: Call<TodoData>, t: Throwable) {
-
+                    Toast.makeText(this@MainActivity, "Failed fetching user data", Toast.LENGTH_SHORT).show()
                 }
             })
 
-        }
-    }
-
-    override fun onStop() {
-        super.onStop()
-        when(isInSharedPreferencesFlow) {
-            true -> TodoDataSharedPreferencesService.instance.saveTodoDataToSharedPreferences(this)
-            false -> saveDataToDB()
         }
     }
 
@@ -221,7 +213,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onFailure(call: Call<TodoDataSetResult>, t: Throwable) {
-                println("Failure")
+
             }
 
         })
