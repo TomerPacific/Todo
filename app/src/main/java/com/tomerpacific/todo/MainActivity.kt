@@ -206,14 +206,13 @@ class MainActivity : AppCompatActivity() {
                 call: Call<TodoDataSetResult>,
                 response: Response<TodoDataSetResult>
             ) {
-                val result = when(response.isSuccessful) {
-                    true -> "Success"
-                    false -> "Failure"
+                if(!response.isSuccessful) {
+                    Toast.makeText(this@MainActivity, "Failed saving user data", Toast.LENGTH_SHORT).show()
                 }
             }
 
             override fun onFailure(call: Call<TodoDataSetResult>, t: Throwable) {
-
+                Toast.makeText(this@MainActivity, "Failed saving user data", Toast.LENGTH_SHORT).show()
             }
 
         })
