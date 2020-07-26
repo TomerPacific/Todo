@@ -130,6 +130,13 @@ class MainActivity : AppCompatActivity() {
         val adapter = list.adapter as TodoListAdapter
         adapter.removeAllTodos()
         setClearButtonStatus(false)
+
+        when(isInSharedPreferencesFlow) {
+            true -> TodoDataSharedPreferencesService.instance.removeAllTodos()
+            false -> removeAllTodoDataFromDB()
+        }
+
+
     }
 
     fun shareWithWhatsApp(view: View) {
@@ -216,5 +223,9 @@ class MainActivity : AppCompatActivity() {
             }
 
         })
+    }
+
+    private fun removeAllTodoDataFromDB() {
+        
     }
 }

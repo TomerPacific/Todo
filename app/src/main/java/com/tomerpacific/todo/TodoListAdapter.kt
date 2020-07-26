@@ -65,7 +65,6 @@ class TodoListAdapter : BaseAdapter {
     }
 
     fun removeAllTodos() {
-        TodoDataSharedPreferencesService.instance.removeAllTodos()
         data.clear()
         notifyDataSetChanged()
     }

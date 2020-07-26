@@ -10,4 +10,8 @@ interface DataService {
     @Headers("Content-type: application/json")
     @GET("setTodoData")
     fun setData(@Query("username") username: String?, @Query("data") data: List<String>) : Call<TodoDataSetResult>
+
+    @GET("removeAllTodoData")
+    fun removeAllData(@Query("username") username: String?) : Call<TodoDataSetResult>
+
 }
