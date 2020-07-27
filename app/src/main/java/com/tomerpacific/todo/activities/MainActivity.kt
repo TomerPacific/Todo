@@ -138,20 +138,20 @@ class MainActivity : AppCompatActivity() {
 
     fun shareWithWhatsApp(view: View) {
 
-        val todos = TodoDataSharedPreferencesService.instance.getTodoData(this)
-
-        val whatsappIntent : Intent = Intent()
-        whatsappIntent.action = Intent.ACTION_SEND
-        whatsappIntent.`package`= "com.whatsapp"
-        val todoList : String = title.text.toString() + " " + todos.joinToString(prefix = "*", separator = "*")
-        whatsappIntent.putExtra(Intent.EXTRA_TEXT, todoList)
-        whatsappIntent.type = "text/plain"
-
-        if (whatsappIntent.resolveActivity(packageManager) == null) {
-            Toast.makeText(this, "Whatsapp has not been found on the device", Toast.LENGTH_SHORT).show()
-        } else {
-            startActivity(whatsappIntent)
-        }
+//        val todos = TodoDataSharedPreferencesService.instance.getTodoData(this)
+//
+//        val whatsappIntent : Intent = Intent()
+//        whatsappIntent.action = Intent.ACTION_SEND
+//        whatsappIntent.`package`= "com.whatsapp"
+//        val todoList : String = title.text.toString() + " " + todos.joinToString(prefix = "*", separator = "*")
+//        whatsappIntent.putExtra(Intent.EXTRA_TEXT, todoList)
+//        whatsappIntent.type = "text/plain"
+//
+//        if (whatsappIntent.resolveActivity(packageManager) == null) {
+//            Toast.makeText(this, "Whatsapp has not been found on the device", Toast.LENGTH_SHORT).show()
+//        } else {
+//            startActivity(whatsappIntent)
+//        }
 
     }
 
@@ -225,9 +225,5 @@ class MainActivity : AppCompatActivity() {
             }
 
         })
-    }
-
-    private fun removeAllTodoDataFromDB() {
-
     }
 }
