@@ -62,7 +62,7 @@ class MainActivity : AppCompatActivity() {
 
         setClearButtonStatus(list.adapter.count != 0)
 
-        decideOnUserDataSavingFlow()
+        DataSavingManager.decideOnUserDataSavingFlow(this)
     }
 
     private fun setupListeners() {
@@ -133,12 +133,7 @@ class MainActivity : AppCompatActivity() {
         adapter.removeAllTodos()
         setClearButtonStatus(false)
 
-        when(isInSharedPreferencesFlow) {
-            true -> TodoDataSharedPreferencesService.instance.removeAllTodos()
-            false -> removeAllTodoDataFromDB()
-        }
-
-
+        DataSavingManager.removeAllTodoData()
     }
 
     fun shareWithWhatsApp(view: View) {
