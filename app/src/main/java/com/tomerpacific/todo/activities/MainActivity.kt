@@ -49,6 +49,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
+        DataSavingManager.decideOnUserDataSavingFlow(this)
+
         clearButton = findViewById(R.id.clearBtn)
 
         title = findViewById(R.id.title)
@@ -62,7 +64,7 @@ class MainActivity : AppCompatActivity() {
 
         setClearButtonStatus(list.adapter.count != 0)
 
-        DataSavingManager.decideOnUserDataSavingFlow(this)
+        setSignoutButtonStatus()
     }
 
     private fun setupListeners() {
@@ -108,6 +110,12 @@ class MainActivity : AppCompatActivity() {
             finish()
         }
 
+    }
+
+    private fun setSignoutButtonStatus() {
+        if (!DataSavingManager.isSavingInSharedPreferences()) {
+            signOutButton?.visibility = View.VISIBLE
+        }
     }
 
     private fun setClearButtonStatus(status: Boolean) {
