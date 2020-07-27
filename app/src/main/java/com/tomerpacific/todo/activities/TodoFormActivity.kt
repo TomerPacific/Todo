@@ -26,7 +26,6 @@ class TodoFormActivity : AppCompatActivity() {
         todoChoreEditText = findViewById(R.id.todo_edit_text)
 
         setupListeners()
-
     }
 
     private fun setupListeners() {
