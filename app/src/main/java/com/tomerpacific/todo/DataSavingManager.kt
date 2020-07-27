@@ -26,6 +26,10 @@ object DataSavingManager {
         }
     }
 
+    fun isSavingInSharedPreferences() : Boolean {
+        return (shouldSaveInSharedPreferences != null && shouldSaveInSharedPreferences == true)
+    }
+
     fun fetchTodoDataFromSavedLocation(context: Context, todoAdapter : TodoListAdapter) {
         when(shouldSaveInSharedPreferences) {
             true -> TodoDataSharedPreferencesService.instance.getTodoData(context, todoAdapter)
