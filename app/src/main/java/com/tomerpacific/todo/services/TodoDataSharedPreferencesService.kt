@@ -2,6 +2,7 @@ package com.tomerpacific.todo.services
 
 import android.content.Context
 import com.tomerpacific.todo.TodoConstants
+import com.tomerpacific.todo.TodoListAdapter
 
 class TodoDataSharedPreferencesService private constructor() {
 
@@ -15,10 +16,10 @@ class TodoDataSharedPreferencesService private constructor() {
         val instance : TodoDataSharedPreferencesService by lazy { HOLDER.INSTANCE }
     }
 
-    fun getTodoData(context: Context): List<String> {
+    fun getTodoData(context: Context, todoAdapter : TodoListAdapter) {
         val todoList : List<String> = getTodoDataFromSharedPreferences(context)
         todoData = todoList.toMutableList()
-        return todoList
+        todoAdapter.setTodoData(todoList)
     }
 
     fun addTodo(todoTask : String) {
