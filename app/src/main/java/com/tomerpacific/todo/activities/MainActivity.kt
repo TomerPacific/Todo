@@ -155,50 +155,6 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    private fun decideOnUserDataSavingFlow() {
-        val sharedPref = this.getSharedPreferences(TodoConstants.TODO_SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE)
-
-        shouldSaveDataInSharedPreferences = sharedPref.getString(
-            TodoConstants.SAVE_DATA_PREFERENCE_KEY,
-            TodoConstants.SAVE_DATA_ON_DEVICE
-        )
-
-        if (shouldSaveDataInSharedPreferences.isNullOrEmpty() || shouldSaveDataInSharedPreferences.equals(
-                TodoConstants.SAVE_DATA_ON_DEVICE
-            )) {
-            isInSharedPreferencesFlow = true
-        } else {
-            user = FirebaseAuth.getInstance().currentUser
-            signOutButton?.visibility = View.VISIBLE
-
-            val retrofit = Retrofit.Builder()
-                .baseUrl(TodoConstants.BASE_URL_FOR_REQUEST)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
-            val service = retrofit.create(DataService::class.java)
-            val call = service.getData(user?.displayName)
-
-            call.enqueue(object: Callback<TodoData> {
-                override fun onResponse(call: Call<TodoData>, response: Response<TodoData>) {
-                    if (response.isSuccessful) {
-                        val body = response.body() as TodoData
-                        val adapter = list.adapter as TodoListAdapter
-                        adapter.setTodoData(body.data)
-                    } else {
-                        Toast.makeText(this@MainActivity, "Failed fetching user data", Toast.LENGTH_SHORT).show()
-                    }
-
-
-                }
-
-                override fun onFailure(call: Call<TodoData>, t: Throwable) {
-                    Toast.makeText(this@MainActivity, "Failed fetching user data", Toast.LENGTH_SHORT).show()
-                }
-            })
-
-        }
-    }
-
     private fun saveDataToDB() {
 
         val adapter = list.adapter as TodoListAdapter
