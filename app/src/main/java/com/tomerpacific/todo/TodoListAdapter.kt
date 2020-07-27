@@ -17,7 +17,7 @@ import com.tomerpacific.todo.services.TodoDataSharedPreferencesService
 
 class TodoListAdapter : BaseAdapter {
 
-    private lateinit var data: MutableList<String>
+    private var data: MutableList<String> = mutableListOf()
     private var inflater: LayoutInflater
     private var clearButton : Button
 
