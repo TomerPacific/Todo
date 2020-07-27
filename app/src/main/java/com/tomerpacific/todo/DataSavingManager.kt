@@ -26,6 +26,13 @@ object DataSavingManager {
         }
     }
 
+    fun fetchTodoDataFromSavedLocation(context: Context, todoAdapter : TodoListAdapter) {
+        when(shouldSaveInSharedPreferences) {
+            true -> TodoDataSharedPreferencesService.instance.getTodoData(context, todoAdapter)
+            false -> TodoDatabaseService.instance.fetchTodoDataFromDB(todoAdapter)
+        }
+    }
+
     fun removeAllTodoData() {
         when (shouldSaveInSharedPreferences != null) {
             true -> TodoDataSharedPreferencesService.instance.removeAllTodos()

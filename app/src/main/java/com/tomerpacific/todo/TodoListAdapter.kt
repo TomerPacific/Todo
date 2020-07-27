@@ -17,13 +17,13 @@ import com.tomerpacific.todo.services.TodoDataSharedPreferencesService
 
 class TodoListAdapter : BaseAdapter {
 
-    private var data: MutableList<String>
+    private lateinit var data: MutableList<String>
     private var inflater: LayoutInflater
     private var clearButton : Button
 
     constructor(context: Context, _clearButton : Button) {
         inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        data = TodoDataSharedPreferencesService.instance.getTodoData(context).toMutableList()
+        DataSavingManager.fetchTodoDataFromSavedLocation(context, this)
         clearButton = _clearButton
     }
 
