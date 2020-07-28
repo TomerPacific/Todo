@@ -39,8 +39,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var list : ListView
     private lateinit var title : EditText
     private lateinit var clearButton : Button
-    private var shouldSaveDataInSharedPreferences : String? = null
-    private var isInSharedPreferencesFlow : Boolean = false
     private var user : FirebaseUser? = null
     private var signOutButton : Button? = null
 
