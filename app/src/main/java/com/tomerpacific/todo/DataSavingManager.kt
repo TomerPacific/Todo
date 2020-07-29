@@ -9,6 +9,11 @@ object DataSavingManager {
     private var shouldSaveInSharedPreferences : Boolean? = null
 
     fun decideOnUserDataSavingFlow(context: Context) {
+
+        if (shouldSaveInSharedPreferences != null) {
+            return
+        }
+
         val sharedPref = context.getSharedPreferences(
             TodoConstants.TODO_SHARED_PREFERENCES_NAME,
             Context.MODE_PRIVATE
@@ -35,6 +40,10 @@ object DataSavingManager {
             true -> TodoDataSharedPreferencesService.instance.getTodoData(context, todoAdapter)
             false -> TodoDatabaseService.instance.fetchTodoDataFromDB(todoAdapter)
         }
+    }
+
+    fun saveTodoData() {
+
     }
 
     fun removeAllTodoData() {
