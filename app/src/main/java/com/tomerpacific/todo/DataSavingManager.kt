@@ -42,11 +42,11 @@ object DataSavingManager {
         }
     }
 
-    fun saveTodoData(context: Context, todoData : List<String>) {
+    fun saveTodoDataInSession(context: Context, todoData : List<String>) {
         TodoDataSharedPreferencesService.instance.saveTodoDataToSharedPreferences(context, todoData)
     }
 
-    fun getTodoData(context: Context, adapter: TodoListAdapter) {
+    fun getTodoDataInSession(context: Context, adapter: TodoListAdapter) {
         TodoDataSharedPreferencesService.instance.getTodoData(context, adapter)
     }
 

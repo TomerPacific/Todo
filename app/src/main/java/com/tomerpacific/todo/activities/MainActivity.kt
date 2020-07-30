@@ -1,6 +1,5 @@
 package com.tomerpacific.todo.activities
 
-import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.PorterDuff
@@ -22,10 +21,8 @@ import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.tomerpacific.todo.*
-import com.tomerpacific.todo.Data.TodoData
 import com.tomerpacific.todo.Data.TodoDataSetResult
 import com.tomerpacific.todo.services.DataService
-import com.tomerpacific.todo.services.TodoDataSharedPreferencesService
 
 import kotlinx.android.synthetic.main.activity_main.*
 import retrofit2.Call
@@ -65,13 +62,14 @@ class MainActivity : AppCompatActivity() {
         setSignoutButtonStatus()
 
         val adapter = list.adapter as TodoListAdapter
-        DataSavingManager.getTodoData(this, adapter)
+        DataSavingManager.getTodoDataInSession(this, adapter)
 
         val todoItemToBeAdd : String? = intent.getStringExtra("NEW_TODO_ITEM")
 
         if (todoItemToBeAdd != null) {
             val todoListAdapter = list.adapter as TodoListAdapter
             todoListAdapter.addTodoItem(todoItemToBeAdd)
+
         } else {
             DataSavingManager.fetchTodoDataFromSavedLocation(this, list.adapter as TodoListAdapter)
         }
@@ -157,12 +155,12 @@ class MainActivity : AppCompatActivity() {
         super.onPause()
         val adapter = list.adapter as TodoListAdapter
         val todoData : List<String> = adapter.getTodoData()
-        DataSavingManager.saveTodoData(this, todoData)
+        DataSavingManager.saveTodoDataInSession(this, todoData)
     }
 
     fun shareWithWhatsApp(view: View) {
 
-//        val todos = TodoDataSharedPreferencesService.instance.getTodoData(this)
+//        val todos = TodoDataSharedPreferencesService.instance.getTodoDataInSession(this)
 //
 //        val whatsappIntent : Intent = Intent()
 //        whatsappIntent.action = Intent.ACTION_SEND
