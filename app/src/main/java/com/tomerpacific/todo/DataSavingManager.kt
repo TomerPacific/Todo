@@ -50,6 +50,13 @@ object DataSavingManager {
         TodoDataSharedPreferencesService.instance.getTodoData(context, adapter)
     }
 
+    fun updateTodoData(context : Context, todoData : List<String>) {
+        when(shouldSaveInSharedPreferences) {
+            true -> TodoDataSharedPreferencesService.instance.saveTodoDataToSharedPreferences(context, todoData)
+            false -> TodoDatabaseService.instance.updateTodoDataInDB(todoData)
+        }
+    }
+
     fun removeAllTodoData() {
         when (shouldSaveInSharedPreferences != null) {
             true -> TodoDataSharedPreferencesService.instance.removeAllTodos()

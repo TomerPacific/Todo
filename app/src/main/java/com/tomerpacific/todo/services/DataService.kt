@@ -9,7 +9,6 @@ interface DataService {
     @GET("getTodoDataInSession")
     fun getData(@Query("username") username: String?) : Call<TodoData>
 
-    @Headers("Content-type: application/json")
     @GET("setTodoData")
     fun setData(@Query("username") username: String?, @Query("data") data: List<String>) : Call<TodoDataSetResult>
 

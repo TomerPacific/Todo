@@ -69,7 +69,7 @@ class MainActivity : AppCompatActivity() {
         if (todoItemToBeAdd != null) {
             val todoListAdapter = list.adapter as TodoListAdapter
             todoListAdapter.addTodoItem(todoItemToBeAdd)
-
+            DataSavingManager.updateTodoData(this, todoListAdapter.getTodoData())
         } else {
             DataSavingManager.fetchTodoDataFromSavedLocation(this, list.adapter as TodoListAdapter)
         }
@@ -175,33 +175,5 @@ class MainActivity : AppCompatActivity() {
 //            startActivity(whatsappIntent)
 //        }
 
-    }
-
-    private fun saveDataToDB() {
-
-        val adapter = list.adapter as TodoListAdapter
-
-        val retrofit = Retrofit.Builder()
-            .baseUrl(TodoConstants.BASE_URL_FOR_REQUEST)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-        val service = retrofit.create(DataService::class.java)
-        val call = service.setData(user?.displayName, adapter.getTodoData())
-
-        call.enqueue(object: Callback<TodoDataSetResult> {
-            override fun onResponse(
-                call: Call<TodoDataSetResult>,
-                response: Response<TodoDataSetResult>
-            ) {
-                if(!response.isSuccessful) {
-                    Toast.makeText(this@MainActivity, "Failed saving user data", Toast.LENGTH_SHORT).show()
-                }
-            }
-
-            override fun onFailure(call: Call<TodoDataSetResult>, t: Throwable) {
-                Toast.makeText(this@MainActivity, "Failed saving user data", Toast.LENGTH_SHORT).show()
-            }
-
-        })
     }
 }

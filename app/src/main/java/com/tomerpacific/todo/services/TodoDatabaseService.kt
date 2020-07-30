@@ -1,10 +1,9 @@
 package com.tomerpacific.todo.services
 
-import android.view.View
-import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.tomerpacific.todo.Data.TodoData
+import com.tomerpacific.todo.Data.TodoDataSetResult
 import com.tomerpacific.todo.TodoConstants
 import com.tomerpacific.todo.TodoListAdapter
 import retrofit2.Call
@@ -44,6 +43,29 @@ class TodoDatabaseService private constructor() {
             }
 
             override fun onFailure(call: Call<TodoData>, t: Throwable) {
+
+            }
+        })
+    }
+
+    fun updateTodoDataInDB(todoData : List<String>) {
+        val retrofit = Retrofit.Builder()
+            .baseUrl(TodoConstants.BASE_URL_FOR_REQUEST)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+        val service = retrofit.create(DataService::class.java)
+        val call = service.setData(user?.displayName, todoData)
+
+        call.enqueue(object: Callback<TodoDataSetResult> {
+            override fun onResponse(
+                call: Call<TodoDataSetResult>,
+                response: Response<TodoDataSetResult>
+            ) {
+                if(!response.isSuccessful) {
+                }
+            }
+
+            override fun onFailure(call: Call<TodoDataSetResult>, t: Throwable) {
 
             }
         })
