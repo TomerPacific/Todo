@@ -42,8 +42,12 @@ object DataSavingManager {
         }
     }
 
-    fun saveTodoData() {
+    fun saveTodoData(context: Context, todoData : List<String>) {
+        TodoDataSharedPreferencesService.instance.saveTodoDataToSharedPreferences(context, todoData)
+    }
 
+    fun getTodoData(context: Context, adapter: TodoListAdapter) {
+        TodoDataSharedPreferencesService.instance.getTodoData(context, adapter)
     }
 
     fun removeAllTodoData() {
