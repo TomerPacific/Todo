@@ -6,8 +6,6 @@ import com.tomerpacific.todo.TodoListAdapter
 
 class TodoDataSharedPreferencesService private constructor() {
 
-    private var todoData : MutableList<String> = mutableListOf<String>()
-
     private object HOLDER {
         val INSTANCE = TodoDataSharedPreferencesService()
     }
@@ -18,23 +16,22 @@ class TodoDataSharedPreferencesService private constructor() {
 
     fun getTodoData(context: Context, todoAdapter : TodoListAdapter) {
         val todoList : List<String> = getTodoDataFromSharedPreferences(context)
-        todoData = todoList.toMutableList()
-        todoAdapter.setTodoData(todoList)
+        todoAdapter.setTodoData(todoList.toMutableList())
     }
 
     fun addTodo(todoTask : String) {
-        todoData.add(todoTask)
+
     }
 
     fun removeTodo(todoTask: String) {
-        todoData.remove(todoTask)
+
     }
 
     fun removeAllTodos() {
-        todoData.clear()
+
     }
 
-    fun saveTodoDataToSharedPreferences(context: Context) {
+    fun saveTodoDataToSharedPreferences(context: Context, todoData : List<String>) {
         val sharedPref = context.getSharedPreferences(TodoConstants.TODO_SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE)
         sharedPref.edit().putStringSet(TodoConstants.TODO_KEY, todoData.toSet()).apply()
     }
