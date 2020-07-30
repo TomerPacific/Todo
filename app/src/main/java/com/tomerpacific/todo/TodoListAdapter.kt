@@ -23,7 +23,6 @@ class TodoListAdapter : BaseAdapter {
 
     constructor(context: Context, _clearButton : Button) {
         inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        DataSavingManager.fetchTodoDataFromSavedLocation(context, this)
         clearButton = _clearButton
     }
 
@@ -77,6 +76,11 @@ class TodoListAdapter : BaseAdapter {
 
     fun getTodoData() : List<String> {
         return data
+    }
+
+    fun addTodoItem(todoItem : String) {
+        data.add(todoItem)
+        notifyDataSetChanged()
     }
 
 }

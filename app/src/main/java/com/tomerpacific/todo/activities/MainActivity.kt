@@ -63,6 +63,18 @@ class MainActivity : AppCompatActivity() {
         setClearButtonStatus(list.adapter.count != 0)
 
         setSignoutButtonStatus()
+
+        val adapter = list.adapter as TodoListAdapter
+        DataSavingManager.getTodoData(this, adapter)
+
+        val todoItemToBeAdd : String? = intent.getStringExtra("NEW_TODO_ITEM")
+
+        if (todoItemToBeAdd != null) {
+            val todoListAdapter = list.adapter as TodoListAdapter
+            todoListAdapter.addTodoItem(todoItemToBeAdd)
+        } else {
+            DataSavingManager.fetchTodoDataFromSavedLocation(this, list.adapter as TodoListAdapter)
+        }
     }
 
     private fun setupListeners() {
@@ -138,8 +150,14 @@ class MainActivity : AppCompatActivity() {
         val adapter = list.adapter as TodoListAdapter
         adapter.removeAllTodos()
         setClearButtonStatus(false)
-
         DataSavingManager.removeAllTodoData()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        val adapter = list.adapter as TodoListAdapter
+        val todoData : List<String> = adapter.getTodoData()
+        DataSavingManager.saveTodoData(this, todoData)
     }
 
     fun shareWithWhatsApp(view: View) {
