@@ -6,7 +6,7 @@ import retrofit2.Call
 import retrofit2.http.*
 
 interface DataService {
-    @GET("getTodoDataInSession")
+    @GET("getTodoData")
     fun getData(@Query("username") username: String?) : Call<TodoData>
 
     @GET("setTodoData")
