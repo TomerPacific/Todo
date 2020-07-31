@@ -61,5 +61,16 @@ app.get('/setTodoData', function(req,res) {
   res.status(200).send({message: "Success"})
 })
 
+app.get('/removeAllTodoData', function(req,res) {
+  var username = req.query.username
+  var data = req.query.data
+  var regex = /[A-z|a-z|0-9]*/g
+  var email = regex.exec(username)
+  var database = firebase.database()
+  database.ref('/users/' + email[0]).remove()
+  res.status(200).send({message: "Success"})
+})
+
+
 
 app.listen(port, () => console.log(`Example app listening at http://localhost:${port}`))
