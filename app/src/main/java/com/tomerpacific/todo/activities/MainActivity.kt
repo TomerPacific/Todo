@@ -148,7 +148,7 @@ class MainActivity : AppCompatActivity() {
         val adapter = list.adapter as TodoListAdapter
         adapter.removeAllTodos()
         setClearButtonStatus(false)
-        DataSavingManager.removeAllTodoData()
+        DataSavingManager.removeAllTodoData(this)
     }
 
     override fun onPause() {
