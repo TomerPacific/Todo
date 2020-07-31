@@ -1,5 +1,7 @@
 package com.tomerpacific.todo.services
 
+import android.content.Context
+import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.tomerpacific.todo.Data.TodoData
@@ -48,7 +50,7 @@ class TodoDatabaseService private constructor() {
         })
     }
 
-    fun updateTodoDataInDB(todoData : List<String>) {
+    fun updateTodoDataInDB(context: Context, todoData : List<String>) {
         val retrofit = Retrofit.Builder()
             .baseUrl(TodoConstants.BASE_URL_FOR_REQUEST)
             .addConverterFactory(GsonConverterFactory.create())
@@ -62,11 +64,12 @@ class TodoDatabaseService private constructor() {
                 response: Response<TodoDataSetResult>
             ) {
                 if(!response.isSuccessful) {
+                    Toast.makeText(context, "There was a problem saving the Todo data in the server", Toast.LENGTH_SHORT).show()
                 }
             }
 
             override fun onFailure(call: Call<TodoDataSetResult>, t: Throwable) {
-
+                Toast.makeText(context, "There was a problem saving the Todo data in the server", Toast.LENGTH_SHORT).show()
             }
         })
     }

@@ -53,7 +53,7 @@ object DataSavingManager {
     fun updateTodoData(context : Context, todoData : List<String>) {
         when(shouldSaveInSharedPreferences) {
             true -> TodoDataSharedPreferencesService.instance.saveTodoDataToSharedPreferences(context, todoData)
-            false -> TodoDatabaseService.instance.updateTodoDataInDB(todoData)
+            false -> TodoDatabaseService.instance.updateTodoDataInDB(context, todoData)
         }
     }
 
