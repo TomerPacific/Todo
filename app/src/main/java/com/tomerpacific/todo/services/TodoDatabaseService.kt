@@ -74,7 +74,27 @@ class TodoDatabaseService private constructor() {
         })
     }
 
-    fun removeAllTodos() {
+    fun removeAllTodos(context: Context) {
+        val retrofit = Retrofit.Builder()
+            .baseUrl(TodoConstants.BASE_URL_FOR_REQUEST)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+        val service = retrofit.create(DataService::class.java)
+        val call = service.removeAllData(user?.displayName)
 
+        call.enqueue(object: Callback<TodoDataSetResult> {
+            override fun onResponse(
+                call: Call<TodoDataSetResult>,
+                response: Response<TodoDataSetResult>
+            ) {
+                if(!response.isSuccessful) {
+                    Toast.makeText(context, "There was a problem saving the Todo data in the server", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<TodoDataSetResult>, t: Throwable) {
+                Toast.makeText(context, "There was a problem saving the Todo data in the server", Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 }
