@@ -19,24 +19,16 @@ import android.widget.EditText
 import android.widget.ListView
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.tomerpacific.todo.*
-import com.tomerpacific.todo.Data.TodoDataSetResult
-import com.tomerpacific.todo.services.DataService
 
 import kotlinx.android.synthetic.main.activity_main.*
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var list : ListView
     private lateinit var title : EditText
     private lateinit var clearButton : Button
-    private var user : FirebaseUser? = null
     private var signOutButton : Button? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -62,7 +54,6 @@ class MainActivity : AppCompatActivity() {
         setSignoutButtonStatus()
 
         val adapter = list.adapter as TodoListAdapter
-        DataSavingManager.getTodoDataInSession(this, adapter)
 
         val todoItemToBeAdd : String? = intent.getStringExtra("NEW_TODO_ITEM")
 
