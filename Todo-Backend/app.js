@@ -40,8 +40,8 @@ app.get('/getTodoData', function (req, res) {
     
     database.ref('/users/' + email[0]).once('value')
     .then(function(snapshot) {
-      var todoData = snapshot.val() ? snapshot.val() : []
-      res.status(200).send({ todo_list: todoData})
+      var data = snapshot.val() ? snapshot.val() : []
+      res.status(200).send({ todo_list: data.todoData})
     }).catch(function(error) {
       console.log(error)
       res.status(500).json({ error: error})
