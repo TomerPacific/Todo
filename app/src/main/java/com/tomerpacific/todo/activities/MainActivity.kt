@@ -48,19 +48,18 @@ class MainActivity : AppCompatActivity() {
 
         list = findViewById(R.id.todo_list)
         list.adapter = TodoListAdapter(this, clearButton)
+        
+        val adapter = list.adapter as TodoListAdapter
+        DataSavingManager.getTodoDataInSession(this, adapter)
 
         setClearButtonStatus(list.adapter.count != 0)
 
         setSignoutButtonStatus()
 
-        val adapter = list.adapter as TodoListAdapter
-
         val todoItemToBeAdd : String? = intent.getStringExtra("NEW_TODO_ITEM")
-
         if (todoItemToBeAdd != null) {
-            val todoListAdapter = list.adapter as TodoListAdapter
-            todoListAdapter.addTodoItem(todoItemToBeAdd)
-            DataSavingManager.updateTodoData(this, todoListAdapter.getTodoData())
+            adapter.addTodoItem(todoItemToBeAdd)
+            DataSavingManager.updateTodoData(this, adapter.getTodoData())
         } else {
             DataSavingManager.fetchTodoDataFromSavedLocation(this, list.adapter as TodoListAdapter)
         }
