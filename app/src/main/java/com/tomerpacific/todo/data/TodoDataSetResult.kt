@@ -1,4 +1,4 @@
-package com.tomerpacific.todo.Data
+package com.tomerpacific.todo.data
 
 import com.google.gson.annotations.SerializedName
 
