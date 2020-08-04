@@ -66,11 +66,13 @@ class TodoListAdapter : BaseAdapter {
 
     fun removeAllTodos() {
         data.clear()
+        setClearButtonStatus(false)
         notifyDataSetChanged()
     }
 
     fun setTodoData(dbData: List<String>) {
         data = dbData.toMutableList()
+        setClearButtonStatus(data.count() != 0)
         notifyDataSetChanged()
     }
 
@@ -81,6 +83,12 @@ class TodoListAdapter : BaseAdapter {
     fun addTodoItem(todoItem : String) {
         data.add(todoItem)
         notifyDataSetChanged()
+    }
+
+    private fun setClearButtonStatus(status: Boolean) {
+        clearButton.isClickable = status
+        clearButton.background.colorFilter = if(!clearButton.isClickable)
+            PorterDuffColorFilter(Color.GRAY, PorterDuff.Mode.MULTIPLY) else PorterDuffColorFilter(Color.GREEN, PorterDuff.Mode.MULTIPLY)
     }
 
 }

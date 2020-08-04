@@ -52,8 +52,6 @@ class MainActivity : AppCompatActivity() {
         val adapter = list.adapter as TodoListAdapter
         DataSavingManager.getTodoDataInSession(this, adapter)
 
-        setClearButtonStatus(list.adapter.count != 0)
-
         setSignoutButtonStatus()
 
         val todoItemToBeAdd : String? = intent.getStringExtra("NEW_TODO_ITEM")
@@ -116,12 +114,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun setClearButtonStatus(status: Boolean) {
-        clearButton.isClickable = status
-        clearButton.background.colorFilter = if(!clearButton.isClickable)
-            PorterDuffColorFilter(Color.GRAY, PorterDuff.Mode.MULTIPLY) else PorterDuffColorFilter(Color.GREEN, PorterDuff.Mode.MULTIPLY)
-    }
-
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
         return true
@@ -137,7 +129,6 @@ class MainActivity : AppCompatActivity() {
     fun removeAll(view: View) {
         val adapter = list.adapter as TodoListAdapter
         adapter.removeAllTodos()
-        setClearButtonStatus(false)
         DataSavingManager.removeAllTodoData(this)
 
     }
