@@ -60,9 +60,13 @@ object DataSavingManager {
     fun removeAllTodoData(context: Context) {
         when (shouldSaveInSharedPreferences != null) {
             true -> TodoDataSharedPreferencesService.instance.removeAllTodos(context)
-            false -> TodoDatabaseService.instance.removeAllTodos(context)
+            false -> removeTodoDataInDBAndShared(context)
         }
+    }
 
+    private fun removeTodoDataInDBAndShared(context: Context) {
+        TodoDatabaseService.instance.removeAllTodos(context)
+        TodoDataSharedPreferencesService.instance.removeAllTodos(context)
     }
 
 

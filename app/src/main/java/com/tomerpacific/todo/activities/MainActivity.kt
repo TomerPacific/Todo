@@ -139,6 +139,7 @@ class MainActivity : AppCompatActivity() {
         adapter.removeAllTodos()
         setClearButtonStatus(false)
         DataSavingManager.removeAllTodoData(this)
+
     }
 
     override fun onPause() {
