@@ -63,7 +63,6 @@ app.get('/setTodoData', function(req,res) {
 
 app.get('/removeAllTodoData', function(req,res) {
   var username = req.query.username
-  var data = req.query.data
   var regex = /[A-z|a-z|0-9]*/g
   var email = regex.exec(username)
   var database = firebase.database()
