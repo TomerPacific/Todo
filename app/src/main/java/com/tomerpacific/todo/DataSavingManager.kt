@@ -58,9 +58,11 @@ object DataSavingManager {
     }
 
     fun removeAllTodoData(context: Context) {
-        when (shouldSaveInSharedPreferences != null) {
-            true -> TodoDataSharedPreferencesService.instance.removeAllTodos(context)
-            false -> removeTodoDataInDBAndShared(context)
+        if (shouldSaveInSharedPreferences != null) {
+            when (shouldSaveInSharedPreferences) {
+                true -> TodoDataSharedPreferencesService.instance.removeAllTodos(context)
+                false -> removeTodoDataInDBAndShared(context)
+            }
         }
     }
 
