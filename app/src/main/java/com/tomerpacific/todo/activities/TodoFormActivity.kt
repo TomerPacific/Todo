@@ -10,7 +10,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.tomerpacific.todo.R
 import com.tomerpacific.todo.TodoConstants
-import com.tomerpacific.todo.services.TodoDataSharedPreferencesService
 
 class TodoFormActivity : AppCompatActivity() {
 

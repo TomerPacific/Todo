@@ -1,9 +1,6 @@
 package com.tomerpacific.todo.activities
 
 import android.content.Intent
-import android.graphics.Color
-import android.graphics.PorterDuff
-import android.graphics.PorterDuffColorFilter
 import android.os.Bundle
 import android.os.Handler
 import android.text.Editable
