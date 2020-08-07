@@ -32,7 +32,7 @@ class TodoFormActivity : AppCompatActivity() {
         doneButton.setOnClickListener { view ->
             if (!choreText.isBlank()) {
                 val intent : Intent = Intent(this, MainActivity::class.java)
-                intent.putExtra("NEW_TODO_ITEM", choreText)
+                intent.putExtra(TodoConstants.TODO_ACTION_NEW_TODO_ITEM, choreText)
                 startActivity(intent)
                 finish()
             } else {

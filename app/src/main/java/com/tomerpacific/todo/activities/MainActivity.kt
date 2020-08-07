@@ -54,7 +54,7 @@ class MainActivity : AppCompatActivity() {
 
         setSignoutButtonStatus()
 
-        val todoItemToBeAdd : String? = intent.getStringExtra("NEW_TODO_ITEM")
+        val todoItemToBeAdd : String? = intent.getStringExtra(TodoConstants.TODO_ACTION_NEW_TODO_ITEM)
         if (todoItemToBeAdd != null) {
             adapter.addTodoItem(todoItemToBeAdd)
             DataSavingManager.updateTodoData(this, adapter.getTodoData())
@@ -130,7 +130,6 @@ class MainActivity : AppCompatActivity() {
         val adapter = list.adapter as TodoListAdapter
         adapter.removeAllTodos()
         DataSavingManager.removeAllTodoData(this)
-
     }
 
     override fun onPause() {
