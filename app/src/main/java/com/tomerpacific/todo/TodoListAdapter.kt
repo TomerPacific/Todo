@@ -82,6 +82,11 @@ class TodoListAdapter : BaseAdapter {
 
     fun addTodoItem(todoItem : String) {
         data.add(todoItem)
+
+        if (data.size == 1) {
+            setClearButtonStatus(true)
+        }
+
         notifyDataSetChanged()
     }
 
