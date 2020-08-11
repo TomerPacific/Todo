@@ -9,7 +9,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
-import android.widget.Button
 import android.widget.CheckBox
 import android.widget.TextView
 import com.tomerpacific.todo.services.TodoDataSharedPreferencesService
@@ -19,11 +18,11 @@ class TodoListAdapter : BaseAdapter {
 
     private var data: MutableList<String> = mutableListOf()
     private var inflater: LayoutInflater
-    private var clearButton : Button
+    private var clearButtonCB : ((status: Boolean) -> Unit)? = null
 
-    constructor(context: Context, _clearButton : Button) {
+    constructor(context: Context, clearButtonCallback : (status: Boolean) -> Unit) {
         inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        clearButton = _clearButton
+        clearButtonCB = clearButtonCallback
     }
 
     override fun getView(position: Int, convertView: View?, container: ViewGroup?): View {
@@ -42,10 +41,7 @@ class TodoListAdapter : BaseAdapter {
                 TodoDataSharedPreferencesService.instance.removeTodo(todoToDelete.text.toString())
                 notifyDataSetChanged()
 
-                if (data.size == 0) {
-                    clearButton.isClickable = false
-                    clearButton.background.colorFilter = PorterDuffColorFilter(Color.GRAY, PorterDuff.Mode.MULTIPLY)
-                }
+                clearButtonCB?.invoke(data.size == 0)
             }
         }
 
@@ -66,13 +62,13 @@ class TodoListAdapter : BaseAdapter {
 
     fun removeAllTodos() {
         data.clear()
-        setClearButtonStatus(false)
+        clearButtonCB?.invoke(false)
         notifyDataSetChanged()
     }
 
     fun setTodoData(dbData: List<String>) {
         data = dbData.toMutableList()
-        setClearButtonStatus(data.count() != 0)
+        clearButtonCB?.invoke(data.count() != 0)
         notifyDataSetChanged()
     }
 
@@ -84,16 +80,10 @@ class TodoListAdapter : BaseAdapter {
         data.add(todoItem)
 
         if (data.size == 1) {
-            setClearButtonStatus(true)
+            clearButtonCB?.invoke(true)
         }
 
         notifyDataSetChanged()
-    }
-
-    private fun setClearButtonStatus(status: Boolean) {
-        clearButton.isClickable = status
-        clearButton.background.colorFilter = if(!clearButton.isClickable)
-            PorterDuffColorFilter(Color.GRAY, PorterDuff.Mode.MULTIPLY) else PorterDuffColorFilter(Color.GREEN, PorterDuff.Mode.MULTIPLY)
     }
 
 }

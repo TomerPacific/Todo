@@ -1,6 +1,9 @@
 package com.tomerpacific.todo.activities
 
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.PorterDuff
+import android.graphics.PorterDuffColorFilter
 import android.os.Bundle
 import android.os.Handler
 import android.text.Editable
@@ -44,7 +47,7 @@ class MainActivity : AppCompatActivity() {
         setupListeners()
 
         list = findViewById(R.id.todo_list)
-        list.adapter = TodoListAdapter(this, clearButton)
+        list.adapter = TodoListAdapter(this, this::setClearButtonStatus)
 
         val adapter = list.adapter as TodoListAdapter
         DataSavingManager.getTodoDataInSession(this, adapter)
@@ -127,6 +130,13 @@ class MainActivity : AppCompatActivity() {
         val adapter = list.adapter as TodoListAdapter
         adapter.removeAllTodos()
         DataSavingManager.removeAllTodoData(this)
+    }
+
+    private fun setClearButtonStatus(status: Boolean) {
+        clearButton.isClickable = status
+        clearButton.background.colorFilter = if(!clearButton.isClickable)
+            PorterDuffColorFilter(Color.GRAY, PorterDuff.Mode.MULTIPLY) else PorterDuffColorFilter(
+            Color.GREEN, PorterDuff.Mode.MULTIPLY)
     }
 
     override fun onPause() {
