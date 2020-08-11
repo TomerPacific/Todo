@@ -41,7 +41,7 @@ class TodoListAdapter : BaseAdapter {
                 TodoDataSharedPreferencesService.instance.removeTodo(todoToDelete.text.toString())
                 notifyDataSetChanged()
 
-                clearButtonCB?.invoke(data.size == 0)
+                clearButtonCB?.invoke(data.size != 0)
             }
         }
 
