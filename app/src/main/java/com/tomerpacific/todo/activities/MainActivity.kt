@@ -46,21 +46,22 @@ class MainActivity : AppCompatActivity() {
 
         setupListeners()
 
-        todoListView = findViewById<ListView>(R.id.todo_list).apply {
-            adapter = TodoListAdapter(this@MainActivity, this@MainActivity::setClearButtonStatus)
-        }
-
-        val adapter = todoListView.adapter as TodoListAdapter
-        DataSavingManager.getTodoDataInSession(this, adapter)
-
         setSignoutButtonStatus()
 
-        val todoItemToBeAdd : String? = intent.getStringExtra(TodoConstants.TODO_ACTION_NEW_TODO_ITEM)
-        if (todoItemToBeAdd != null) {
-            adapter.addTodoItem(todoItemToBeAdd)
-            DataSavingManager.updateTodoData(this, adapter.getTodoData())
-        } else {
-            DataSavingManager.fetchTodoDataFromSavedLocation(this, todoListView.adapter as TodoListAdapter)
+        todoListView = findViewById<ListView>(R.id.todo_list).apply {
+            val listAdapter = TodoListAdapter(this@MainActivity, this@MainActivity::setClearButtonStatus)
+            this.adapter = listAdapter
+            DataSavingManager.getTodoDataInSession(this@MainActivity, this.adapter as TodoListAdapter)
+
+            val todoItemToBeAdd : String? = intent.getStringExtra(TodoConstants.TODO_ACTION_NEW_TODO_ITEM)
+            todoItemToBeAdd.let {
+                if (it != null) {
+                    listAdapter.addTodoItem(it)
+                    DataSavingManager.updateTodoData(this@MainActivity, listAdapter.getTodoData())
+                } else {
+                    DataSavingManager.fetchTodoDataFromSavedLocation(this@MainActivity, listAdapter)
+                }
+            }
         }
     }
 
