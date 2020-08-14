@@ -135,10 +135,15 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setClearButtonStatus(status: Boolean) {
-        clearButton.isClickable = status
-        clearButton.background.colorFilter = if(!clearButton.isClickable)
-            PorterDuffColorFilter(Color.GRAY, PorterDuff.Mode.MULTIPLY) else PorterDuffColorFilter(
-            Color.GREEN, PorterDuff.Mode.MULTIPLY)
+
+        clearButton.apply {
+            isClickable = status
+            background.colorFilter = when(isClickable) {
+                true -> PorterDuffColorFilter(
+                    Color.GREEN, PorterDuff.Mode.MULTIPLY)
+                false -> PorterDuffColorFilter(Color.GRAY, PorterDuff.Mode.MULTIPLY)
+            }
+        }
     }
 
     override fun onPause() {
