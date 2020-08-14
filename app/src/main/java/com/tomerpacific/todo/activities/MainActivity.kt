@@ -155,19 +155,19 @@ class MainActivity : AppCompatActivity() {
 
     fun shareWithWhatsApp(view: View) {
         val adapter = todoListView.adapter as TodoListAdapter
-
-        val whatsappIntent : Intent = Intent()
-        whatsappIntent.action = Intent.ACTION_SEND
-        whatsappIntent.`package`= "com.whatsapp"
         val todoList : String = todoListTitle.text.toString() + " " + adapter.getTodoData().joinToString(prefix = "*", separator = "*")
-        whatsappIntent.putExtra(Intent.EXTRA_TEXT, todoList)
-        whatsappIntent.type = "text/plain"
 
-        if (whatsappIntent.resolveActivity(packageManager) == null) {
-            Toast.makeText(this, "Whatsapp has not been found on the device", Toast.LENGTH_SHORT).show()
-        } else {
-            startActivity(whatsappIntent)
+        val whatsappIntent : Intent = Intent().apply {
+            action = Intent.ACTION_SEND
+            `package`= "com.whatsapp"
+            putExtra(Intent.EXTRA_TEXT, todoList)
+            type = "text/plain"
         }
 
+        when(whatsappIntent.resolveActivity(packageManager)) {
+            null -> Toast.makeText(this, "Whatsapp has not been found on the device", Toast.LENGTH_SHORT).show()
+            else ->
+            startActivity(whatsappIntent)
+        }
     }
 }
