@@ -46,8 +46,9 @@ class MainActivity : AppCompatActivity() {
 
         setupListeners()
 
-        todoListView = findViewById(R.id.todo_list)
-        todoListView.adapter = TodoListAdapter(this, this::setClearButtonStatus)
+        todoListView = findViewById<ListView>(R.id.todo_list).apply {
+            adapter = TodoListAdapter(this@MainActivity, this@MainActivity::setClearButtonStatus)
+        }
 
         val adapter = todoListView.adapter as TodoListAdapter
         DataSavingManager.getTodoDataInSession(this, adapter)
