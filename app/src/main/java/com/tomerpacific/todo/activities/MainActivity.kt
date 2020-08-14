@@ -26,8 +26,8 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var list : ListView
-    private lateinit var title : EditText
+    private lateinit var todoListView : ListView
+    private lateinit var todoListTitle : EditText
     private lateinit var clearButton : Button
     private var signOutButton : Button? = null
 
@@ -40,16 +40,16 @@ class MainActivity : AppCompatActivity() {
 
         clearButton = findViewById(R.id.clearBtn)
 
-        title = findViewById(R.id.title)
+        todoListTitle = findViewById(R.id.title)
 
         signOutButton = findViewById(R.id.Logout)
 
         setupListeners()
 
-        list = findViewById(R.id.todo_list)
-        list.adapter = TodoListAdapter(this, this::setClearButtonStatus)
+        todoListView = findViewById(R.id.todo_list)
+        todoListView.adapter = TodoListAdapter(this, this::setClearButtonStatus)
 
-        val adapter = list.adapter as TodoListAdapter
+        val adapter = todoListView.adapter as TodoListAdapter
         DataSavingManager.getTodoDataInSession(this, adapter)
 
         setSignoutButtonStatus()
@@ -59,13 +59,13 @@ class MainActivity : AppCompatActivity() {
             adapter.addTodoItem(todoItemToBeAdd)
             DataSavingManager.updateTodoData(this, adapter.getTodoData())
         } else {
-            DataSavingManager.fetchTodoDataFromSavedLocation(this, list.adapter as TodoListAdapter)
+            DataSavingManager.fetchTodoDataFromSavedLocation(this, todoListView.adapter as TodoListAdapter)
         }
     }
 
     private fun setupListeners() {
 
-        title.setOnEditorActionListener {view, actionId, keyEvent ->
+        todoListTitle.setOnEditorActionListener { view, actionId, keyEvent ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH ||
                 keyEvent == null ||
                 keyEvent.keyCode == KeyEvent.KEYCODE_ENTER) {
@@ -76,9 +76,9 @@ class MainActivity : AppCompatActivity() {
 
         val handler = Handler()
         val runnable = Runnable {
-            Toast.makeText(this, "You have changed the title to " + title.text.toString(), Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "You have changed the todoListTitle to " + todoListTitle.text.toString(), Toast.LENGTH_SHORT).show()
         }
-        title.addTextChangedListener (object : TextWatcher {
+        todoListTitle.addTextChangedListener (object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
                 handler.removeCallbacks(runnable)
                 handler.postDelayed(runnable, 5000)
@@ -127,7 +127,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun removeAll(view: View) {
-        val adapter = list.adapter as TodoListAdapter
+        val adapter = todoListView.adapter as TodoListAdapter
         adapter.removeAllTodos()
         DataSavingManager.removeAllTodoData(this)
     }
@@ -141,18 +141,18 @@ class MainActivity : AppCompatActivity() {
 
     override fun onPause() {
         super.onPause()
-        val adapter = list.adapter as TodoListAdapter
+        val adapter = todoListView.adapter as TodoListAdapter
         val todoData : List<String> = adapter.getTodoData()
         DataSavingManager.saveTodoDataInSession(this, todoData)
     }
 
     fun shareWithWhatsApp(view: View) {
-        val adapter = list.adapter as TodoListAdapter
+        val adapter = todoListView.adapter as TodoListAdapter
 
         val whatsappIntent : Intent = Intent()
         whatsappIntent.action = Intent.ACTION_SEND
         whatsappIntent.`package`= "com.whatsapp"
-        val todoList : String = title.text.toString() + " " + adapter.getTodoData().joinToString(prefix = "*", separator = "*")
+        val todoList : String = todoListTitle.text.toString() + " " + adapter.getTodoData().joinToString(prefix = "*", separator = "*")
         whatsappIntent.putExtra(Intent.EXTRA_TEXT, todoList)
         whatsappIntent.type = "text/plain"
 
