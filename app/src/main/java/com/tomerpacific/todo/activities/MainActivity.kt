@@ -166,8 +166,7 @@ class MainActivity : AppCompatActivity() {
 
         when(whatsappIntent.resolveActivity(packageManager)) {
             null -> Toast.makeText(this, "Whatsapp has not been found on the device", Toast.LENGTH_SHORT).show()
-            else ->
-            startActivity(whatsappIntent)
+            else -> startActivity(whatsappIntent)
         }
     }
 }

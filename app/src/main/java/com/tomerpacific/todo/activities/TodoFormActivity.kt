@@ -21,24 +21,28 @@ class TodoFormActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_todo_form)
 
-        doneButton = findViewById(R.id.todo_item_button)
+        doneButton = findViewById<Button>(R.id.todo_item_button).apply {
+            setOnClickListener { view ->
+                when(choreText.isBlank()) {
+                    true ->  Toast.makeText(
+                        this@TodoFormActivity,
+                        TodoConstants.USER_NOTIFICATION_MISSING_TODO, Toast.LENGTH_SHORT
+                    ).show()
+                    false -> let {
+                        val intent: Intent = Intent(this@TodoFormActivity, MainActivity::class.java)
+                        intent.putExtra(TodoConstants.TODO_ACTION_NEW_TODO_ITEM, choreText)
+                        startActivity(intent)
+                        finish()
+                    }
+                }
+            }
+        }
         todoChoreEditText = findViewById(R.id.todo_edit_text)
 
         setupListeners()
     }
 
     private fun setupListeners() {
-        doneButton.setOnClickListener { view ->
-            if (!choreText.isBlank()) {
-                val intent : Intent = Intent(this, MainActivity::class.java)
-                intent.putExtra(TodoConstants.TODO_ACTION_NEW_TODO_ITEM, choreText)
-                startActivity(intent)
-                finish()
-            } else {
-                Toast.makeText(this,
-                    TodoConstants.USER_NOTIFICATION_MISSING_TODO, Toast.LENGTH_SHORT).show()
-            }
-        }
 
         todoChoreEditText.setOnEditorActionListener {view, actionId, keyEvent ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH || keyEvent == null || keyEvent.keyCode == KeyEvent.KEYCODE_ENTER) {
