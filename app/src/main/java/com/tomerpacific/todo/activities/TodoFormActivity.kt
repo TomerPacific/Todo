@@ -46,7 +46,7 @@ class TodoFormActivity : AppCompatActivity() {
                 false
             }
 
-            todoChoreEditText.setOnFocusChangeListener { view, hasFocus ->
+            setOnFocusChangeListener { view, hasFocus ->
                 if (!hasFocus) {
                     choreText = todoChoreEditText.text.toString()
                 }
