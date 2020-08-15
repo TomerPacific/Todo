@@ -34,7 +34,7 @@ class TodoListAdapter : BaseAdapter {
                 val parentView = view.parent as ViewGroup
                 val todoToDelete = parentView.getChildAt(0) as TextView
                 data.remove(todoToDelete.text.toString())
-                TodoDataSharedPreferencesService.instance.removeTodo(todoToDelete.text.toString())
+                DataSavingManager.updateTodoData(view.context, data)
                 notifyDataSetChanged()
 
                 clearButtonCB?.invoke(data.size != 0)
