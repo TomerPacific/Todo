@@ -46,7 +46,7 @@ class TodoDatabaseService private constructor() {
             }
 
             override fun onFailure(call: Call<TodoData>, t: Throwable) {
-                Log.d("TOMER", "FAIL")
+
             }
         })
     }

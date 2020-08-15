@@ -19,14 +19,6 @@ class TodoDataSharedPreferencesService private constructor() {
         todoAdapter.setTodoData(todoList.toMutableList())
     }
 
-    fun addTodo(todoTask : String) {
-
-    }
-
-    fun removeTodo(todoTask: String) {
-
-    }
-
     fun removeAllTodos(context: Context) {
         val sharedPref = context.getSharedPreferences(TodoConstants.TODO_SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE)
         sharedPref.edit().putStringSet(TodoConstants.TODO_KEY, setOf()).apply()
