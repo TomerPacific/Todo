@@ -37,26 +37,21 @@ class TodoFormActivity : AppCompatActivity() {
                 }
             }
         }
-        todoChoreEditText = findViewById(R.id.todo_edit_text)
-
-        setupListeners()
-    }
-
-    private fun setupListeners() {
-
-        todoChoreEditText.setOnEditorActionListener {view, actionId, keyEvent ->
-            if (actionId == EditorInfo.IME_ACTION_SEARCH || keyEvent == null || keyEvent.keyCode == KeyEvent.KEYCODE_ENTER) {
-                choreText = view.text.toString()
-                true
+        todoChoreEditText = findViewById<EditText>(R.id.todo_edit_text).apply {
+            setOnEditorActionListener {view, actionId, keyEvent ->
+                if (actionId == EditorInfo.IME_ACTION_SEARCH || keyEvent == null || keyEvent.keyCode == KeyEvent.KEYCODE_ENTER) {
+                    choreText = view.text.toString()
+                    true
+                }
+                false
             }
-            false
-        }
 
-        todoChoreEditText.setOnFocusChangeListener { view, hasFocus ->
-            if (!hasFocus) {
-                choreText = todoChoreEditText.text.toString()
+            todoChoreEditText.setOnFocusChangeListener { view, hasFocus ->
+                if (!hasFocus) {
+                    choreText = todoChoreEditText.text.toString()
+                }
             }
         }
-
     }
+
 }
