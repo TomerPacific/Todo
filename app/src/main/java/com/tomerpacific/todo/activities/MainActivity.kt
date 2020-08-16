@@ -159,7 +159,7 @@ class MainActivity : AppCompatActivity() {
 
         val whatsappIntent : Intent = Intent().apply {
             action = Intent.ACTION_SEND
-            `package`= "com.whatsapp"
+            `package`= TodoConstants.WHATSAPP_PACKAGE
             putExtra(Intent.EXTRA_TEXT, todoList)
             type = "text/plain"
         }
