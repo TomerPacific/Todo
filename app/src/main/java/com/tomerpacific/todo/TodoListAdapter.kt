@@ -7,8 +7,6 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.CheckBox
 import android.widget.TextView
-import com.tomerpacific.todo.services.TodoDataSharedPreferencesService
-
 
 class TodoListAdapter : BaseAdapter {
 
