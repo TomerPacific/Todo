@@ -21,11 +21,13 @@ class TodoListAdapter : BaseAdapter {
 
     override fun getView(position: Int, convertView: View?, container: ViewGroup?): View {
         val rootView = inflater.inflate(R.layout.todo_list_item, container, false)
-        val todoName : TextView = rootView.findViewById(R.id.todo_item_name)
+        val item = getItem(position) as String
+        
+        rootView.findViewById<TextView>(R.id.todo_item_name).apply {
+            text = item
+        }
         val todoCheckbox: CheckBox = rootView.findViewById(R.id.todo_item_done_checkbox)
 
-        val item = getItem(position) as String
-        todoName.text = item
 
         todoCheckbox.setOnCheckedChangeListener {view, isChanged ->
             if (isChanged) {
