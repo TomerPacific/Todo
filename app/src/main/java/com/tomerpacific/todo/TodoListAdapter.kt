@@ -22,22 +22,22 @@ class TodoListAdapter : BaseAdapter {
     override fun getView(position: Int, convertView: View?, container: ViewGroup?): View {
         val rootView = inflater.inflate(R.layout.todo_list_item, container, false)
         val item = getItem(position) as String
-        
+
         rootView.findViewById<TextView>(R.id.todo_item_name).apply {
             text = item
         }
-        val todoCheckbox: CheckBox = rootView.findViewById(R.id.todo_item_done_checkbox)
+        
+        rootView.findViewById<CheckBox>(R.id.todo_item_done_checkbox).apply {
+            setOnCheckedChangeListener { view, isChanged ->
+                if (isChanged) {
+                    val parentView = view.parent as ViewGroup
+                    val todoToDelete = parentView.getChildAt(0) as TextView
+                    data.remove(todoToDelete.text.toString())
+                    DataSavingManager.updateTodoData(view.context, data)
+                    notifyDataSetChanged()
 
-
-        todoCheckbox.setOnCheckedChangeListener {view, isChanged ->
-            if (isChanged) {
-                val parentView = view.parent as ViewGroup
-                val todoToDelete = parentView.getChildAt(0) as TextView
-                data.remove(todoToDelete.text.toString())
-                DataSavingManager.updateTodoData(view.context, data)
-                notifyDataSetChanged()
-
-                clearButtonCB?.invoke(data.size != 0)
+                    clearButtonCB?.invoke(data.size != 0)
+                }
             }
         }
 
