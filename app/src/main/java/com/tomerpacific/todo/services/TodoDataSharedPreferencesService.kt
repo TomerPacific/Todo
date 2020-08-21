@@ -20,18 +20,20 @@ class TodoDataSharedPreferencesService private constructor() {
     }
 
     fun removeAllTodos(context: Context) {
-        val sharedPref = context.getSharedPreferences(TodoConstants.TODO_SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE)
-        sharedPref.edit().putStringSet(TodoConstants.TODO_KEY, setOf()).apply()
+        context.getSharedPreferences(TodoConstants.TODO_SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE).apply {
+            edit().putStringSet(TodoConstants.TODO_KEY, setOf()).apply()
+        }
     }
 
     fun saveTodoDataToSharedPreferences(context: Context, todoData : List<String>) {
-        val sharedPref = context.getSharedPreferences(TodoConstants.TODO_SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE)
-        sharedPref.edit().putStringSet(TodoConstants.TODO_KEY, todoData.toSet()).apply()
+        context.getSharedPreferences(TodoConstants.TODO_SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE).apply {
+            edit().putStringSet(TodoConstants.TODO_KEY, todoData.toSet()).apply()
+        }
     }
 
     private fun getTodoDataFromSharedPreferences(context: Context): List<String> {
-        val sharedPref = context.getSharedPreferences(TodoConstants.TODO_SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE)
-        return sharedPref.getStringSet(TodoConstants.TODO_KEY, emptyList<String>().toSet())!!.toList()
-
+        return context.getSharedPreferences(TodoConstants.TODO_SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE).let {
+            it.getStringSet(TodoConstants.TODO_KEY, emptyList<String>().toSet())!!.toList()
+        }
     }
 }
