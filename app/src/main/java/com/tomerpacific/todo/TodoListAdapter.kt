@@ -26,7 +26,7 @@ class TodoListAdapter : BaseAdapter {
         rootView.findViewById<TextView>(R.id.todo_item_name).apply {
             text = item
         }
-        
+
         rootView.findViewById<CheckBox>(R.id.todo_item_done_checkbox).apply {
             setOnCheckedChangeListener { view, isChanged ->
                 if (isChanged) {
