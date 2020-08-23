@@ -49,20 +49,28 @@ class MainActivity : AppCompatActivity() {
         setSignoutButtonStatus()
 
         todoListView = findViewById<ListView>(R.id.todo_list).apply {
-            val listAdapter = TodoListAdapter(this@MainActivity, this@MainActivity::setClearButtonStatus)
+            val listAdapter =
+                TodoListAdapter(this@MainActivity, this@MainActivity::setClearButtonStatus)
             this.adapter = listAdapter
-            DataSavingManager.getTodoDataInSession(this@MainActivity, this.adapter as TodoListAdapter)
+            DataSavingManager.getTodoDataInSession(
+                this@MainActivity,
+                this.adapter as TodoListAdapter
+            )
 
-            val todoItemToBeAdd : String? = intent.getStringExtra(TodoConstants.TODO_ACTION_NEW_TODO_ITEM)
-            todoItemToBeAdd.let {
-                if (it != null) {
-                    listAdapter.addTodoItem(it)
+            val todoItemToBeAdd: String? =
+                intent.getStringExtra(TodoConstants.TODO_ACTION_NEW_TODO_ITEM)
+            when (todoItemToBeAdd) {
+                null -> DataSavingManager.fetchTodoDataFromSavedLocation(
+                    this@MainActivity,
+                    listAdapter
+                )
+                else -> let {
+                    listAdapter.addTodoItem(todoItemToBeAdd)
                     DataSavingManager.updateTodoData(this@MainActivity, listAdapter.getTodoData())
-                } else {
-                    DataSavingManager.fetchTodoDataFromSavedLocation(this@MainActivity, listAdapter)
                 }
             }
         }
+
     }
 
     private fun setupListeners() {
