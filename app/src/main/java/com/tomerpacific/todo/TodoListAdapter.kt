@@ -8,16 +8,13 @@ import android.widget.BaseAdapter
 import android.widget.CheckBox
 import android.widget.TextView
 
-class TodoListAdapter : BaseAdapter {
+class TodoListAdapter(context: Context, clearButtonCallback : (status: Boolean) -> Unit) : BaseAdapter() {
 
     private var data: MutableList<String> = mutableListOf()
-    private var inflater: LayoutInflater
-    private var clearButtonCB : ((status: Boolean) -> Unit)? = null
+    private val inflater: LayoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+    private val clearButtonCB : ((status: Boolean) -> Unit) = clearButtonCallback
 
-    constructor(context: Context, clearButtonCallback : (status: Boolean) -> Unit) {
-        inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        clearButtonCB = clearButtonCallback
-    }
+
 
     override fun getView(position: Int, convertView: View?, container: ViewGroup?): View {
         val rootView = inflater.inflate(R.layout.todo_list_item, container, false)
@@ -36,7 +33,7 @@ class TodoListAdapter : BaseAdapter {
                     DataSavingManager.updateTodoData(view.context, data)
                     notifyDataSetChanged()
 
-                    clearButtonCB?.invoke(data.size != 0)
+                    clearButtonCB(data.size != 0)
                 }
             }
         }
@@ -58,13 +55,13 @@ class TodoListAdapter : BaseAdapter {
 
     fun removeAllTodos() {
         data.clear()
-        clearButtonCB?.invoke(false)
+        clearButtonCB(false)
         notifyDataSetChanged()
     }
 
     fun setTodoData(dbData: List<String>) {
         data = dbData.toMutableList()
-        clearButtonCB?.invoke(data.count() != 0)
+        clearButtonCB(data.count() != 0)
         notifyDataSetChanged()
     }
 
@@ -76,7 +73,7 @@ class TodoListAdapter : BaseAdapter {
         data.add(todoItem)
 
         if (data.size == 1) {
-            clearButtonCB?.invoke(true)
+            clearButtonCB(true)
         }
 
         notifyDataSetChanged()
