@@ -19,7 +19,7 @@ class DataSavePreferenceActivity : AppCompatActivity() {
         setContentView(R.layout.activity_data_save_preference)
         setSupportActionBar(toolbar)
 
-        switch = findViewById<Switch>(R.id.switch1).apply {
+        switch = findViewById<Switch>(R.id.savingPreferencesSwitch).apply {
             setOnCheckedChangeListener { _, isChecked ->
                 switch.text =
                     if (isChecked) TodoConstants.SAVE_DATA_ONLINE else TodoConstants.SAVE_DATA_ON_DEVICE
@@ -28,10 +28,10 @@ class DataSavePreferenceActivity : AppCompatActivity() {
     }
 
     fun moveToMain(view : View) {
-
-        val sharedPref = this.getSharedPreferences(TodoConstants.TODO_SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE)
-        sharedPref.edit().putBoolean(TodoConstants.FIRST_LOGIN_KEY, false).apply()
-        sharedPref.edit().putString(TodoConstants.SAVE_DATA_PREFERENCE_KEY, switch.text.toString()).apply()
+        this.getSharedPreferences(TodoConstants.TODO_SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE).apply {
+            edit().putBoolean(TodoConstants.FIRST_LOGIN_KEY, false).apply()
+            edit().putString(TodoConstants.SAVE_DATA_PREFERENCE_KEY, switch.text.toString()).apply()
+        }
 
         val mainIntent : Intent? = when(switch.text.toString()) {
             TodoConstants.SAVE_DATA_ON_DEVICE -> Intent(this, MainActivity::class.java)
