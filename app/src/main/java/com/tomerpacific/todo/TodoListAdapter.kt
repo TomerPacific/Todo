@@ -14,8 +14,6 @@ class TodoListAdapter(context: Context, clearButtonCallback : (status: Boolean) 
     private val inflater: LayoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
     private val clearButtonCB : ((status: Boolean) -> Unit) = clearButtonCallback
 
-
-
     override fun getView(position: Int, convertView: View?, container: ViewGroup?): View {
         val rootView = inflater.inflate(R.layout.todo_list_item, container, false)
         val item = getItem(position) as String

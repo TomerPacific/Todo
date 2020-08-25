@@ -19,12 +19,12 @@ class DataSavePreferenceActivity : AppCompatActivity() {
         setContentView(R.layout.activity_data_save_preference)
         setSupportActionBar(toolbar)
 
-        switch = findViewById(R.id.switch1)
-
-        switch.setOnCheckedChangeListener {_, isChecked ->
-            switch.text = if (isChecked) TodoConstants.SAVE_DATA_ONLINE else TodoConstants.SAVE_DATA_ON_DEVICE
+        switch = findViewById<Switch>(R.id.switch1).apply {
+            setOnCheckedChangeListener { _, isChecked ->
+                switch.text =
+                    if (isChecked) TodoConstants.SAVE_DATA_ONLINE else TodoConstants.SAVE_DATA_ON_DEVICE
+            }
         }
-
     }
 
     fun moveToMain(view : View) {
