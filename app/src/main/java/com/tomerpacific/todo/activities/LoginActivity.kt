@@ -22,19 +22,19 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
-        val userEmailEditText : EditText = findViewById(R.id.email_edit_text)
-        val passwordEditText : EditText = findViewById(R.id.password_edit_text)
 
-        userEmailEditText.setOnEditorActionListener {view, actionId, keyEvent ->
-            if (actionId == EditorInfo.IME_ACTION_SEARCH || actionId == EditorInfo.IME_ACTION_DONE ||
-                keyEvent == null ||
-                keyEvent.keyCode == KeyEvent.KEYCODE_ENTER) {
-                val edit = view as EditText
-                userEmail = edit.text.toString()
-                true
+        findViewById<EditText>(R.id.email_edit_text).apply {
+            setOnEditorActionListener {view, actionId, keyEvent ->
+                if (actionId == EditorInfo.IME_ACTION_SEARCH || actionId == EditorInfo.IME_ACTION_DONE ||
+                    keyEvent == null ||
+                    keyEvent.keyCode == KeyEvent.KEYCODE_ENTER) {
+                    userEmail = text.toString()
+                }
+                false
             }
-            false
         }
+
+        val passwordEditText : EditText = findViewById(R.id.password_edit_text)
 
         passwordEditText.setOnEditorActionListener {view, actionId, keyEvent ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH || actionId == EditorInfo.IME_ACTION_DONE ||
