@@ -24,7 +24,7 @@ class LoginActivity : AppCompatActivity() {
         setContentView(R.layout.activity_login)
 
         findViewById<EditText>(R.id.email_edit_text).apply {
-            setOnEditorActionListener {view, actionId, keyEvent ->
+            setOnEditorActionListener {_, actionId, keyEvent ->
                 if (actionId == EditorInfo.IME_ACTION_SEARCH || actionId == EditorInfo.IME_ACTION_DONE ||
                     keyEvent == null ||
                     keyEvent.keyCode == KeyEvent.KEYCODE_ENTER) {
@@ -34,17 +34,15 @@ class LoginActivity : AppCompatActivity() {
             }
         }
 
-        val passwordEditText : EditText = findViewById(R.id.password_edit_text)
-
-        passwordEditText.setOnEditorActionListener {view, actionId, keyEvent ->
-            if (actionId == EditorInfo.IME_ACTION_SEARCH || actionId == EditorInfo.IME_ACTION_DONE ||
-                keyEvent == null ||
-                keyEvent.keyCode == KeyEvent.KEYCODE_ENTER) {
-                val edit = view as EditText
-                userPassword = edit.text.toString()
-                true
+        findViewById<EditText>(R.id.password_edit_text).apply {
+            setOnEditorActionListener {_, actionId, keyEvent ->
+                if (actionId == EditorInfo.IME_ACTION_SEARCH || actionId == EditorInfo.IME_ACTION_DONE ||
+                    keyEvent == null ||
+                    keyEvent.keyCode == KeyEvent.KEYCODE_ENTER) {
+                    userPassword = text.toString()
+                }
+                false
             }
-            false
         }
     }
 
