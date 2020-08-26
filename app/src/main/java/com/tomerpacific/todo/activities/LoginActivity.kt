@@ -16,14 +16,12 @@ import com.tomerpacific.todo.R
 
 class LoginActivity : AppCompatActivity() {
 
-    private lateinit var auth: FirebaseAuth
     private var userEmail : String = ""
     private var userPassword: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
-        auth = FirebaseAuth.getInstance()
         val userEmailEditText : EditText = findViewById(R.id.email_edit_text)
         val passwordEditText : EditText = findViewById(R.id.password_edit_text)
 
@@ -52,7 +50,7 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        val currentUser = auth.currentUser
+        val currentUser = FirebaseAuth.getInstance().currentUser
 
         if (currentUser != null) {
             val intent : Intent = Intent(this, MainActivity::class.java)
@@ -61,7 +59,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     fun loginUser(view : View) {
-        auth.signInWithEmailAndPassword(userEmail, userPassword)
+        FirebaseAuth.getInstance().signInWithEmailAndPassword(userEmail, userPassword)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     updateFirebaseUserDisplayName()
@@ -77,7 +75,7 @@ class LoginActivity : AppCompatActivity() {
             Toast.makeText(this, "Please make sure to fill in your email and password", Toast.LENGTH_SHORT).show()
         }
 
-        auth.createUserWithEmailAndPassword(userEmail, userPassword)
+        FirebaseAuth.getInstance().createUserWithEmailAndPassword(userEmail, userPassword)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     updateFirebaseUserDisplayName()
@@ -89,7 +87,7 @@ class LoginActivity : AppCompatActivity() {
 
     private fun updateFirebaseUserDisplayName() {
         val intent : Intent = Intent(this, MainActivity::class.java)
-        val user : FirebaseUser? = auth.currentUser
+        val user : FirebaseUser? = FirebaseAuth.getInstance().currentUser
         val profileUpdates : UserProfileChangeRequest = UserProfileChangeRequest.Builder().setDisplayName(userEmail).build()
         user?.updateProfile(profileUpdates)?.addOnCompleteListener(OnCompleteListener {
             if (it.isSuccessful) {
