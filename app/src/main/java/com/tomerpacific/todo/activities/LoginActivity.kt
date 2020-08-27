@@ -49,8 +49,9 @@ class LoginActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         FirebaseAuth.getInstance().currentUser?.let {
-            val intent : Intent = Intent(this@LoginActivity, MainActivity::class.java)
-            startActivity(intent)
+            Intent(this@LoginActivity, MainActivity::class.java).apply {
+                startActivity(this)
+            }
         }
     }
 
