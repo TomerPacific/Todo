@@ -83,15 +83,21 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun updateFirebaseUserDisplayName() {
-        val intent : Intent = Intent(this, MainActivity::class.java)
-        val user : FirebaseUser? = FirebaseAuth.getInstance().currentUser
-        val profileUpdates : UserProfileChangeRequest = UserProfileChangeRequest.Builder().setDisplayName(userEmail).build()
-        user?.updateProfile(profileUpdates)?.addOnCompleteListener(OnCompleteListener {
-            if (it.isSuccessful) {
-                startActivity(intent)
-                finish()
-            }
-        })
+
+        FirebaseAuth.getInstance().currentUser?.apply {
+            val profileUpdates : UserProfileChangeRequest = UserProfileChangeRequest.Builder().setDisplayName(userEmail).build()
+            updateProfile(profileUpdates)?.addOnCompleteListener(OnCompleteListener {
+                when(it.isSuccessful) {
+                    true -> apply {
+                        Intent(this@LoginActivity, MainActivity::class.java).apply {
+                            startActivity(this)
+                            finish()
+                        }
+                    }
+                    false -> Toast.makeText(this@LoginActivity, "Login has failed", Toast.LENGTH_SHORT).show()
+                }
+            })
+        }
     }
 
 }
