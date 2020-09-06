@@ -34,7 +34,7 @@ class TodoDatabaseService private constructor() {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         val service = retrofit.create(DataService::class.java)
-        val call = service.getData(user?.displayName)
+        val call = service.getData(user?.uid)
 
         call.enqueue(object: Callback<TodoData> {
             override fun onResponse(call: Call<TodoData>, response: Response<TodoData>) {
@@ -57,7 +57,7 @@ class TodoDatabaseService private constructor() {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         val service = retrofit.create(DataService::class.java)
-        val call = service.setData(user?.displayName, todoData.toTypedArray())
+        val call = service.setData(user?.uid, todoData.toTypedArray())
 
         call.enqueue(object: Callback<TodoDataSetResult> {
             override fun onResponse(
@@ -81,7 +81,7 @@ class TodoDatabaseService private constructor() {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         val service = retrofit.create(DataService::class.java)
-        val call = service.removeAllData(user?.displayName)
+        val call = service.removeAllData(user?.uid)
 
         call.enqueue(object: Callback<TodoDataSetResult> {
             override fun onResponse(
