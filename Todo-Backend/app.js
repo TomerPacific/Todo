@@ -34,11 +34,9 @@ app.use(function(req, res, next) {
 
 app.get('/getTodoData', function (req, res) {
     var database = firebase.database()
-    var username = req.query.username
-    var regex = /[A-z|a-z|0-9]*/g
-    var email = regex.exec(username)
+    var uid = req.query.uid
     
-    database.ref('/users/' + email[0]).once('value')
+    database.ref('/users/' + uid).once('value')
     .then(function(snapshot) {
       var data = snapshot.val() ? snapshot.val() : []
       res.status(200).send({ todo_list: data.todoData})
@@ -49,12 +47,15 @@ app.get('/getTodoData', function (req, res) {
 })
 
 app.get('/setTodoData', function(req,res) {
-  var username = req.query.username
+  var uid = req.query.uid
   var data = req.query.data
-  var regex = /[A-z|a-z|0-9]*/g
-  var email = regex.exec(username)
+
+  if (!uid || !data) {
+    res.status(500).send({message: "Failure Due to missing uid/data"})
+  }
+
   var database = firebase.database()
-  database.ref('/users/' + email[0]).set({
+  database.ref('/users/' + uid).set({
     todoData: data
   })
 
@@ -62,11 +63,9 @@ app.get('/setTodoData', function(req,res) {
 })
 
 app.get('/removeAllTodoData', function(req,res) {
-  var username = req.query.username
-  var regex = /[A-z|a-z|0-9]*/g
-  var email = regex.exec(username)
+  var uid = req.query.uid
   var database = firebase.database()
-  database.ref('/users/' + email[0]).remove()
+  database.ref('/users/' + uid).remove()
   res.status(200).send({message: "Success"})
 })
 
