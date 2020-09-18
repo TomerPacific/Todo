@@ -91,7 +91,7 @@ class MainActivity : AppCompatActivity() {
 
         val handler = Handler()
         val runnable = Runnable {
-            Toast.makeText(this, "You have changed the todoListTitle to " + todoListTitle.text.toString(), Toast.LENGTH_SHORT).show()
+
         }
         todoListTitle.addTextChangedListener (object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
