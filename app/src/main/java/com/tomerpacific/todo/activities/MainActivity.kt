@@ -1,5 +1,6 @@
 package com.tomerpacific.todo.activities
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.PorterDuff
@@ -40,6 +41,10 @@ class MainActivity : AppCompatActivity() {
 
         todoListTitle = findViewById(R.id.title)
 
+        this.getSharedPreferences(TodoConstants.TODO_SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE).apply {
+           todoListTitle.setText(getString(TodoConstants.TODO_SHARED_PREFERENCES_TODO_LIST_TITLE_KEY, "Things To Do"))
+        }
+
         signOutButton = findViewById(R.id.Logout)
 
         setupListeners()
@@ -75,6 +80,10 @@ class MainActivity : AppCompatActivity() {
             if (actionId == EditorInfo.IME_ACTION_SEARCH ||
                 keyEvent == null ||
                 keyEvent.keyCode == KeyEvent.KEYCODE_ENTER) {
+
+                this.getSharedPreferences(TodoConstants.TODO_SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE).apply {
+                    edit().putString(TodoConstants.TODO_SHARED_PREFERENCES_TODO_LIST_TITLE_KEY, todoListTitle.text.toString()).apply()
+                }
                 true
             }
             false
