@@ -18,8 +18,8 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ListView
 import android.widget.Toast
-import com.google.firebase.auth.FirebaseAuth
 import com.tomerpacific.todo.*
+import com.tomerpacific.todo.services.TodoDataSharedPreferencesService
 
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -36,8 +36,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
-        DataSavingManager.decideOnUserDataSavingFlow(this)
-
         clearButton = findViewById(R.id.clearBtn)
 
         todoListTitle = findViewById(R.id.title)
@@ -46,13 +44,11 @@ class MainActivity : AppCompatActivity() {
 
         setupListeners()
 
-        setSignoutButtonStatus()
-
         todoListView = findViewById<ListView>(R.id.todo_list).apply {
             val listAdapter =
                 TodoListAdapter(this@MainActivity, this@MainActivity::setClearButtonStatus)
             this.adapter = listAdapter
-            DataSavingManager.getTodoDataInSession(
+            TodoDataSharedPreferencesService.instance.getTodoData(
                 this@MainActivity,
                 this.adapter as TodoListAdapter
             )
@@ -60,13 +56,13 @@ class MainActivity : AppCompatActivity() {
             val todoItemToBeAdd: String? =
                 intent.getStringExtra(TodoConstants.TODO_ACTION_NEW_TODO_ITEM)
             when (todoItemToBeAdd) {
-                null -> DataSavingManager.fetchTodoDataFromSavedLocation(
+                null -> TodoDataSharedPreferencesService.instance.getTodoData(
                     this@MainActivity,
                     listAdapter
                 )
                 else -> let {
                     listAdapter.addTodoItem(todoItemToBeAdd)
-                    DataSavingManager.updateTodoData(this@MainActivity, listAdapter.getTodoData())
+                    TodoDataSharedPreferencesService.instance.saveTodoDataToSharedPreferences(this@MainActivity, listAdapter.getTodoData())
                 }
             }
         }
@@ -109,19 +105,6 @@ class MainActivity : AppCompatActivity() {
             finish()
         }
 
-        signOutButton?.setOnClickListener {
-            FirebaseAuth.getInstance().signOut()
-            val intent : Intent = Intent(this, LoginActivity::class.java)
-            startActivity(intent)
-            finish()
-        }
-
-    }
-
-    private fun setSignoutButtonStatus() {
-        if (!DataSavingManager.isSavingInSharedPreferences()) {
-            signOutButton?.visibility = View.VISIBLE
-        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -139,7 +122,7 @@ class MainActivity : AppCompatActivity() {
     fun removeAll(view: View) {
         val adapter = todoListView.adapter as TodoListAdapter
         adapter.removeAllTodos()
-        DataSavingManager.removeAllTodoData(this)
+        TodoDataSharedPreferencesService.instance.removeAllTodos(this)
     }
 
     private fun setClearButtonStatus(status: Boolean) {
@@ -158,7 +141,7 @@ class MainActivity : AppCompatActivity() {
         super.onPause()
         val adapter = todoListView.adapter as TodoListAdapter
         val todoData : List<String> = adapter.getTodoData()
-        DataSavingManager.saveTodoDataInSession(this, todoData)
+        TodoDataSharedPreferencesService.instance.saveTodoDataToSharedPreferences(this, todoData)
     }
 
     fun shareWithWhatsApp(view: View) {

@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.CheckBox
 import android.widget.TextView
+import com.tomerpacific.todo.services.TodoDataSharedPreferencesService
 
 class TodoListAdapter(context: Context, clearButtonCallback : (status: Boolean) -> Unit) : BaseAdapter() {
 
@@ -28,7 +29,7 @@ class TodoListAdapter(context: Context, clearButtonCallback : (status: Boolean) 
                     val parentView = view.parent as ViewGroup
                     val todoToDelete = parentView.getChildAt(0) as TextView
                     data.remove(todoToDelete.text.toString())
-                    DataSavingManager.updateTodoData(view.context, data)
+                    TodoDataSharedPreferencesService.instance.saveTodoDataToSharedPreferences(view.context, data)
                     notifyDataSetChanged()
 
                     clearButtonCB(data.size != 0)
