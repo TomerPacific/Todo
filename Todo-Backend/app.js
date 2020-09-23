@@ -3,6 +3,7 @@
 const express = require('express')
 var bodyParser = require('body-parser')
 var firebase = require('firebase')
+var admin = require('firebase-admin');
 const app = express()
 var port = process.env.PORT || 3000
 
@@ -20,6 +21,14 @@ var firebaseConfig = {
   
   // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
+
+const serviceAccount = require("./config/firebaseServiceAccountKey.json");
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: "https://todo-tomer.firebaseio.com"
+});
+
 
 app.use(bodyParser.urlencoded())
 
