@@ -28,6 +28,14 @@ class TodoDatabaseService private constructor() {
 
     fun fetchTodoDataFromDB(todoAdapter : TodoListAdapter) {
         user = FirebaseAuth.getInstance().currentUser
+        var userToken : String? = ""
+        user?.getIdToken(true)?.addOnCompleteListener{
+            if (it.isSuccessful) {
+                userToken = it.result?.let {
+                    it.token
+                }
+            }
+        }
 
         val retrofit = Retrofit.Builder()
             .baseUrl(TodoConstants.BASE_URL_FOR_REQUEST)
