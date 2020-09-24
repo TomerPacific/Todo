@@ -42,17 +42,24 @@ app.use(function(req, res, next) {
 
 
 app.get('/getTodoData', function (req, res) {
-    var database = firebase.database()
-    var uid = req.query.uid
-    
-    database.ref('/users/' + uid).once('value')
-    .then(function(snapshot) {
-      var data = snapshot.val() ? snapshot.val() : []
-      res.status(200).send({ todo_list: data.todoData})
-    }).catch(function(error) {
-      console.log(error)
-      res.status(500).json({ error: error})
+  if (req.headers.authtoken) {
+    admin.auth().verifyIdToken(req.headers.authtoken)
+    .then(() => {
+      var database = admin.database()
+      var uid = req.query.uid
+      database.ref('/todo-tomer/' + uid).once('value')
+      .then(function(snapshot) {
+        var data = snapshot.val() ? snapshot.val() : []
+        res.status(200).send({ todo_list: data.todoData})
+      }).catch(function(error) {
+        res.status(500).json({ error: error})
+      })
+    }).catch(() => {
+      res.status(403).send('Unauthorized')
     })
+  } else {
+    res.status(403).send('Unauthorized')
+  }
 })
 
 app.get('/setTodoData', function(req,res) {
@@ -63,12 +70,21 @@ app.get('/setTodoData', function(req,res) {
     res.status(500).send({message: "Failure Due to missing uid/data"})
   }
 
-  var database = firebase.database()
-  database.ref('/users/' + uid).set({
-    todoData: data
-  })
-
-  res.status(200).send({message: "Success"})
+  if (req.headers.authtoken) {
+    admin.auth().verifyIdToken(req.headers.authtoken)
+    .then(() => {
+      var database = admin.database()
+      var uid = req.query.uid
+      database.ref('/todo-tomer/' + uid).set({
+        todoData: data
+      })
+      res.status(200).send({message: "Success"})
+    }).catch(() => {
+      res.status(403).send('Unauthorized')
+    })
+  } else {
+    res.status(403).send('Unauthorized')
+  }
 })
 
 app.get('/removeAllTodoData', function(req,res) {
