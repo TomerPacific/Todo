@@ -47,7 +47,7 @@ app.get('/getTodoData', function (req, res) {
     .then(() => {
       var database = admin.database()
       var uid = req.query.uid
-      database.ref('/todo-tomer/' + uid).once('value')
+      database.ref('/users/' + uid).once('value')
       .then(function(snapshot) {
         var data = snapshot.val() ? snapshot.val() : []
         res.status(200).send({ todo_list: data.todoData})
@@ -75,7 +75,7 @@ app.get('/setTodoData', function(req,res) {
     .then(() => {
       var database = admin.database()
       var uid = req.query.uid
-      database.ref('/todo-tomer/' + uid).set({
+      database.ref('/users/' + uid).set({
         todoData: data
       })
       res.status(200).send({message: "Success"})
@@ -94,7 +94,7 @@ app.get('/removeAllTodoData', function(req,res) {
     .then(() => {
       var database = admin.database()
       var uid = req.query.uid
-      database.ref('/todo-tomer/' + uid).remove()
+      database.ref('/users' + uid).remove()
       res.status(200).send({message: "Success"})
     }).catch(() => {
       res.status(403).send('Unauthorized')
