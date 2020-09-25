@@ -94,7 +94,7 @@ app.get('/removeAllTodoData', function(req,res) {
     .then(() => {
       var database = admin.database()
       var uid = req.query.uid
-      database.ref('/users' + uid).remove()
+      database.ref('/users/' + uid).remove()
       res.status(200).send({message: "Success"})
     }).catch(() => {
       res.status(403).send('Unauthorized')
