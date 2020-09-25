@@ -98,14 +98,14 @@ class TodoDatabaseService private constructor() {
         }
     }
 
-    fun removeAllTodos(context: Context) {
+    fun removeAllTodos(context: Context, idToken: String) {
 
         val retrofit = Retrofit.Builder()
             .baseUrl(TodoConstants.BASE_URL_FOR_REQUEST)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         val service = retrofit.create(DataService::class.java)
-        val call = service.removeAllData(getUserIdToken(), getUserUUID())
+        val call = service.removeAllData(idToken, getUserUUID())
 
         call.enqueue(object: Callback<TodoDataSetResult> {
             override fun onResponse(
@@ -123,19 +123,18 @@ class TodoDatabaseService private constructor() {
         })
     }
 
-    private fun getUserIdToken() : String {
-        var idToken: String = ""
+    fun getUserIdToken(context: Context, callback :(Context, String) -> Unit) {
 
         val user = FirebaseAuth.getInstance().currentUser
         if (user != null) {
             user.getIdToken(false).addOnCompleteListener {
                 if (it.isSuccessful) {
-                    idToken = it.result?.token as String
+                    val idToken = it.result?.token as String
+                    callback(context, idToken)
                 }
             }
         }
 
-        return idToken
     }
 
     private fun getUserUUID() : String {
