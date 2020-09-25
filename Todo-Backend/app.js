@@ -88,10 +88,20 @@ app.get('/setTodoData', function(req,res) {
 })
 
 app.get('/removeAllTodoData', function(req,res) {
-  var uid = req.query.uid
-  var database = firebase.database()
-  database.ref('/users/' + uid).remove()
-  res.status(200).send({message: "Success"})
+
+  if (req.headers.authtoken) {
+    admin.auth().verifyIdToken(req.headers.authtoken)
+    .then(() => {
+      var database = admin.database()
+      var uid = req.query.uid
+      database.ref('/todo-tomer/' + uid).remove()
+      res.status(200).send({message: "Success"})
+    }).catch(() => {
+      res.status(403).send('Unauthorized')
+    })
+  } else {
+    res.status(403).send('Unauthorized')
+  }
 })
 
 
