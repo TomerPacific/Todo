@@ -7,12 +7,12 @@ import retrofit2.http.*
 
 interface DataService {
     @GET("getTodoData")
-    fun getData(@Query("uid") uid: String?) : Call<TodoData>
+    fun getData(@Header("AuthToken") token: String?, @Query("uid") uid: String?) : Call<TodoData>
 
     @GET("setTodoData")
-    fun setData(@Query("uid") uid: String?, @Query("data") data: Array<String>) : Call<TodoDataSetResult>
+    fun setData(@Header("AuthToken") token: String?, @Query("uid") uid: String?, @Query("data") data: Array<String>) : Call<TodoDataSetResult>
 
     @GET("removeAllTodoData")
-    fun removeAllData(@Query("uid") uid: String?) : Call<TodoDataSetResult>
+    fun removeAllData(@Header("AuthToken") token: String?, @Query("uid") uid: String?) : Call<TodoDataSetResult>
 
 }
