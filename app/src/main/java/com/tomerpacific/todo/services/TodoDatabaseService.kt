@@ -13,6 +13,7 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
+
 class TodoDatabaseService private constructor() {
 
     private object HOLDER {
@@ -36,7 +37,7 @@ class TodoDatabaseService private constructor() {
                         .addConverterFactory(GsonConverterFactory.create())
                         .build()
                     val service = retrofit.create(DataService::class.java)
-                    val call = service.getData(token, user.uid)
+                    val call = service.getData(token, getUserUUID())
 
                     call.enqueue(object: Callback<TodoData> {
                         override fun onResponse(call: Call<TodoData>, response: Response<TodoData>) {
@@ -69,7 +70,7 @@ class TodoDatabaseService private constructor() {
                         .addConverterFactory(GsonConverterFactory.create())
                         .build()
                     val service = retrofit.create(DataService::class.java)
-                    val call = service.setData(token, user.uid, todoData.toTypedArray())
+                    val call = service.setData(token, getUserUUID(), todoData.toTypedArray())
 
                     call.enqueue(object : Callback<TodoDataSetResult> {
                         override fun onResponse(
@@ -98,47 +99,52 @@ class TodoDatabaseService private constructor() {
         }
     }
 
-    fun removeAllTodos(context: Context, idToken: String) {
-
-        val retrofit = Retrofit.Builder()
-            .baseUrl(TodoConstants.BASE_URL_FOR_REQUEST)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-        val service = retrofit.create(DataService::class.java)
-        val call = service.removeAllData(idToken, getUserUUID())
-
-        call.enqueue(object: Callback<TodoDataSetResult> {
-            override fun onResponse(
-                call: Call<TodoDataSetResult>,
-                response: Response<TodoDataSetResult>
-            ) {
-                if(!response.isSuccessful) {
-                    Toast.makeText(context, "There was a problem saving the Todo data in the server", Toast.LENGTH_SHORT).show()
-                }
-            }
-
-            override fun onFailure(call: Call<TodoDataSetResult>, t: Throwable) {
-                Toast.makeText(context, "There was a problem saving the Todo data in the server", Toast.LENGTH_SHORT).show()
-            }
-        })
-    }
-
-    fun getUserIdToken(context: Context, callback :(Context, String) -> Unit) {
+    fun removeAllTodos(context: Context) {
 
         val user = FirebaseAuth.getInstance().currentUser
+
         if (user != null) {
             user.getIdToken(false).addOnCompleteListener {
                 if (it.isSuccessful) {
-                    val idToken = it.result?.token as String
-                    callback(context, idToken)
+                    val token = it.result?.token
+
+                    val retrofit = Retrofit.Builder()
+                        .baseUrl(TodoConstants.BASE_URL_FOR_REQUEST)
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .build()
+                    val service = retrofit.create(DataService::class.java)
+                    val call = service.removeAllData(token, getUserUUID())
+
+                    call.enqueue(object : Callback<TodoDataSetResult> {
+                        override fun onResponse(
+                            call: Call<TodoDataSetResult>,
+                            response: Response<TodoDataSetResult>
+                        ) {
+                            if (!response.isSuccessful) {
+                                Toast.makeText(
+                                    context,
+                                    "There was a problem saving the Todo data in the server",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                        }
+
+                        override fun onFailure(call: Call<TodoDataSetResult>, t: Throwable) {
+                            Toast.makeText(
+                                context,
+                                "There was a problem saving the Todo data in the server",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    })
                 }
             }
         }
-
     }
 
     private fun getUserUUID() : String {
         val user = FirebaseAuth.getInstance().currentUser
         return user?.uid as String
     }
+
 }

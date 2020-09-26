@@ -67,7 +67,7 @@ object DataSavingManager {
     }
 
     private fun removeTodoDataInDBAndShared(context: Context) {
-        TodoDatabaseService.instance.getUserIdToken(context, TodoDatabaseService.instance::removeAllTodos)
+        TodoDatabaseService.instance.removeAllTodos(context)
         TodoDataSharedPreferencesService.instance.removeAllTodos(context)
     }
 
