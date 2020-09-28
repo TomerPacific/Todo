@@ -55,6 +55,12 @@ class LoginActivity : AppCompatActivity() {
     }
 
     fun loginUser(view : View) {
+
+        if (userEmail.isEmpty() || userPassword.isEmpty()) {
+            Toast.makeText(this, "Please make sure to fill in your email and password", Toast.LENGTH_SHORT).show()
+            return
+        }
+
         FirebaseAuth.getInstance().signInWithEmailAndPassword(userEmail, userPassword)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
@@ -69,6 +75,7 @@ class LoginActivity : AppCompatActivity() {
 
         if (userEmail.isEmpty() || userPassword.isEmpty()) {
             Toast.makeText(this, "Please make sure to fill in your email and password", Toast.LENGTH_SHORT).show()
+            return
         }
 
         FirebaseAuth.getInstance().createUserWithEmailAndPassword(userEmail, userPassword)
