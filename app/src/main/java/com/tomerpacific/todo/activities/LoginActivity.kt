@@ -31,6 +31,10 @@ class LoginActivity : AppCompatActivity() {
                 }
                 false
             }
+
+            setOnFocusChangeListener {view, gainedFoucs ->
+                userEmail = text.toString()
+            }
         }
 
         findViewById<EditText>(R.id.password_edit_text).apply {
@@ -41,6 +45,10 @@ class LoginActivity : AppCompatActivity() {
                     userPassword = text.toString()
                 }
                 false
+            }
+
+            setOnFocusChangeListener {view, gainedFoucs ->
+                userPassword = text.toString()
             }
         }
     }
