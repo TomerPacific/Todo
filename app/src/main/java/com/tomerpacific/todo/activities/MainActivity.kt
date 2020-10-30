@@ -18,9 +18,11 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ListView
 import android.widget.Toast
+import androidx.lifecycle.ViewModelProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.tomerpacific.todo.*
 import com.tomerpacific.todo.adapters.TodoListAdapter
+import com.tomerpacific.todo.viewmodels.MainActivityViewModel
 
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -31,6 +33,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var todoListTitle : EditText
     private lateinit var clearButton : Button
     private var signOutButton : Button? = null
+    private lateinit var mMainActivityViewModel : MainActivityViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,6 +51,8 @@ class MainActivity : AppCompatActivity() {
         setupListeners()
 
         setSignoutButtonStatus()
+
+        mMainActivityViewModel = ViewModelProvider(this).get(MainActivityViewModel::class.java)
 
         todoListView = findViewById<ListView>(R.id.todo_list).apply {
             val listAdapter =
