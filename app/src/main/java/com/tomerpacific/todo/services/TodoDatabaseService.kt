@@ -5,7 +5,7 @@ import kotlinx.coroutines.*
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import com.tomerpacific.todo.models.TodoData
+import com.tomerpacific.todo.models.TodoDataFromBackend
 import com.tomerpacific.todo.models.TodoDataSetResult
 import com.tomerpacific.todo.TodoConstants
 import com.tomerpacific.todo.adapters.TodoListAdapter
@@ -41,15 +41,15 @@ class TodoDatabaseService private constructor() {
                     val service = retrofit.create(DataService::class.java)
                     val call = service.getData(token, getUserUUID())
 
-                    call.enqueue(object: Callback<TodoData> {
-                        override fun onResponse(call: Call<TodoData>, response: Response<TodoData>) {
+                    call.enqueue(object: Callback<TodoDataFromBackend> {
+                        override fun onResponse(call: Call<TodoDataFromBackend>, response: Response<TodoDataFromBackend>) {
                             if (response.isSuccessful) {
-                                val body = response.body() as TodoData
+                                val body = response.body() as TodoDataFromBackend
                                 todoAdapter.setTodoData(body.data)
                             }
                         }
 
-                        override fun onFailure(call: Call<TodoData>, t: Throwable) {
+                        override fun onFailure(call: Call<TodoDataFromBackend>, t: Throwable) {
 
                         }
                     })

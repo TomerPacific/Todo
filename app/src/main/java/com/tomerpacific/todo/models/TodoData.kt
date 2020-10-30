@@ -1,10 +1,8 @@
 package com.tomerpacific.todo.models
 
-import com.google.gson.annotations.SerializedName
+data class TodoData(var todoItem: String) {
 
-class TodoData {
-
-    @SerializedName("todo_list")
-    var data : List<String> = listOf()
-
+    override fun toString(): String {
+        return todoItem
+    }
 }
