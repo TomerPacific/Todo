@@ -8,7 +8,7 @@ import com.google.firebase.auth.FirebaseUser
 import com.tomerpacific.todo.data.TodoData
 import com.tomerpacific.todo.data.TodoDataSetResult
 import com.tomerpacific.todo.TodoConstants
-import com.tomerpacific.todo.TodoListAdapter
+import com.tomerpacific.todo.adapters.TodoListAdapter
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

@@ -1,4 +1,4 @@
-package com.tomerpacific.todo
+package com.tomerpacific.todo.adapters
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.CheckBox
 import android.widget.TextView
+import com.tomerpacific.todo.DataSavingManager
+import com.tomerpacific.todo.R
 
 class TodoListAdapter(context: Context, clearButtonCallback : (status: Boolean) -> Unit) : BaseAdapter() {
 
@@ -28,7 +30,10 @@ class TodoListAdapter(context: Context, clearButtonCallback : (status: Boolean) 
                     val parentView = view.parent as ViewGroup
                     val todoToDelete = parentView.getChildAt(0) as TextView
                     data.remove(todoToDelete.text.toString())
-                    DataSavingManager.updateTodoData(view.context, data)
+                    DataSavingManager.updateTodoData(
+                        view.context,
+                        data
+                    )
                     notifyDataSetChanged()
 
                     clearButtonCB(data.size != 0)

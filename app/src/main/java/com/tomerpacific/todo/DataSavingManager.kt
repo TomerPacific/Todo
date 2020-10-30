@@ -1,6 +1,7 @@
 package com.tomerpacific.todo
 
 import android.content.Context
+import com.tomerpacific.todo.adapters.TodoListAdapter
 import com.tomerpacific.todo.services.TodoDataSharedPreferencesService
 import com.tomerpacific.todo.services.TodoDatabaseService
 

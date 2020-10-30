@@ -20,6 +20,7 @@ import android.widget.ListView
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.tomerpacific.todo.*
+import com.tomerpacific.todo.adapters.TodoListAdapter
 
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -50,7 +51,10 @@ class MainActivity : AppCompatActivity() {
 
         todoListView = findViewById<ListView>(R.id.todo_list).apply {
             val listAdapter =
-                TodoListAdapter(this@MainActivity, this@MainActivity::setClearButtonStatus)
+                TodoListAdapter(
+                    this@MainActivity,
+                    this@MainActivity::setClearButtonStatus
+                )
             this.adapter = listAdapter
             DataSavingManager.getTodoDataInSession(
                 this@MainActivity,
