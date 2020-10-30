@@ -5,8 +5,8 @@ import kotlinx.coroutines.*
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import com.tomerpacific.todo.data.TodoData
-import com.tomerpacific.todo.data.TodoDataSetResult
+import com.tomerpacific.todo.models.TodoData
+import com.tomerpacific.todo.models.TodoDataSetResult
 import com.tomerpacific.todo.TodoConstants
 import com.tomerpacific.todo.adapters.TodoListAdapter
 import retrofit2.Call
