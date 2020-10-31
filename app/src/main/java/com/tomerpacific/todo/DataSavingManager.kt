@@ -38,8 +38,15 @@ object DataSavingManager {
 
     fun fetchTodoDataFromSavedLocation(context: Context, todoAdapter : TodoListAdapter) {
         when(shouldSaveInSharedPreferences) {
-            true -> TodoDataSharedPreferencesService.instance.getTodoData(context, todoAdapter)
-            false -> TodoDatabaseService.instance.fetchTodoDataFromDB(todoAdapter)
+            true -> TodoDataSharedPreferencesService.instance.getTodoDataAndSet(context, todoAdapter)
+            false -> TodoDatabaseService.instance.fetchTodoDataFromDBAndSet(todoAdapter)
+        }
+    }
+
+    fun fetchTodoData(context: Context) {
+        when(shouldSaveInSharedPreferences) {
+            true -> TodoDataSharedPreferencesService.instance.getTodoData(context)
+            false -> TodoDatabaseService.instance.fetchTodoDataFromDB()
         }
     }
 
@@ -48,7 +55,7 @@ object DataSavingManager {
     }
 
     fun getTodoDataInSession(context: Context, adapter: TodoListAdapter) {
-        TodoDataSharedPreferencesService.instance.getTodoData(context, adapter)
+        TodoDataSharedPreferencesService.instance.getTodoDataAndSet(context, adapter)
     }
 
     fun updateTodoData(context : Context, todoData : List<String>) {

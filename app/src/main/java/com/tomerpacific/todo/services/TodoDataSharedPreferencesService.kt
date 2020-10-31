@@ -14,9 +14,14 @@ class TodoDataSharedPreferencesService private constructor() {
         val instance : TodoDataSharedPreferencesService by lazy { HOLDER.INSTANCE }
     }
 
-    fun getTodoData(context: Context, todoAdapter : TodoListAdapter) {
+    fun getTodoDataAndSet(context: Context, todoAdapter : TodoListAdapter) {
         val todoList : List<String> = getTodoDataFromSharedPreferences(context)
         todoAdapter.setTodoData(todoList.toMutableList())
+    }
+
+    fun getTodoData(context: Context) : MutableList<String> {
+        val todoList : List<String> = getTodoDataFromSharedPreferences(context)
+        return todoList.toMutableList()
     }
 
     fun removeAllTodos(context: Context) {
