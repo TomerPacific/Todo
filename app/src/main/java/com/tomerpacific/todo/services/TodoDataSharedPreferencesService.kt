@@ -33,9 +33,10 @@ class TodoDataSharedPreferencesService private constructor() {
         }
     }
 
-    fun saveTodoDataToSharedPreferences(context: Context, todoData : List<String>) {
+    fun saveTodoDataToSharedPreferences(context: Context, todoData : List<TodoData>) {
         context.getSharedPreferences(TodoConstants.TODO_SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE).apply {
-            edit().putStringSet(TodoConstants.TODO_KEY, todoData.toSet()).apply()
+            val json : String = Gson().toJson(todoData)
+            edit().putString(TodoConstants.TODO_KEY, json).apply()
         }
     }
 
