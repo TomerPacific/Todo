@@ -9,6 +9,7 @@ import com.tomerpacific.todo.models.TodoDataFromBackend
 import com.tomerpacific.todo.models.TodoDataSetResult
 import com.tomerpacific.todo.TodoConstants
 import com.tomerpacific.todo.adapters.TodoListAdapter
+import com.tomerpacific.todo.models.TodoData
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -89,7 +90,7 @@ class TodoDatabaseService private constructor() {
         }
     }
 
-    fun updateTodoDataInDB(context: Context, todoData : List<String>) {
+    fun updateTodoDataInDB(context: Context, todoData : List<TodoData>) {
 
         val user = FirebaseAuth.getInstance().currentUser
 

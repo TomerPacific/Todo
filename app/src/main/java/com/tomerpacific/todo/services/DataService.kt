@@ -1,5 +1,6 @@
 package com.tomerpacific.todo.services
 
+import com.tomerpacific.todo.models.TodoData
 import com.tomerpacific.todo.models.TodoDataFromBackend
 import com.tomerpacific.todo.models.TodoDataSetResult
 import retrofit2.Call
@@ -10,7 +11,7 @@ interface DataService {
     fun getData(@Header("AuthToken") token: String?, @Query("uid") uid: String?) : Call<TodoDataFromBackend>
 
     @GET("setTodoData")
-    fun setData(@Header("AuthToken") token: String?, @Query("uid") uid: String?, @Query("data") data: Array<String>) : Call<TodoDataSetResult>
+    fun setData(@Header("AuthToken") token: String?, @Query("uid") uid: String?, @Query("data") data: Array<TodoData>) : Call<TodoDataSetResult>
 
     @GET("removeAllTodoData")
     fun removeAllData(@Header("AuthToken") token: String?, @Query("uid") uid: String?) : Call<TodoDataSetResult>
