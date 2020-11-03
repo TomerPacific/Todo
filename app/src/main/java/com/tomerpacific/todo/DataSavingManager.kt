@@ -2,6 +2,7 @@ package com.tomerpacific.todo
 
 import android.content.Context
 import com.tomerpacific.todo.adapters.TodoListAdapter
+import com.tomerpacific.todo.models.TodoData
 import com.tomerpacific.todo.services.TodoDataSharedPreferencesService
 import com.tomerpacific.todo.services.TodoDatabaseService
 
@@ -50,7 +51,7 @@ object DataSavingManager {
         }
     }
 
-    fun saveTodoDataInSession(context: Context, todoData : List<String>) {
+    fun saveTodoDataInSession(context: Context, todoData : List<TodoData>) {
         TodoDataSharedPreferencesService.instance.saveTodoDataToSharedPreferences(context, todoData)
     }
 
@@ -58,7 +59,7 @@ object DataSavingManager {
         TodoDataSharedPreferencesService.instance.getTodoDataAndSet(context, adapter)
     }
 
-    fun updateTodoData(context : Context, todoData : List<String>) {
+    fun updateTodoData(context : Context, todoData : List<TodoData>) {
         when(shouldSaveInSharedPreferences) {
             true -> TodoDataSharedPreferencesService.instance.saveTodoDataToSharedPreferences(context, todoData)
             false -> TodoDatabaseService.instance.updateTodoDataInDB(context, todoData)
