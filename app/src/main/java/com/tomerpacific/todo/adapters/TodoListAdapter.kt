@@ -9,10 +9,11 @@ import android.widget.CheckBox
 import android.widget.TextView
 import com.tomerpacific.todo.DataSavingManager
 import com.tomerpacific.todo.R
+import com.tomerpacific.todo.models.TodoData
 
 class TodoListAdapter(context: Context, clearButtonCallback : (status: Boolean) -> Unit) : BaseAdapter() {
 
-    private var data: MutableList<String> = mutableListOf()
+    private var data: MutableList<TodoData> = mutableListOf()
     private val inflater: LayoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
     private val clearButtonCB : ((status: Boolean) -> Unit) = clearButtonCallback
 
@@ -28,8 +29,14 @@ class TodoListAdapter(context: Context, clearButtonCallback : (status: Boolean) 
             setOnCheckedChangeListener { view, isChanged ->
                 if (isChanged) {
                     val parentView = view.parent as ViewGroup
-                    val todoToDelete = parentView.getChildAt(0) as TextView
-                    data.remove(todoToDelete.text.toString())
+                    val todoToDeleteTextView = parentView.getChildAt(0) as TextView
+                    val todoToDelete : String = todoToDeleteTextView.text.toString()
+                    data.forEachIndexed { index : Int, element : TodoData ->
+                        if (element.todoItem == todoToDelete) {
+                            data.removeAt(index)
+                        }
+                    }
+
                     DataSavingManager.updateTodoData(
                         view.context,
                         data
@@ -62,17 +69,17 @@ class TodoListAdapter(context: Context, clearButtonCallback : (status: Boolean) 
         notifyDataSetChanged()
     }
 
-    fun setTodoData(dbData: List<String>) {
+    fun setTodoData(dbData: List<TodoData>) {
         data = dbData.toMutableList()
         clearButtonCB(data.count() != 0)
         notifyDataSetChanged()
     }
 
-    fun getTodoData() : List<String> {
+    fun getTodoData() : List<TodoData> {
         return data
     }
 
-    fun addTodoItem(todoItem : String) {
+    fun addTodoItem(todoItem : TodoData) {
         data.add(todoItem)
 
         if (data.size == 1) {
