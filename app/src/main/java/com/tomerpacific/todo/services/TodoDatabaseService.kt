@@ -59,7 +59,7 @@ class TodoDatabaseService private constructor() {
         }
     }
 
-    fun fetchTodoDataFromDB() {
+    fun fetchTodoDataFromDB(success : (data: List<TodoData>) -> Unit, failure: (error:String) -> Unit) {
         val user = FirebaseAuth.getInstance().currentUser
 
         if (user != null) {
@@ -78,11 +78,12 @@ class TodoDatabaseService private constructor() {
                         override fun onResponse(call: Call<TodoDataFromBackend>, response: Response<TodoDataFromBackend>) {
                             if (response.isSuccessful) {
                                 val body = response.body() as TodoDataFromBackend
+                                success.invoke(body.data)
                             }
                         }
 
                         override fun onFailure(call: Call<TodoDataFromBackend>, t: Throwable) {
-
+                            failure.invoke("Failure")
                         }
                     })
                 }
