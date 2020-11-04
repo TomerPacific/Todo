@@ -20,8 +20,11 @@ import android.widget.ListView
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import com.google.firebase.auth.FirebaseAuth
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.tomerpacific.todo.*
 import com.tomerpacific.todo.adapters.TodoListAdapter
+import com.tomerpacific.todo.models.TodoData
 import com.tomerpacific.todo.viewmodels.MainActivityViewModel
 
 import kotlinx.android.synthetic.main.activity_main.*
@@ -66,17 +69,18 @@ class MainActivity : AppCompatActivity() {
                 this.adapter as TodoListAdapter
             )
 
-            val todoItemToBeAdd: String? =
+            val todoItemToBeAddedJson: String? =
                 intent.getStringExtra(TodoConstants.TODO_ACTION_NEW_TODO_ITEM)
-            when (todoItemToBeAdd) {
-                null -> DataSavingManager.fetchTodoDataFromSavedLocation(
+            if (todoItemToBeAddedJson != null) {
+                val listType = object : TypeToken<TodoData>() {}.type
+                val todoItemToBeAdded : TodoData = Gson().fromJson<TodoData>(todoItemToBeAddedJson, listType)
+                listAdapter.addTodoItem(todoItemToBeAdded)
+                DataSavingManager.updateTodoData(this@MainActivity, listAdapter.getTodoData())
+            } else {
+                DataSavingManager.fetchTodoDataFromSavedLocation(
                     this@MainActivity,
                     listAdapter
                 )
-                else -> let {
-                    listAdapter.addTodoItem(todoItemToBeAdd)
-                    DataSavingManager.updateTodoData(this@MainActivity, listAdapter.getTodoData())
-                }
             }
         }
 
@@ -166,7 +170,7 @@ class MainActivity : AppCompatActivity() {
     override fun onPause() {
         super.onPause()
         val adapter = todoListView.adapter as TodoListAdapter
-        val todoData : List<String> = adapter.getTodoData()
+        val todoData : List<TodoData> = adapter.getTodoData()
         DataSavingManager.saveTodoDataInSession(this, todoData)
     }
 
