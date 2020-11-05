@@ -19,4 +19,11 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
         return mTodoData
     }
 
+    fun addTodo(todoTask: TodoData) {
+        var data : List<TodoData> = mTodoData.value.orEmpty()
+        data = data as MutableList
+        data.add(todoTask)
+        mTodoData.postValue(data)
+    }
+
 }
