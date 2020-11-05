@@ -12,7 +12,7 @@ object TodoRepository {
 
     fun getTodoData(context: Context): MutableLiveData<List<TodoData>> {
         setTodoData(context)
-        var data = MutableLiveData<List<TodoData>>()
+        val data = MutableLiveData<List<TodoData>>()
         data.value = todoData
 
         return data
@@ -30,11 +30,11 @@ object TodoRepository {
                                                          TodoRepository::onFetchDataFromBackendFailure)
     }
 
-    fun onFetchDataFromBackendSuccess(res : List<TodoData>) {
+    private fun onFetchDataFromBackendSuccess(res : List<TodoData>) {
         todoData = res
     }
 
-    fun onFetchDataFromBackendFailure(error : String) {
+    private fun onFetchDataFromBackendFailure(error : String) {
         todoData = listOf()
     }
 
