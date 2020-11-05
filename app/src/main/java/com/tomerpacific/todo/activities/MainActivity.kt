@@ -26,6 +26,7 @@ import com.google.gson.reflect.TypeToken
 import com.tomerpacific.todo.*
 import com.tomerpacific.todo.adapters.TodoListAdapter
 import com.tomerpacific.todo.models.TodoData
+import com.tomerpacific.todo.repositories.TodoRepository
 import com.tomerpacific.todo.viewmodels.MainActivityViewModel
 
 import kotlinx.android.synthetic.main.activity_main.*
@@ -84,7 +85,7 @@ class MainActivity : AppCompatActivity() {
             if (todoItemToBeAddedJson != null) {
                 val listType = object : TypeToken<TodoData>() {}.type
                 val todoItemToBeAdded : TodoData = Gson().fromJson<TodoData>(todoItemToBeAddedJson, listType)
-                todoListAdapter.addTodoItem(todoItemToBeAdded)
+                mMainActivityViewModel.addTodo(todoItemToBeAdded)
                 DataSavingManager.updateTodoData(this@MainActivity, todoListAdapter.getTodoData())
             } else {
                 DataSavingManager.fetchTodoDataFromSavedLocation(
