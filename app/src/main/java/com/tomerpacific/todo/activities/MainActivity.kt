@@ -18,6 +18,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ListView
 import android.widget.Toast
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.gson.Gson
@@ -33,6 +34,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : AppCompatActivity() {
 
     private lateinit var todoListView : ListView
+    private lateinit var todoListAdapter : TodoListAdapter
     private lateinit var todoListTitle : EditText
     private lateinit var clearButton : Button
     private var signOutButton : Button? = null
@@ -57,13 +59,21 @@ class MainActivity : AppCompatActivity() {
 
         mMainActivityViewModel = ViewModelProvider(this).get(MainActivityViewModel::class.java)
 
+        mMainActivityViewModel.getTodoData().observe(this, Observer { _ ->
+            todoListAdapter.notifyDataSetChanged()
+        })
+
+        initListView()
+    }
+
+    private fun initListView() {
         todoListView = findViewById<ListView>(R.id.todo_list).apply {
-            val listAdapter =
+            todoListAdapter =
                 TodoListAdapter(
                     this@MainActivity,
                     this@MainActivity::setClearButtonStatus
                 )
-            this.adapter = listAdapter
+            adapter = todoListAdapter
             DataSavingManager.getTodoDataInSession(
                 this@MainActivity,
                 this.adapter as TodoListAdapter
@@ -74,16 +84,15 @@ class MainActivity : AppCompatActivity() {
             if (todoItemToBeAddedJson != null) {
                 val listType = object : TypeToken<TodoData>() {}.type
                 val todoItemToBeAdded : TodoData = Gson().fromJson<TodoData>(todoItemToBeAddedJson, listType)
-                listAdapter.addTodoItem(todoItemToBeAdded)
-                DataSavingManager.updateTodoData(this@MainActivity, listAdapter.getTodoData())
+                todoListAdapter.addTodoItem(todoItemToBeAdded)
+                DataSavingManager.updateTodoData(this@MainActivity, todoListAdapter.getTodoData())
             } else {
                 DataSavingManager.fetchTodoDataFromSavedLocation(
                     this@MainActivity,
-                    listAdapter
+                    todoListAdapter
                 )
             }
         }
-
     }
 
     private fun setupListeners() {
