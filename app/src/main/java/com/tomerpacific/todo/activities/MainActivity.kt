@@ -160,8 +160,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun removeAll(view: View) {
-        val adapter = todoListView.adapter as TodoListAdapter
-        adapter.removeAllTodos()
+        todoListAdapter.removeAllTodos()
         DataSavingManager.removeAllTodoData(this)
     }
 
@@ -179,14 +178,12 @@ class MainActivity : AppCompatActivity() {
 
     override fun onPause() {
         super.onPause()
-        val adapter = todoListView.adapter as TodoListAdapter
-        val todoData : List<TodoData> = adapter.getTodoData()
+        val todoData : List<TodoData> = todoListAdapter.getTodoData()
         DataSavingManager.saveTodoDataInSession(this, todoData)
     }
 
     fun shareWithWhatsApp(view: View) {
-        val adapter = todoListView.adapter as TodoListAdapter
-        val todoList : String = todoListTitle.text.toString() + " " + adapter.getTodoData().joinToString(prefix = "*", separator = "*")
+        val todoList : String = todoListTitle.text.toString() + " " + todoListAdapter.getTodoData().joinToString(prefix = "*", separator = "*")
 
         val whatsappIntent : Intent = Intent().apply {
             action = Intent.ACTION_SEND
