@@ -26,7 +26,6 @@ import com.google.gson.reflect.TypeToken
 import com.tomerpacific.todo.*
 import com.tomerpacific.todo.adapters.TodoListAdapter
 import com.tomerpacific.todo.models.TodoData
-import com.tomerpacific.todo.repositories.TodoRepository
 import com.tomerpacific.todo.viewmodels.MainActivityViewModel
 
 import kotlinx.android.synthetic.main.activity_main.*
@@ -57,8 +56,7 @@ class MainActivity : AppCompatActivity() {
         setupListeners()
 
         setSignoutButtonStatus()
-
-        mMainActivityViewModel = ViewModelProvider(this).get(MainActivityViewModel::class.java)
+        mMainActivityViewModel = ViewModelProvider(this, ViewModelFactory(application)).get(MainActivityViewModel::class.java)
 
         mMainActivityViewModel.getTodoData().observe(this, Observer { _ ->
             todoListAdapter.notifyDataSetChanged()
@@ -75,14 +73,9 @@ class MainActivity : AppCompatActivity() {
                     this@MainActivity::setClearButtonStatus
                 )
             adapter = todoListAdapter
-            DataSavingManager.getTodoDataInSession(
-                this@MainActivity,
-                this.adapter as TodoListAdapter
-            )
 
-            val todoItemToBeAddedJson: String? =
-                intent.getStringExtra(TodoConstants.TODO_ACTION_NEW_TODO_ITEM)
-            if (todoItemToBeAddedJson != null) {
+            val todoItemToBeAddedJson: String? = intent.getStringExtra(TodoConstants.TODO_ACTION_NEW_TODO_ITEM)
+            if (!todoItemToBeAddedJson.isNullOrEmpty()) {
                 val listType = object : TypeToken<TodoData>() {}.type
                 val todoItemToBeAdded : TodoData = Gson().fromJson<TodoData>(todoItemToBeAddedJson, listType)
                 mMainActivityViewModel.addTodo(todoItemToBeAdded)
