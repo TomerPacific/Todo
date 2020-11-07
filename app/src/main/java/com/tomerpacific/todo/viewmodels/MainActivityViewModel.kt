@@ -12,7 +12,8 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
     private var mTodoData : MutableLiveData<List<TodoData>> = MutableLiveData()
 
     init {
-        mTodoData = TodoRepository.getTodoData(application.applicationContext)
+        mTodoData = TodoRepository.getTodoData(application)
+
     }
 
     fun getTodoData() : LiveData<List<TodoData>> {
@@ -20,8 +21,7 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
     }
 
     fun addTodo(todoTask: TodoData) {
-        var data : List<TodoData> = mTodoData.value.orEmpty()
-        data = data as MutableList
+        val data : MutableList<TodoData> = mTodoData.value.orEmpty().toMutableList()
         data.add(todoTask)
         mTodoData.postValue(data)
     }
