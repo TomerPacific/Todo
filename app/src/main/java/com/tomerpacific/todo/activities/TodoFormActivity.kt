@@ -8,8 +8,10 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.google.gson.Gson
 import com.tomerpacific.todo.R
 import com.tomerpacific.todo.TodoConstants
+import com.tomerpacific.todo.models.TodoData
 
 class TodoFormActivity : AppCompatActivity() {
 
@@ -29,8 +31,9 @@ class TodoFormActivity : AppCompatActivity() {
                         TodoConstants.USER_NOTIFICATION_MISSING_TODO, Toast.LENGTH_SHORT
                     ).show()
                     false -> let {
+                        val todoItem : TodoData = TodoData(choreText)
                         val intent: Intent = Intent(this@TodoFormActivity, MainActivity::class.java)
-                        intent.putExtra(TodoConstants.TODO_ACTION_NEW_TODO_ITEM, choreText)
+                        intent.putExtra(TodoConstants.TODO_ACTION_NEW_TODO_ITEM, Gson().toJson(todoItem))
                         startActivity(intent)
                         finish()
                     }
