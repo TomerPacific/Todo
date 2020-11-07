@@ -70,7 +70,8 @@ class MainActivity : AppCompatActivity() {
             todoListAdapter =
                 TodoListAdapter(
                     this@MainActivity,
-                    this@MainActivity::setClearButtonStatus
+                    this@MainActivity::setClearButtonStatus,
+                    mMainActivityViewModel.getTodoData().value.orEmpty()
                 )
             adapter = todoListAdapter
 
@@ -79,11 +80,10 @@ class MainActivity : AppCompatActivity() {
                 val listType = object : TypeToken<TodoData>() {}.type
                 val todoItemToBeAdded : TodoData = Gson().fromJson<TodoData>(todoItemToBeAddedJson, listType)
                 mMainActivityViewModel.addTodo(todoItemToBeAdded)
-                DataSavingManager.updateTodoData(this@MainActivity, todoListAdapter.getTodoData())
+                DataSavingManager.updateTodoData(this@MainActivity, mMainActivityViewModel.getTodoData().value.orEmpty())
             } else {
-                DataSavingManager.fetchTodoDataFromSavedLocation(
-                    this@MainActivity,
-                    todoListAdapter
+                DataSavingManager.fetchTodoData(
+                    this@MainActivity
                 )
             }
         }
@@ -153,7 +153,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun removeAll(view: View) {
-        todoListAdapter.removeAllTodos()
+        //TODO remove from ViewModel
         DataSavingManager.removeAllTodoData(this)
     }
 
@@ -171,12 +171,12 @@ class MainActivity : AppCompatActivity() {
 
     override fun onPause() {
         super.onPause()
-        val todoData : List<TodoData> = todoListAdapter.getTodoData()
+        val todoData : List<TodoData> = mMainActivityViewModel.getTodoData().value.orEmpty()
         DataSavingManager.saveTodoDataInSession(this, todoData)
     }
 
     fun shareWithWhatsApp(view: View) {
-        val todoList : String = todoListTitle.text.toString() + " " + todoListAdapter.getTodoData().joinToString(prefix = "*", separator = "*")
+        val todoList : String = todoListTitle.text.toString() + " " + mMainActivityViewModel.getTodoData().value.orEmpty().joinToString(prefix = "*", separator = "*")
 
         val whatsappIntent : Intent = Intent().apply {
             action = Intent.ACTION_SEND
