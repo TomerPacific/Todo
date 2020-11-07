@@ -1,5 +1,6 @@
 package com.tomerpacific.todo.repositories
 
+import android.app.Application
 import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import com.tomerpacific.todo.models.TodoData
@@ -16,6 +17,18 @@ object TodoRepository {
         data.value = todoData
 
         return data
+    }
+
+    fun updateTodoData(application: Application, todoTask: TodoData) {
+        val isTodoDataSavedOnDevice = TodoDataSharedPreferencesService.instance.didUserDecideToSaveDataInSharedPreferences(application)
+
+        val mutableTodoData : MutableList<TodoData> = todoData.toMutableList()
+        mutableTodoData.add(todoTask)
+
+        when(isTodoDataSavedOnDevice) {
+            true -> TodoDataSharedPreferencesService.instance.saveTodoDataToSharedPreferences(application, mutableTodoData)
+            false -> TodoDatabaseService.instance.updateTodoDataInDB(application, mutableTodoData)
+        }
     }
 
     private fun setTodoData(context: Context) {
