@@ -63,6 +63,14 @@ class MainActivity : AppCompatActivity() {
         })
 
         initListView()
+
+        val todoItemToBeAddedJson: String? = intent.getStringExtra(TodoConstants.TODO_ACTION_NEW_TODO_ITEM)
+        if (!todoItemToBeAddedJson.isNullOrEmpty()) {
+            val listType = object : TypeToken<TodoData>() {}.type
+            val todoItemToBeAdded : TodoData = Gson().fromJson<TodoData>(todoItemToBeAddedJson, listType)
+            mMainActivityViewModel.addTodo(todoItemToBeAdded)
+        }
+
     }
 
     private fun initListView() {
@@ -74,18 +82,6 @@ class MainActivity : AppCompatActivity() {
                     mMainActivityViewModel.getTodoData().value.orEmpty()
                 )
             adapter = todoListAdapter
-
-            val todoItemToBeAddedJson: String? = intent.getStringExtra(TodoConstants.TODO_ACTION_NEW_TODO_ITEM)
-            if (!todoItemToBeAddedJson.isNullOrEmpty()) {
-                val listType = object : TypeToken<TodoData>() {}.type
-                val todoItemToBeAdded : TodoData = Gson().fromJson<TodoData>(todoItemToBeAddedJson, listType)
-                mMainActivityViewModel.addTodo(todoItemToBeAdded)
-                DataSavingManager.updateTodoData(this@MainActivity, mMainActivityViewModel.getTodoData().value.orEmpty())
-            } else {
-                DataSavingManager.fetchTodoData(
-                    this@MainActivity
-                )
-            }
         }
     }
 
