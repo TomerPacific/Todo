@@ -10,9 +10,10 @@ import com.tomerpacific.todo.repositories.TodoRepository
 class MainActivityViewModel(application: Application) : AndroidViewModel(application) {
 
     private var mTodoData : MutableLiveData<List<TodoData>> = MutableLiveData()
+    private var applicationContext : Application = application
 
     init {
-        mTodoData = TodoRepository.getTodoData(application)
+        mTodoData = TodoRepository.getTodoData(applicationContext)
 
     }
 
@@ -24,6 +25,7 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
         val data : MutableList<TodoData> = mTodoData.value.orEmpty().toMutableList()
         data.add(todoTask)
         mTodoData.postValue(data)
+        TodoRepository.updateTodoData(applicationContext, todoTask)
     }
 
 }
