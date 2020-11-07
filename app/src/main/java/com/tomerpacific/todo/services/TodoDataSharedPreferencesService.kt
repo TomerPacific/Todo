@@ -18,11 +18,6 @@ class TodoDataSharedPreferencesService private constructor() {
         val instance : TodoDataSharedPreferencesService by lazy { HOLDER.INSTANCE }
     }
 
-    fun getTodoDataAndSet(context: Context, todoAdapter : TodoListAdapter) {
-        val todoList : List<TodoData> = getTodoDataFromSharedPreferences(context)
-        todoAdapter.setTodoData(todoList.toMutableList())
-    }
-
     fun getTodoData(context: Context) : List<TodoData> {
         return getTodoDataFromSharedPreferences(context)
     }
@@ -42,13 +37,16 @@ class TodoDataSharedPreferencesService private constructor() {
 
     fun didUserDecideToSaveDataInSharedPreferences(context: Context) : Boolean {
         val sharedPreferences = context.getSharedPreferences(TodoConstants.TODO_SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE)
-        return sharedPreferences.getBoolean(TodoConstants.SAVE_DATA_PREFERENCE_KEY, false)
+        val res = sharedPreferences.getString(TodoConstants.SAVE_DATA_PREFERENCE_KEY, "")
+
+        if (res.isNullOrEmpty() || res == TodoConstants.SAVE_DATA_ONLINE) return false
+        return true
     }
 
     private fun getTodoDataFromSharedPreferences(context: Context): List<TodoData> {
         val sharedPreferences = context.getSharedPreferences(TodoConstants.TODO_SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE)
         val data = sharedPreferences.getString(TodoConstants.TODO_KEY, "")
-        if (data != null) {
+        if (!data.isNullOrEmpty()) {
             val listType = object : TypeToken<List<TodoData>>() {}.type
             return Gson().fromJson<List<TodoData>>(data, listType)
         }
