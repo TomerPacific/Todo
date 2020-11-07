@@ -11,9 +11,10 @@ import com.tomerpacific.todo.DataSavingManager
 import com.tomerpacific.todo.R
 import com.tomerpacific.todo.models.TodoData
 
-class TodoListAdapter(context: Context, clearButtonCallback : (status: Boolean) -> Unit) : BaseAdapter() {
+class TodoListAdapter(context: Context,
+                      clearButtonCallback : (status: Boolean) -> Unit,
+                      private var todoItems: List<TodoData>) : BaseAdapter() {
 
-    private var data: MutableList<TodoData> = mutableListOf()
     private val inflater: LayoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
     private val clearButtonCB : ((status: Boolean) -> Unit) = clearButtonCallback
 
@@ -31,19 +32,24 @@ class TodoListAdapter(context: Context, clearButtonCallback : (status: Boolean) 
                     val parentView = view.parent as ViewGroup
                     val todoToDeleteTextView = parentView.getChildAt(0) as TextView
                     val todoToDelete : String = todoToDeleteTextView.text.toString()
-                    data.forEachIndexed { index : Int, element : TodoData ->
+
+
+                    val mutableTodoList : MutableList<TodoData> = todoItems.toMutableList()
+                    mutableTodoList.forEachIndexed { index : Int, element : TodoData ->
                         if (element.todoItem == todoToDelete) {
-                            data.removeAt(index)
+                            mutableTodoList.removeAt(index)
+                            return@forEachIndexed
                         }
                     }
 
+                    todoItems = mutableTodoList.toList()
                     DataSavingManager.updateTodoData(
                         view.context,
-                        data
+                        todoItems
                     )
                     notifyDataSetChanged()
 
-                    clearButtonCB(data.size != 0)
+                    clearButtonCB(todoItems.isNotEmpty())
                 }
             }
         }
@@ -52,7 +58,7 @@ class TodoListAdapter(context: Context, clearButtonCallback : (status: Boolean) 
     }
 
     override fun getItem(position: Int): Any {
-        return data[position]
+        return todoItems[position]
     }
 
     override fun getItemId(position: Int): Long {
@@ -60,33 +66,7 @@ class TodoListAdapter(context: Context, clearButtonCallback : (status: Boolean) 
     }
 
     override fun getCount(): Int {
-        return data.size
-    }
-
-    fun removeAllTodos() {
-        data.clear()
-        clearButtonCB(false)
-        notifyDataSetChanged()
-    }
-
-    fun setTodoData(dbData: List<TodoData>) {
-        data = dbData.toMutableList()
-        clearButtonCB(data.count() != 0)
-        notifyDataSetChanged()
-    }
-
-    fun getTodoData() : List<TodoData> {
-        return data
-    }
-
-    fun addTodoItem(todoItem : TodoData) {
-        data.add(todoItem)
-
-        if (data.size == 1) {
-            clearButtonCB(true)
-        }
-
-        notifyDataSetChanged()
+        return todoItems.size
     }
 
 }
