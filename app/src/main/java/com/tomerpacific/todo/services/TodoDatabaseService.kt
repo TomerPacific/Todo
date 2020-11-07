@@ -27,38 +27,6 @@ class TodoDatabaseService private constructor() {
         val instance: TodoDatabaseService by lazy { HOLDER.INSTANCE }
     }
 
-    fun fetchTodoDataFromDBAndSet(todoAdapter : TodoListAdapter) {
-        val user = FirebaseAuth.getInstance().currentUser
-
-        if (user != null) {
-            user.getIdToken(false).addOnCompleteListener{
-                if (it.isSuccessful) {
-                    val token = it.result?.token
-
-                    val retrofit = Retrofit.Builder()
-                        .baseUrl(TodoConstants.BASE_URL_FOR_REQUEST)
-                        .addConverterFactory(GsonConverterFactory.create())
-                        .build()
-                    val service = retrofit.create(DataService::class.java)
-                    val call = service.getData(token, getUserUUID())
-
-                    call.enqueue(object: Callback<TodoDataFromBackend> {
-                        override fun onResponse(call: Call<TodoDataFromBackend>, response: Response<TodoDataFromBackend>) {
-                            if (response.isSuccessful) {
-                                val body = response.body() as TodoDataFromBackend
-                                todoAdapter.setTodoData(body.data)
-                            }
-                        }
-
-                        override fun onFailure(call: Call<TodoDataFromBackend>, t: Throwable) {
-
-                        }
-                    })
-                }
-            }
-        }
-    }
-
     fun fetchTodoDataFromDB(success : (data: List<TodoData>) -> Unit, failure: (error:String) -> Unit) {
         val user = FirebaseAuth.getInstance().currentUser
 
@@ -83,7 +51,7 @@ class TodoDatabaseService private constructor() {
                         }
 
                         override fun onFailure(call: Call<TodoDataFromBackend>, t: Throwable) {
-                            failure.invoke("Failure")
+                            failure.invoke("Failure when trying to fetch todo data")
                         }
                     })
                 }
