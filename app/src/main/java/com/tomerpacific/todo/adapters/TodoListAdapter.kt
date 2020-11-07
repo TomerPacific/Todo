@@ -20,10 +20,10 @@ class TodoListAdapter(context: Context,
 
     override fun getView(position: Int, convertView: View?, container: ViewGroup?): View {
         val rootView = inflater.inflate(R.layout.todo_list_item, container, false)
-        val item = getItem(position) as String
+        val item = getItem(position) as TodoData
 
         rootView.findViewById<TextView>(R.id.todo_item_name).apply {
-            text = item
+            text = item.todoItem
         }
 
         rootView.findViewById<CheckBox>(R.id.todo_item_done_checkbox).apply {
