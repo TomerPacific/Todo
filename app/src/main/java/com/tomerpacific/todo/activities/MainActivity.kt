@@ -26,6 +26,7 @@ import com.google.gson.reflect.TypeToken
 import com.tomerpacific.todo.*
 import com.tomerpacific.todo.adapters.TodoListAdapter
 import com.tomerpacific.todo.models.TodoData
+import com.tomerpacific.todo.repositories.TodoRepository
 import com.tomerpacific.todo.viewmodels.MainActivityViewModel
 
 import kotlinx.android.synthetic.main.activity_main.*
@@ -45,7 +46,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
-        DataSavingManager.decideOnUserDataSavingFlow(this)
+        TodoRepository.decideOnUserDataSavingFlow(this)
 
         clearButton = findViewById(R.id.clearBtn)
 
@@ -56,6 +57,7 @@ class MainActivity : AppCompatActivity() {
         setupListeners()
 
         setSignoutButtonStatus()
+
         mMainActivityViewModel = ViewModelProvider(this, ViewModelFactory(application)).get(MainActivityViewModel::class.java)
 
         mMainActivityViewModel.getTodoData().observe(this, Observer { _ ->
