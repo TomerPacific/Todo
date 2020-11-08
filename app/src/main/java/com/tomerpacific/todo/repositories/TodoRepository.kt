@@ -68,6 +68,10 @@ object TodoRepository {
             }
     }
 
+    fun isSavingInSharedPreferences() : Boolean {
+        return (didSaveDataInSharedPreferences != null && didSaveDataInSharedPreferences == true)
+    }
+
     private fun onFetchDataFromBackendSuccess(res : List<TodoData>) {
         todoData = res
 

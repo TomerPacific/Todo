@@ -133,7 +133,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setSignoutButtonStatus() {
-        if (!DataSavingManager.isSavingInSharedPreferences()) {
+        if (!TodoRepository.isSavingInSharedPreferences()) {
             signOutButton?.visibility = View.VISIBLE
         }
     }
