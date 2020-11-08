@@ -3,6 +3,7 @@ package com.tomerpacific.todo.repositories
 import android.app.Application
 import android.content.Context
 import androidx.lifecycle.MutableLiveData
+import com.tomerpacific.todo.TodoConstants
 import com.tomerpacific.todo.models.TodoData
 import com.tomerpacific.todo.services.TodoDataSharedPreferencesService
 import com.tomerpacific.todo.services.TodoDatabaseService
@@ -10,6 +11,7 @@ import com.tomerpacific.todo.services.TodoDatabaseService
 object TodoRepository {
 
     private var todoData : List<TodoData> = listOf()
+    private var didSaveDataInSharedPreferences : Boolean? = null
 
     fun getTodoData(context: Context): MutableLiveData<List<TodoData>> {
         setTodoData(context)
@@ -43,8 +45,32 @@ object TodoRepository {
                                                          TodoRepository::onFetchDataFromBackendFailure)
     }
 
+    fun decideOnUserDataSavingFlow(context: Context) {
+
+        if (didSaveDataInSharedPreferences != null) {
+            return
+        }
+
+        val sharedPref = context.getSharedPreferences(
+            TodoConstants.TODO_SHARED_PREFERENCES_NAME,
+            Context.MODE_PRIVATE
+        )
+
+        val shouldSaveDataInSharedPreferences: String? = sharedPref.getString(
+            TodoConstants.SAVE_DATA_PREFERENCE_KEY,
+            TodoConstants.SAVE_DATA_ON_DEVICE
+        )
+
+        didSaveDataInSharedPreferences =
+            when(shouldSaveDataInSharedPreferences) {
+                TodoConstants.SAVE_DATA_ON_DEVICE -> true
+                else -> false
+            }
+    }
+
     private fun onFetchDataFromBackendSuccess(res : List<TodoData>) {
         todoData = res
+
     }
 
     private fun onFetchDataFromBackendFailure(error : String) {
