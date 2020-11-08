@@ -72,6 +72,10 @@ object TodoRepository {
         return (didSaveDataInSharedPreferences != null && didSaveDataInSharedPreferences == true)
     }
 
+    fun saveTodoDataInSession(context: Context) {
+        TodoDataSharedPreferencesService.instance.saveTodoDataToSharedPreferences(context, todoData)
+    }
+
     private fun onFetchDataFromBackendSuccess(res : List<TodoData>) {
         todoData = res
 

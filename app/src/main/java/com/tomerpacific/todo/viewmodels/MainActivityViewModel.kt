@@ -1,6 +1,7 @@
 package com.tomerpacific.todo.viewmodels
 
 import android.app.Application
+import android.content.Context
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -26,6 +27,10 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
         data.add(todoTask)
         mTodoData.postValue(data)
         TodoRepository.updateTodoData(applicationContext, todoTask)
+    }
+
+    fun saveTodoData(context: Context) {
+        TodoRepository.saveTodoDataInSession(context)
     }
 
 }

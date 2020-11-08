@@ -169,8 +169,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onPause() {
         super.onPause()
-        val todoData : List<TodoData> = mMainActivityViewModel.getTodoData().value.orEmpty()
-        DataSavingManager.saveTodoDataInSession(this, todoData)
+        mMainActivityViewModel.saveTodoData(this)
     }
 
     fun shareWithWhatsApp(view: View) {
