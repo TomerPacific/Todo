@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.CheckBox
 import android.widget.TextView
-import com.tomerpacific.todo.DataSavingManager
 import com.tomerpacific.todo.R
 import com.tomerpacific.todo.models.TodoData
 
@@ -43,10 +42,6 @@ class TodoListAdapter(context: Context,
                     }
 
                     todoItems = mutableTodoList.toList()
-                    DataSavingManager.updateTodoData(
-                        view.context,
-                        todoItems
-                    )
                     notifyDataSetChanged()
 
                     clearButtonCB(todoItems.isNotEmpty())
