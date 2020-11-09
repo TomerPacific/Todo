@@ -33,4 +33,8 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
         TodoRepository.saveTodoDataInSession(context)
     }
 
+    fun removeTodoData(context: Context) {
+        TodoRepository.removeTodoData(context)
+    }
+
 }
