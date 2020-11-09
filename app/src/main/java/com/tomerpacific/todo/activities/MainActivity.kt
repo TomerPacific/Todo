@@ -151,8 +151,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun removeAll(view: View) {
-        //TODO remove from ViewModel
-        DataSavingManager.removeAllTodoData(this)
+        mMainActivityViewModel.removeTodoData(this)
     }
 
     private fun setClearButtonStatus(status: Boolean) {
