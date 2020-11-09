@@ -11,7 +11,8 @@ import com.tomerpacific.todo.services.TodoDatabaseService
 object TodoRepository {
 
     private var todoData : List<TodoData> = listOf()
-    private var didSaveDataInSharedPreferences : Boolean? = null
+    private var didSaveDataInSharedPreferences : Boolean = false
+    private var didAlreadySetSavePreferencesFlag : Boolean = false
 
     fun getTodoData(context: Context): MutableLiveData<List<TodoData>> {
         setTodoData(context)
@@ -47,8 +48,8 @@ object TodoRepository {
 
     fun decideOnUserDataSavingFlow(context: Context) {
 
-        if (didSaveDataInSharedPreferences != null) {
-            return
+        if (didAlreadySetSavePreferencesFlag) {
+            return;
         }
 
         val sharedPref = context.getSharedPreferences(
@@ -66,14 +67,21 @@ object TodoRepository {
                 TodoConstants.SAVE_DATA_ON_DEVICE -> true
                 else -> false
             }
+
+        didAlreadySetSavePreferencesFlag = true
     }
 
     fun isSavingInSharedPreferences() : Boolean {
-        return (didSaveDataInSharedPreferences != null && didSaveDataInSharedPreferences == true)
+        return didSaveDataInSharedPreferences
     }
 
     fun saveTodoDataInSession(context: Context) {
         TodoDataSharedPreferencesService.instance.saveTodoDataToSharedPreferences(context, todoData)
+    }
+
+    fun removeTodoData(context: Context) {
+        TodoDataSharedPreferencesService.instance.removeAllTodos(context)
+        if (!didSaveDataInSharedPreferences) TodoDatabaseService.instance.removeAllTodos(context)
     }
 
     private fun onFetchDataFromBackendSuccess(res : List<TodoData>) {
