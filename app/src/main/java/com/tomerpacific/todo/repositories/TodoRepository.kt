@@ -14,12 +14,16 @@ object TodoRepository {
     private var didSaveDataInSharedPreferences : Boolean = false
     private var didAlreadySetSavePreferencesFlag : Boolean = false
 
-    fun getTodoData(context: Context): MutableLiveData<List<TodoData>> {
-        setTodoData(context)
-        val data = MutableLiveData<List<TodoData>>()
-        data.value = todoData
+    fun getTodoData(context: Context): List<TodoData> {
+        val isTodoDataSavedOnDevice = TodoDataSharedPreferencesService.instance.didUserDecideToSaveDataInSharedPreferences(context)
 
-        return data
+        if (isTodoDataSavedOnDevice) {
+            return TodoDataSharedPreferencesService.instance.getTodoData(context)
+        }
+
+        TodoDatabaseService.instance.fetchTodoDataFromDB(TodoRepository::onFetchDataFromBackendSuccess,
+            TodoRepository::onFetchDataFromBackendFailure)
+        return listOf()
     }
 
     fun updateTodoData(application: Application, todoTask: TodoData) {
@@ -34,17 +38,6 @@ object TodoRepository {
         }
     }
 
-    private fun setTodoData(context: Context) {
-        val isTodoDataSavedOnDevice = TodoDataSharedPreferencesService.instance.didUserDecideToSaveDataInSharedPreferences(context)
-
-        if (isTodoDataSavedOnDevice) {
-            todoData = TodoDataSharedPreferencesService.instance.getTodoData(context)
-            return
-        }
-
-        TodoDatabaseService.instance.fetchTodoDataFromDB(TodoRepository::onFetchDataFromBackendSuccess,
-                                                         TodoRepository::onFetchDataFromBackendFailure)
-    }
 
     fun decideOnUserDataSavingFlow(context: Context) {
 
