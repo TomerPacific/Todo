@@ -64,4 +64,9 @@ class TodoListAdapter(context: Context,
         return todoItems.size
     }
 
+    fun submitList(data: List<TodoData>) {
+        todoItems = data
+        notifyDataSetChanged()
+    }
+
 }
