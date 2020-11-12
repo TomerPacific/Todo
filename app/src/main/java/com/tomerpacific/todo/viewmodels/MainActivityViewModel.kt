@@ -7,15 +7,17 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.tomerpacific.todo.models.TodoData
 import com.tomerpacific.todo.repositories.TodoRepository
+import java.util.*
 
 class MainActivityViewModel(application: Application) : AndroidViewModel(application) {
 
     private var mTodoData : MutableLiveData<List<TodoData>> = MutableLiveData()
+    private var todoDataList: List<TodoData> = listOf()
     private var applicationContext : Application = application
 
     init {
-        mTodoData = TodoRepository.getTodoData(applicationContext)
-
+        todoDataList = TodoRepository.getTodoData(applicationContext)
+        mTodoData.value = todoDataList
     }
 
     fun getTodoData() : LiveData<List<TodoData>> {
@@ -23,9 +25,10 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
     }
 
     fun addTodo(todoTask: TodoData) {
-        val data : MutableList<TodoData> = mTodoData.value.orEmpty().toMutableList()
+        val data : MutableList<TodoData> = todoDataList.toMutableList()
         data.add(todoTask)
-        mTodoData.postValue(data)
+        todoDataList = Collections.unmodifiableList(data)
+        mTodoData.value = todoDataList
         TodoRepository.updateTodoData(applicationContext, todoTask)
     }
 
