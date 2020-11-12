@@ -18,6 +18,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ListView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.google.firebase.auth.FirebaseAuth
@@ -60,8 +61,8 @@ class MainActivity : AppCompatActivity() {
 
         mMainActivityViewModel = ViewModelProvider(this, ViewModelFactory(application)).get(MainActivityViewModel::class.java)
 
-        mMainActivityViewModel.getTodoData().observe(this, Observer { _ ->
-            todoListAdapter.notifyDataSetChanged()
+        mMainActivityViewModel.getTodoData().observe(this, Observer { it ->
+            todoListAdapter.submitList(it)
         })
 
         initListView()
@@ -76,12 +77,15 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initListView() {
+
+        var data = mMainActivityViewModel.getTodoData().value.orEmpty()
+
         todoListView = findViewById<ListView>(R.id.todo_list).apply {
             todoListAdapter =
                 TodoListAdapter(
                     this@MainActivity,
                     this@MainActivity::setClearButtonStatus,
-                    mMainActivityViewModel.getTodoData().value.orEmpty()
+                    data
                 )
             adapter = todoListAdapter
         }
@@ -118,9 +122,26 @@ class MainActivity : AppCompatActivity() {
         })
 
         fab.setOnClickListener { view ->
-            val intent : Intent = Intent(this, TodoFormActivity::class.java)
-            startActivity(intent)
-            finish()
+//            val intent : Intent = Intent(this, TodoFormActivity::class.java)
+//            startActivity(intent)
+//            finish()
+
+            val builder = AlertDialog.Builder(this)
+            builder.setTitle("Add A New Task")
+            builder.setMessage("Message")
+            builder.setIcon(android.R.drawable.ic_dialog_alert)
+
+            builder.setPositiveButton("Yes"){dialogInterface, which ->
+                mMainActivityViewModel.addTodo(TodoData("Something"))
+            }
+
+            builder.setNegativeButton("No"){dialogInterface, which ->
+                Toast.makeText(applicationContext,"clicked No",Toast.LENGTH_LONG).show()
+            }
+            val alertDialog: AlertDialog = builder.create()
+            alertDialog.setCancelable(false)
+            alertDialog.show()
+
         }
 
         signOutButton?.setOnClickListener {
