@@ -4,9 +4,7 @@ import android.content.Context
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.tomerpacific.todo.TodoConstants
-import com.tomerpacific.todo.adapters.TodoListAdapter
 import com.tomerpacific.todo.models.TodoData
-import java.lang.reflect.Type
 
 class TodoDataSharedPreferencesService private constructor() {
 
@@ -24,7 +22,7 @@ class TodoDataSharedPreferencesService private constructor() {
 
     fun removeAllTodos(context: Context) {
         context.getSharedPreferences(TodoConstants.TODO_SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE).apply {
-            edit().putStringSet(TodoConstants.TODO_KEY, setOf()).apply()
+            edit().putString(TodoConstants.TODO_KEY, "").apply()
         }
     }
 
