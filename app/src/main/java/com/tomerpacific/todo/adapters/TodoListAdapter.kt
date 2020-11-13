@@ -34,10 +34,12 @@ class TodoListAdapter(context: Context,
 
 
                     val mutableTodoList : MutableList<TodoData> = todoItems.toMutableList()
-                    mutableTodoList.forEachIndexed { index : Int, element : TodoData ->
-                        if (element.todoItem == todoToDelete) {
-                            mutableTodoList.removeAt(index)
-                            return@forEachIndexed
+                    with(mutableTodoList.iterator()) {
+                        forEach {
+                            if (it.todoItem == todoToDelete) {
+                                remove()
+                                return@forEach
+                            }
                         }
                     }
 
