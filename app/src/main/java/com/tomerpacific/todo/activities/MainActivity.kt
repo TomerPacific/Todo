@@ -123,7 +123,9 @@ class MainActivity : AppCompatActivity() {
 
         fab.setOnClickListener { view ->
             val builder = AlertDialog.Builder(this)
-            val userInputEditText : EditText = EditText(this)
+            val userInputEditText : EditText = EditText(this).apply {
+                this.maxLines = 1
+            }
 
             builder.setView(userInputEditText)
             builder.setTitle("Add A New Task")
