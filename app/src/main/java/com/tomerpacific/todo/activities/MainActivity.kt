@@ -122,10 +122,6 @@ class MainActivity : AppCompatActivity() {
         })
 
         fab.setOnClickListener { view ->
-//            val intent : Intent = Intent(this, TodoFormActivity::class.java)
-//            startActivity(intent)
-//            finish()
-
             val builder = AlertDialog.Builder(this)
             builder.setTitle("Add A New Task")
             builder.setMessage("Message")
