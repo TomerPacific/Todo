@@ -123,12 +123,14 @@ class MainActivity : AppCompatActivity() {
 
         fab.setOnClickListener { view ->
             val builder = AlertDialog.Builder(this)
+            val userInputEditText : EditText = EditText(this)
+
+            builder.setView(userInputEditText)
             builder.setTitle("Add A New Task")
-            builder.setMessage("Message")
             builder.setIcon(android.R.drawable.ic_dialog_alert)
 
             builder.setPositiveButton("Yes"){dialogInterface, which ->
-                mMainActivityViewModel.addTodo(TodoData("Something"))
+                mMainActivityViewModel.addTodo(TodoData(userInputEditText.text.toString()))
             }
 
             builder.setNegativeButton("No"){dialogInterface, which ->
