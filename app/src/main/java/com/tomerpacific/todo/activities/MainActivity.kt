@@ -131,18 +131,21 @@ class MainActivity : AppCompatActivity() {
             builder.setTitle("Add A New Task")
             builder.setIcon(android.R.drawable.ic_dialog_alert)
 
-            builder.setPositiveButton("Yes"){dialogInterface, which ->
+            builder.setPositiveButton("Yes"){ dialogInterface, which ->
                 if (!userInputEditText.text.isNullOrEmpty()) {
                     mMainActivityViewModel.addTodo(TodoData(userInputEditText.text.toString()))
                 }
             }
 
-            builder.setNegativeButton("No"){dialogInterface, which ->
-                Toast.makeText(applicationContext,"clicked No",Toast.LENGTH_LONG).show()
+            builder.setNegativeButton("No"){ dialogInterface, which ->
+                
             }
+
             val alertDialog: AlertDialog = builder.create()
             alertDialog.setCancelable(false)
             alertDialog.show()
+
+            alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = false
 
         }
 
