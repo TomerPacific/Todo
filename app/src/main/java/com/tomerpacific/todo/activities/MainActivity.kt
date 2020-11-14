@@ -132,7 +132,9 @@ class MainActivity : AppCompatActivity() {
             builder.setIcon(android.R.drawable.ic_dialog_alert)
 
             builder.setPositiveButton("Yes"){dialogInterface, which ->
-                mMainActivityViewModel.addTodo(TodoData(userInputEditText.text.toString()))
+                if (!userInputEditText.text.isNullOrEmpty()) {
+                    mMainActivityViewModel.addTodo(TodoData(userInputEditText.text.toString()))
+                }
             }
 
             builder.setNegativeButton("No"){dialogInterface, which ->
