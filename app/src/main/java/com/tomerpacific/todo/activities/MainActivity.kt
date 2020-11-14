@@ -125,6 +125,8 @@ class MainActivity : AppCompatActivity() {
             val builder = AlertDialog.Builder(this)
             val userInputEditText : EditText = EditText(this).apply {
                 this.maxLines = 1
+                this.isSingleLine = true
+                this.setLines(1)
             }
 
             builder.setView(userInputEditText)
