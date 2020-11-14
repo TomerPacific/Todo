@@ -2,7 +2,6 @@ package com.tomerpacific.todo.repositories
 
 import android.app.Application
 import android.content.Context
-import androidx.lifecycle.MutableLiveData
 import com.tomerpacific.todo.TodoConstants
 import com.tomerpacific.todo.models.TodoData
 import com.tomerpacific.todo.services.TodoDataSharedPreferencesService
@@ -18,7 +17,8 @@ object TodoRepository {
         val isTodoDataSavedOnDevice = TodoDataSharedPreferencesService.instance.didUserDecideToSaveDataInSharedPreferences(context)
 
         if (isTodoDataSavedOnDevice) {
-            return TodoDataSharedPreferencesService.instance.getTodoData(context)
+           todoData = TodoDataSharedPreferencesService.instance.getTodoData(context)
+            return todoData
         }
 
         TodoDatabaseService.instance.fetchTodoDataFromDB(TodoRepository::onFetchDataFromBackendSuccess,
@@ -31,6 +31,7 @@ object TodoRepository {
 
         val mutableTodoData : MutableList<TodoData> = todoData.toMutableList()
         mutableTodoData.add(todoTask)
+        todoData = mutableTodoData.toList()
 
         when(isTodoDataSavedOnDevice) {
             true -> TodoDataSharedPreferencesService.instance.saveTodoDataToSharedPreferences(application, mutableTodoData)

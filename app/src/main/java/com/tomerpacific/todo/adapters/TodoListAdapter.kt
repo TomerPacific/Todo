@@ -32,7 +32,6 @@ class TodoListAdapter(context: Context,
                     val todoToDeleteTextView = parentView.getChildAt(0) as TextView
                     val todoToDelete : String = todoToDeleteTextView.text.toString()
 
-
                     val mutableTodoList : MutableList<TodoData> = todoItems.toMutableList()
                     with(mutableTodoList.iterator()) {
                         forEach {
