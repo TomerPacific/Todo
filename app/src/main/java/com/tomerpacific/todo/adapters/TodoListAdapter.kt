@@ -49,7 +49,7 @@ class TodoListAdapter(context: Context,
                             }
                         }
                     }
-
+                    mainActivityViewModel.removeTodoItem(context, TodoData(todoToDelete))
                     todoItemsList = mutableTodoList.toList()
                     notifyDataSetChanged()
 
