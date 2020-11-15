@@ -9,13 +9,21 @@ import android.widget.CheckBox
 import android.widget.TextView
 import com.tomerpacific.todo.R
 import com.tomerpacific.todo.models.TodoData
+import com.tomerpacific.todo.viewmodels.MainActivityViewModel
 
 class TodoListAdapter(context: Context,
                       clearButtonCallback : (status: Boolean) -> Unit,
-                      private var todoItems: List<TodoData>) : BaseAdapter() {
+                      private var mainActivityViewModel: MainActivityViewModel) : BaseAdapter() {
 
     private val inflater: LayoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
     private val clearButtonCB : ((status: Boolean) -> Unit) = clearButtonCallback
+    private var todoItemsList : List<TodoData> = listOf()
+
+    init {
+        mainActivityViewModel.getTodoData().value?.let {
+            todoItemsList = it
+        }
+    }
 
     override fun getView(position: Int, convertView: View?, container: ViewGroup?): View {
         val rootView = inflater.inflate(R.layout.todo_list_item, container, false)
@@ -32,7 +40,7 @@ class TodoListAdapter(context: Context,
                     val todoToDeleteTextView = parentView.getChildAt(0) as TextView
                     val todoToDelete : String = todoToDeleteTextView.text.toString()
 
-                    val mutableTodoList : MutableList<TodoData> = todoItems.toMutableList()
+                    val mutableTodoList : MutableList<TodoData> = todoItemsList.toMutableList()
                     with(mutableTodoList.iterator()) {
                         forEach {
                             if (it.todoItem == todoToDelete) {
@@ -42,10 +50,10 @@ class TodoListAdapter(context: Context,
                         }
                     }
 
-                    todoItems = mutableTodoList.toList()
+                    todoItemsList = mutableTodoList.toList()
                     notifyDataSetChanged()
 
-                    clearButtonCB(todoItems.isNotEmpty())
+                    clearButtonCB(todoItemsList.isNotEmpty())
                 }
             }
         }
@@ -54,7 +62,7 @@ class TodoListAdapter(context: Context,
     }
 
     override fun getItem(position: Int): Any {
-        return todoItems[position]
+        return todoItemsList[position]
     }
 
     override fun getItemId(position: Int): Long {
@@ -62,11 +70,11 @@ class TodoListAdapter(context: Context,
     }
 
     override fun getCount(): Int {
-        return todoItems.size
+        return todoItemsList.size
     }
 
     fun submitList(data: List<TodoData>) {
-        todoItems = data
+        todoItemsList = data
         notifyDataSetChanged()
     }
 

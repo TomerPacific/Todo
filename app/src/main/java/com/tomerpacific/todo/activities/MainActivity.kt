@@ -78,14 +78,12 @@ class MainActivity : AppCompatActivity() {
 
     private fun initListView() {
 
-        var data = mMainActivityViewModel.getTodoData().value.orEmpty()
-
         todoListView = findViewById<ListView>(R.id.todo_list).apply {
             todoListAdapter =
                 TodoListAdapter(
                     this@MainActivity,
                     this@MainActivity::setClearButtonStatus,
-                    data
+                    mMainActivityViewModel
                 )
             adapter = todoListAdapter
         }
