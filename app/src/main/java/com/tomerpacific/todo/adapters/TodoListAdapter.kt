@@ -12,11 +12,9 @@ import com.tomerpacific.todo.models.TodoData
 import com.tomerpacific.todo.viewmodels.MainActivityViewModel
 
 class TodoListAdapter(context: Context,
-                      clearButtonCallback : (status: Boolean) -> Unit,
                       private var mainActivityViewModel: MainActivityViewModel) : BaseAdapter() {
 
     private val inflater: LayoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-    private val clearButtonCB : ((status: Boolean) -> Unit) = clearButtonCallback
     private var todoItemsList : List<TodoData> = listOf()
 
     init {
@@ -52,8 +50,6 @@ class TodoListAdapter(context: Context,
                     mainActivityViewModel.removeTodoItem(context, TodoData(todoToDelete))
                     todoItemsList = mutableTodoList.toList()
                     notifyDataSetChanged()
-
-                    clearButtonCB(todoItemsList.isNotEmpty())
                 }
             }
         }

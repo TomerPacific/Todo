@@ -82,7 +82,6 @@ class MainActivity : AppCompatActivity() {
             todoListAdapter =
                 TodoListAdapter(
                     this@MainActivity,
-                    this@MainActivity::setClearButtonStatus,
                     mMainActivityViewModel
                 )
             adapter = todoListAdapter
