@@ -67,12 +67,7 @@ class MainActivity : AppCompatActivity() {
 
         initListView()
 
-        val todoItemToBeAddedJson: String? = intent.getStringExtra(TodoConstants.TODO_ACTION_NEW_TODO_ITEM)
-        if (!todoItemToBeAddedJson.isNullOrEmpty()) {
-            val listType = object : TypeToken<TodoData>() {}.type
-            val todoItemToBeAdded : TodoData = Gson().fromJson<TodoData>(todoItemToBeAddedJson, listType)
-            mMainActivityViewModel.addTodo(todoItemToBeAdded)
-        }
+        setClearButtonStatus()
 
     }
 
@@ -133,6 +128,7 @@ class MainActivity : AppCompatActivity() {
             builder.setPositiveButton("Yes"){ dialogInterface, which ->
                 if (!userInputEditText.text.isNullOrEmpty()) {
                     mMainActivityViewModel.addTodo(TodoData(userInputEditText.text.toString()))
+                    setClearButtonStatus()
                 }
             }
 
@@ -195,12 +191,17 @@ class MainActivity : AppCompatActivity() {
 
     fun removeAll(view: View) {
         mMainActivityViewModel.removeAllTodoData(this)
+        setClearButtonStatus()
     }
 
-    private fun setClearButtonStatus(status: Boolean) {
+    private fun setClearButtonStatus() {
+        var clearButtonStatus : Boolean = false
+        mMainActivityViewModel.getTodoData().value?.let {
+            clearButtonStatus = it.isNotEmpty()
+        }
 
         clearButton.apply {
-            isClickable = status
+            isClickable = clearButtonStatus
             background.colorFilter = when(isClickable) {
                 true -> PorterDuffColorFilter(
                     Color.GREEN, PorterDuff.Mode.MULTIPLY)
