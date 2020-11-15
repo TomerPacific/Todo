@@ -78,6 +78,17 @@ object TodoRepository {
         if (!didSaveDataInSharedPreferences) TodoDatabaseService.instance.removeAllTodos(context)
     }
 
+    fun removeTodoItem(context: Context, todoItemToRemove : TodoData) {
+        todoData = todoData.toMutableList().let {
+            it.remove(todoItemToRemove)
+            it.toList()
+        }
+        when(didSaveDataInSharedPreferences) {
+            true -> TodoDataSharedPreferencesService.instance.saveTodoDataToSharedPreferences(context, todoData)
+            false -> TodoDatabaseService.instance.updateTodoDataInDB(context, todoData)
+        }
+    }
+
     private fun onFetchDataFromBackendSuccess(res : List<TodoData>) {
         todoData = res
 

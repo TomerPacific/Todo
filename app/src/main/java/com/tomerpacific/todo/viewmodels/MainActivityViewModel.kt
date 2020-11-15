@@ -40,4 +40,8 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
         TodoRepository.removeTodoData(context)
     }
 
+    fun removeTodoItem(context: Context, todoItemToRemove: TodoData) {
+        TodoRepository.removeTodoItem(context, todoItemToRemove)
+    }
+
 }
