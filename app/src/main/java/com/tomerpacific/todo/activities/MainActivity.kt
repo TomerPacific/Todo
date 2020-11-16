@@ -63,6 +63,7 @@ class MainActivity : AppCompatActivity() {
 
         mMainActivityViewModel.getTodoData().observe(this, Observer { it ->
             todoListAdapter.submitList(it)
+            setClearButtonStatus()
         })
 
         initListView()
@@ -189,8 +190,9 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun removeAll(view: View) {
+    fun clearAllTodoData(view: View) {
         mMainActivityViewModel.removeAllTodoData(this)
+        todoListAdapter.submitList(listOf())
         setClearButtonStatus()
     }
 
