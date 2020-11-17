@@ -74,6 +74,7 @@ object TodoRepository {
     }
 
     fun removeTodoData(context: Context) {
+        todoData = listOf()
         TodoDataSharedPreferencesService.instance.removeAllTodos(context)
         if (!didSaveDataInSharedPreferences) TodoDatabaseService.instance.removeAllTodos(context)
     }
