@@ -16,8 +16,12 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
     private var applicationContext : Application = application
 
     init {
-        todoDataList = TodoRepository.getTodoData(applicationContext)
-        mTodoData.value = todoDataList
+        if (TodoRepository.isSavingInSharedPreferences()) {
+            todoDataList = TodoRepository.getTodoDataFromSharedPreferences(applicationContext)
+            mTodoData.value = todoDataList
+        } else {
+            TodoRepository.getTodoDataFromDb(::onFetchDataFromBackendSuccess, ::onFetchDataFromBackendFailure)
+        }
     }
 
     fun getTodoData() : LiveData<List<TodoData>> {
@@ -44,6 +48,17 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
 
     fun removeTodoItem(context: Context, todoItemToRemove: TodoData) {
         TodoRepository.removeTodoItem(context, todoItemToRemove)
+    }
+
+    private fun onFetchDataFromBackendSuccess(res : List<TodoData>) {
+        todoDataList = res
+        mTodoData.value = todoDataList
+
+    }
+
+    private fun onFetchDataFromBackendFailure(error : String) {
+        todoDataList = listOf()
+        mTodoData.value = todoDataList
     }
 
 }
