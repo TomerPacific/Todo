@@ -13,17 +13,9 @@ object TodoRepository {
     private var didSaveDataInSharedPreferences : Boolean = false
     private var didAlreadySetSavePreferencesFlag : Boolean = false
 
-    fun getTodoData(context: Context): List<TodoData> {
-        val isTodoDataSavedOnDevice = TodoDataSharedPreferencesService.instance.didUserDecideToSaveDataInSharedPreferences(context)
-
-        if (isTodoDataSavedOnDevice) {
-           todoData = TodoDataSharedPreferencesService.instance.getTodoData(context)
-            return todoData
-        }
-
-        TodoDatabaseService.instance.fetchTodoDataFromDB(TodoRepository::onFetchDataFromBackendSuccess,
-            TodoRepository::onFetchDataFromBackendFailure)
-        return listOf()
+    fun getTodoDataFromSharedPreferences(context: Context): List<TodoData> {
+        todoData = TodoDataSharedPreferencesService.instance.getTodoData(context)
+        return todoData
     }
 
     fun updateTodoData(application: Application, todoTask: TodoData) {
