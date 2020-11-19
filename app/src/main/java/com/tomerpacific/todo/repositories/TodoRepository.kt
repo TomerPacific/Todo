@@ -2,6 +2,7 @@ package com.tomerpacific.todo.repositories
 
 import android.app.Application
 import android.content.Context
+import androidx.lifecycle.MutableLiveData
 import com.tomerpacific.todo.TodoConstants
 import com.tomerpacific.todo.models.TodoData
 import com.tomerpacific.todo.services.TodoDataSharedPreferencesService
@@ -16,6 +17,10 @@ object TodoRepository {
     fun getTodoDataFromSharedPreferences(context: Context): List<TodoData> {
         todoData = TodoDataSharedPreferencesService.instance.getTodoData(context)
         return todoData
+    }
+
+    fun getTodoDataFromDb(success : (data: List<TodoData>) -> Unit, failure: (error:String) -> Unit) {
+        TodoDatabaseService.instance.fetchTodoDataFromDB(success, failure)
     }
 
     fun updateTodoData(application: Application, todoTask: TodoData) {
@@ -80,15 +85,6 @@ object TodoRepository {
             true -> TodoDataSharedPreferencesService.instance.saveTodoDataToSharedPreferences(context, todoData)
             false -> TodoDatabaseService.instance.updateTodoDataInDB(context, todoData)
         }
-    }
-
-    private fun onFetchDataFromBackendSuccess(res : List<TodoData>) {
-        todoData = res
-
-    }
-
-    private fun onFetchDataFromBackendFailure(error : String) {
-        todoData = listOf()
     }
 
 }
