@@ -11,7 +11,7 @@ interface DataService {
     fun getData(@Header("AuthToken") token: String?, @Query("uid") uid: String?) : Call<TodoDataFromBackend>
 
     @GET("setTodoData")
-    fun setData(@Header("AuthToken") token: String?, @Query("uid") uid: String?, @Query("data") data: Array<TodoData>) : Call<TodoDataSetResult>
+    fun setData(@Header("AuthToken") token: String?, @Query("uid") uid: String?, @Query("data") data: String) : Call<TodoDataSetResult>
 
     @GET("removeAllTodoData")
     fun removeAllData(@Header("AuthToken") token: String?, @Query("uid") uid: String?) : Call<TodoDataSetResult>
