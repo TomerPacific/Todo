@@ -5,6 +5,6 @@ import com.google.gson.annotations.SerializedName
 class TodoDataFromBackend {
 
     @SerializedName("todo_list")
-    var data : List<TodoData> = listOf()
+    var data : String = ""
 
 }
