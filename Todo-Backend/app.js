@@ -49,7 +49,7 @@ app.get('/getTodoData', function (req, res) {
       var uid = req.query.uid
       database.ref('/users/' + uid).once('value')
       .then(function(snapshot) {
-        var data = snapshot.val() ? snapshot.val() : []
+        var data = snapshot.val() ? snapshot.val() : {}
         res.status(200).send({ todo_list: data.todoData})
       }).catch(function(error) {
         res.status(500).json({ error: error})
