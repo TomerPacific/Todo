@@ -5,6 +5,8 @@ import kotlinx.coroutines.*
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.tomerpacific.todo.models.TodoDataFromBackend
 import com.tomerpacific.todo.models.TodoDataSetResult
 import com.tomerpacific.todo.TodoConstants
@@ -46,7 +48,14 @@ class TodoDatabaseService private constructor() {
                         override fun onResponse(call: Call<TodoDataFromBackend>, response: Response<TodoDataFromBackend>) {
                             if (response.isSuccessful) {
                                 val body = response.body() as TodoDataFromBackend
-                                success.invoke(body.data)
+
+                                if (body.data.isNullOrEmpty()) {
+                                    success.invoke(listOf())
+                                    return
+                                }
+
+                                val listType = object : TypeToken<List<TodoData>>() {}.type
+                                success.invoke(Gson().fromJson<List<TodoData>>(body.data, listType))
                             }
                         }
 
@@ -73,7 +82,7 @@ class TodoDatabaseService private constructor() {
                         .addConverterFactory(GsonConverterFactory.create())
                         .build()
                     val service = retrofit.create(DataService::class.java)
-                    val call = service.setData(token, getUserUUID(), todoData.toTypedArray())
+                    val call = service.setData(token, getUserUUID(),  Gson().toJson(todoData))
 
                     call.enqueue(object : Callback<TodoDataSetResult> {
                         override fun onResponse(
