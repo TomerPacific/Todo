@@ -1,6 +1,5 @@
 package com.tomerpacific.todo.services
 
-import com.tomerpacific.todo.models.TodoData
 import com.tomerpacific.todo.models.TodoDataFromBackend
 import com.tomerpacific.todo.models.TodoDataSetResult
 import retrofit2.Call
