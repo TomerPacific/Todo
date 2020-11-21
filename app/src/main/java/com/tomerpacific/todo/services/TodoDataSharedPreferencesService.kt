@@ -6,15 +6,7 @@ import com.google.gson.reflect.TypeToken
 import com.tomerpacific.todo.TodoConstants
 import com.tomerpacific.todo.models.TodoData
 
-class TodoDataSharedPreferencesService private constructor() {
-
-    private object HOLDER {
-        val INSTANCE = TodoDataSharedPreferencesService()
-    }
-
-    companion object {
-        val instance : TodoDataSharedPreferencesService by lazy { HOLDER.INSTANCE }
-    }
+object TodoDataSharedPreferencesService {
 
     fun getTodoData(context: Context) : List<TodoData> {
         return getTodoDataFromSharedPreferences(context)

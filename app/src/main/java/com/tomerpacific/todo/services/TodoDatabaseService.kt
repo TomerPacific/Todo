@@ -10,7 +10,6 @@ import com.google.gson.reflect.TypeToken
 import com.tomerpacific.todo.models.TodoDataFromBackend
 import com.tomerpacific.todo.models.TodoDataSetResult
 import com.tomerpacific.todo.TodoConstants
-import com.tomerpacific.todo.adapters.TodoListAdapter
 import com.tomerpacific.todo.models.TodoData
 import retrofit2.Call
 import retrofit2.Callback
@@ -19,15 +18,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 
-class TodoDatabaseService private constructor() {
-
-    private object HOLDER {
-        val INSTANCE = TodoDatabaseService()
-    }
-
-    companion object {
-        val instance: TodoDatabaseService by lazy { HOLDER.INSTANCE }
-    }
+object TodoDatabaseService {
 
     fun fetchTodoDataFromDB(success : (data: List<TodoData>) -> Unit, failure: (error:String) -> Unit) {
         val user = FirebaseAuth.getInstance().currentUser
