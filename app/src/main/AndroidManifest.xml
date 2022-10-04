@@ -12,7 +12,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="false"
         android:theme="@style/AppTheme.NoActionBar">
-        <activity android:name=".activities.EntryScreenActivity">
+        <activity android:name=".activities.EntryScreenActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -27,9 +28,9 @@
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan">
         </activity>
-        <activity android:name=".activities.TodoFormActivity"></activity>
         <activity android:name=".activities.LoginActivity"
-            android:finishOnTaskLaunch="true"></activity>
+            android:finishOnTaskLaunch="true">
+        </activity>
     </application>
 
 </manifest>
