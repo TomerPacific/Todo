@@ -12,24 +12,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="false"
         android:theme="@style/AppTheme.NoActionBar">
-        <activity android:name=".activities.EntryScreenActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity android:name=".activities.DataSavePreferenceActivity">
-        </activity>
         <activity
-            android:name=".activities.MainActivity"
+            android:name=".activities.MainActivityCompose"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustPan">
-        </activity>
-        <activity android:name=".activities.LoginActivity"
-            android:finishOnTaskLaunch="true">
+            android:windowSoftInputMode="adjustPan"
+            android:exported="true">
+            <intent-filter>
+                        <action android:name="android.intent.action.MAIN" />
+                        <category android:name="android.intent.category.LAUNCHER" />
+                    </intent-filter>
         </activity>
     </application>
 
