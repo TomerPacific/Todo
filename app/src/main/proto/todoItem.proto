@@ -7,3 +7,7 @@ message TodoItem {
   int32 itemId = 1;
   string itemDescription = 2;
 }
+
+message TodoItems {
+  repeated TodoItem items = 1;
+}
