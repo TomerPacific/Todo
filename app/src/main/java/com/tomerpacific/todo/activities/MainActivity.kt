@@ -20,6 +20,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
+import androidx.lifecycle.viewmodel.compose.viewModel
 
 class MainActivity: AppCompatActivity() {
 
@@ -27,6 +28,8 @@ class MainActivity: AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
+
+            val mainViewModel: MainViewModel = viewModel()
 
             val todoListTitle = remember {
                 mutableStateOf("Your Todo List Title")
