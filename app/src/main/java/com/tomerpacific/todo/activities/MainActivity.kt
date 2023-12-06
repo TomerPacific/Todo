@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.Icon
@@ -14,6 +16,8 @@ import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.material3.Text
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -34,6 +38,8 @@ class MainActivity: AppCompatActivity() {
             val todoListTitle = remember {
                 mutableStateOf("Your Todo List Title")
             }
+
+            val todoItems = mainViewModel.todoItems.observeAsState()
 
             MaterialTheme {
                 Column(modifier = Modifier.fillMaxSize(),
@@ -56,6 +62,15 @@ class MainActivity: AppCompatActivity() {
                             }
                         )
                     }
+
+                    if (todoItems.value != null) {
+                        LazyColumn() {
+                            items(todoItems.value!!.itemsList) { todoItem ->
+                                Text(todoItem.itemDescription)
+                            }
+                        }
+                    }
+
                 }
             }
         }
