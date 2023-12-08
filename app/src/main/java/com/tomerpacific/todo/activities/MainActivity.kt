@@ -26,6 +26,7 @@ import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
@@ -111,6 +112,7 @@ class MainActivity: AppCompatActivity() {
                             shouldShowTodoDialog.value = false
                         },
                         onConfirmation = {
+                            mainViewModel.addTodoItem(it)
                             shouldShowTodoDialog.value = false
                         })
                     }
@@ -121,7 +123,13 @@ class MainActivity: AppCompatActivity() {
 
     @Composable
     fun ShowAddTodoItemDialog(onDismissRequest: () -> Unit,
-                              onConfirmation: () -> Unit) {
+                              onConfirmation: (String) -> Unit) {
+
+        val todoItemDescription = remember {
+            mutableStateOf("")
+        }
+
+
         Dialog(onDismissRequest = { onDismissRequest() }) {
             Card(
                 modifier = Modifier
@@ -136,10 +144,16 @@ class MainActivity: AppCompatActivity() {
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
-                    Text(
-                        text = "What do you want to do?",
-                        modifier = Modifier.padding(16.dp),
-                    )
+                    Row(modifier = Modifier.fillMaxWidth()) {
+                        TextField(value = todoItemDescription.value,
+                            onValueChange = { userInput ->
+                                if (userInput.isNotEmpty()) {
+                                    todoItemDescription.value = userInput
+                                }
+                            }, label = {
+                                Text("What do you want to do?")
+                            })
+                    }
                     Row(
                         modifier = Modifier
                             .fillMaxWidth(),
@@ -152,7 +166,7 @@ class MainActivity: AppCompatActivity() {
                             Text("Cancel")
                         }
                         TextButton(
-                            onClick = { onConfirmation() },
+                            onClick = { onConfirmation(todoItemDescription.value) },
                             modifier = Modifier.padding(8.dp),
                         ) {
                             Text("Add")
