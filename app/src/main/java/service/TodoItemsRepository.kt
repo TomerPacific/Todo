@@ -9,7 +9,7 @@ import java.io.IOException
 
 class TodoItemsRepository(private val todoItemsDataStore: DataStore<TodoItems>) {
 
-    val todoItemsFlow = todoItemsDataStore.data
+    private val todoItemsFlow = todoItemsDataStore.data
         .catch { exception ->
             if (exception is IOException) {
                 emit(TodoItems.getDefaultInstance())
