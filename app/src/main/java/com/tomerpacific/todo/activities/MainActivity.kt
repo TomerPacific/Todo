@@ -145,14 +145,20 @@ class MainActivity: AppCompatActivity() {
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
                     Row(modifier = Modifier.fillMaxWidth()) {
-                        TextField(value = todoItemDescription.value,
-                            onValueChange = { userInput ->
+                        TextField(
+                            value = todoItemDescription.value,
+                            onValueChange = { userInput: String ->
                                 if (userInput.isNotEmpty()) {
                                     todoItemDescription.value = userInput
                                 }
-                            }, label = {
+                            },
+                            label = {
                                 Text("What do you want to do?")
-                            })
+                            },
+                            trailingIcon = {
+                                Icon(imageVector = Icons.Default.Edit, "Edit Icon")
+                            }
+                        )
                     }
                     Row(
                         modifier = Modifier
