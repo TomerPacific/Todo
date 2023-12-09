@@ -4,7 +4,7 @@ option java_package = "com.tomerpacific.todo";
 option java_multiple_files = true;
 
 message TodoItem {
-  int32 itemId = 1;
+  string itemId = 1;
   string itemDescription = 2;
 }
 
