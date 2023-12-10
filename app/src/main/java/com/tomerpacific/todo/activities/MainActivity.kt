@@ -34,8 +34,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.tomerpacific.todo.TodoItems
@@ -76,39 +78,37 @@ class MainActivity: AppCompatActivity() {
                     }
 
                 }) { paddingValues ->
-                    Column(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(paddingValues),
-                        verticalArrangement = Arrangement.Center,
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        Row(
+                    LazyColumn(modifier = Modifier.fillMaxSize()
+                        .padding(paddingValues)) {
+                        item {
+                            Row(
                             modifier = Modifier.fillMaxSize(),
                             horizontalArrangement = Arrangement.Center
                         ) {
-                            OutlinedTextField(
-                                textStyle = LocalTextStyle.current.copy(textAlign = TextAlign.Center),
-                                value = todoListTitle.value,
-                                onValueChange = {
-                                    todoListTitle.value = it
-                                },
-                                colors = OutlinedTextFieldDefaults.colors(
-                                    focusedBorderColor = Color.Black,
-                                    unfocusedBorderColor = Color.Transparent,
-                                ),
-                                trailingIcon = {
-                                    Icon(Icons.Default.Edit, contentDescription = "Edit Icon")
-                                }
-                            )
-                        }
-
-                        todoItemsList?.itemsList?.let {
-                            LazyColumn(modifier = Modifier.fillMaxSize()) {
-                                items(it) { todoItem ->
-                                    Row(modifier = Modifier.fillMaxWidth()) {
-                                        Text(todoItem.itemDescription)
+                                OutlinedTextField(
+                                    textStyle = LocalTextStyle.current.copy(textAlign = TextAlign.Center),
+                                    value = todoListTitle.value,
+                                    onValueChange = {
+                                        todoListTitle.value = it
+                                    },
+                                    colors = OutlinedTextFieldDefaults.colors(
+                                        focusedBorderColor = Color.Black,
+                                        unfocusedBorderColor = Color.Transparent,
+                                    ),
+                                    trailingIcon = {
+                                        Icon(Icons.Default.Edit, contentDescription = "Edit Icon")
                                     }
+                                )
+                            }
+                        }
+                        todoItemsList?.itemsList?.let {
+                            items(it) { todoItem ->
+                                Row(modifier = Modifier.fillMaxWidth(),
+                                    horizontalArrangement = Arrangement.Center) {
+                                    Text(todoItem.itemDescription,
+                                        textAlign = TextAlign.Center,
+                                        fontWeight = FontWeight.Bold,
+                                        fontSize = 20.sp)
                                 }
                             }
                         }
