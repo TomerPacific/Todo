@@ -3,13 +3,14 @@ package service
 import androidx.datastore.core.DataStore
 import com.tomerpacific.todo.TodoItem
 import com.tomerpacific.todo.TodoItems
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.first
 import java.io.IOException
 
 class TodoItemsRepository(private val todoItemsDataStore: DataStore<TodoItems>) {
 
-    private val todoItemsFlow = todoItemsDataStore.data
+    val todoItemsFlow: Flow<TodoItems> = todoItemsDataStore.data
         .catch { exception ->
             if (exception is IOException) {
                 emit(TodoItems.getDefaultInstance())
@@ -20,9 +21,9 @@ class TodoItemsRepository(private val todoItemsDataStore: DataStore<TodoItems>) 
 
     suspend fun fetchCachedTodoItems() = todoItemsFlow.first()
 
-    suspend fun updateTodoItems(todoItems: List<TodoItem>) {
-        todoItemsDataStore.updateData {
-            it.toBuilder().clearItems().addAllItems(todoItems).build()
+    suspend fun updateTodoItems(todoItem: TodoItem) {
+        todoItemsDataStore.updateData { items ->
+            items.toBuilder().addItems(todoItem).build()
         }
     }
 
