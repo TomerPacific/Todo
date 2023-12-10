@@ -28,16 +28,17 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.tomerpacific.todo.TodoItems
 
 class MainActivity: AppCompatActivity() {
 
@@ -56,7 +57,11 @@ class MainActivity: AppCompatActivity() {
                 mutableStateOf(false)
             }
 
-            val todoItems = mainViewModel.todoItems.observeAsState()
+            var todoItemsList: TodoItems? = null
+
+            mainViewModel.todoItemsFlow.observe(LocalLifecycleOwner.current) { todoItems ->
+                todoItemsList = todoItems
+            }
 
             MaterialTheme {
                 Scaffold(floatingActionButton = {
@@ -98,10 +103,12 @@ class MainActivity: AppCompatActivity() {
                             )
                         }
 
-                        if (todoItems.value != null) {
+                        todoItemsList?.itemsList?.let {
                             LazyColumn(modifier = Modifier.fillMaxSize()) {
-                                items(todoItems.value!!.itemsList) { todoItem ->
-                                    Text(todoItem.itemDescription)
+                                items(it) { todoItem ->
+                                    Row(modifier = Modifier.fillMaxWidth()) {
+                                        Text(todoItem.itemDescription)
+                                    }
                                 }
                             }
                         }
