@@ -6,7 +6,7 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.dataStore
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.tomerpacific.todo.TodoItem
 import com.tomerpacific.todo.TodoItems
@@ -26,27 +26,23 @@ private val Context.todoItemsStore: DataStore<TodoItems> by dataStore(
 class MainViewModel(application: Application): AndroidViewModel(application) {
 
     private val todoItemsRepository: TodoItemsRepository = TodoItemsRepository(application.todoItemsStore)
-    private val _todoItems: MutableLiveData<TodoItems> = MutableLiveData()
-    val todoItems: LiveData<TodoItems> = _todoItems
 
+    val todoItemsFlow: LiveData<TodoItems> = todoItemsRepository.todoItemsFlow.asLiveData()
     init {
         getTodoItems()
     }
 
     private fun getTodoItems() {
         viewModelScope.launch {
-            _todoItems.value = todoItemsRepository.fetchCachedTodoItems()
+            todoItemsRepository.fetchCachedTodoItems()
         }
     }
 
     fun addTodoItem(todoItemDescription: String) {
         val todoItem = TodoItem.newBuilder().setItemId(UUID.randomUUID().toString())
             .setItemDescription(todoItemDescription).build()
-        _todoItems.value?.let {
-            it.itemsList.add(todoItem)
-            viewModelScope.launch {
-                todoItemsRepository.updateTodoItems(it.itemsList)
-            }
+        viewModelScope.launch {
+            todoItemsRepository.updateTodoItems(todoItem)
         }
     }
 
