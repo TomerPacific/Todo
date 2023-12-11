@@ -34,10 +34,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalLifecycleOwner
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.tomerpacific.todo.TodoItems
@@ -78,7 +76,8 @@ class MainActivity: AppCompatActivity() {
                     }
 
                 }) { paddingValues ->
-                    LazyColumn(modifier = Modifier.fillMaxSize()
+                    LazyColumn(modifier = Modifier
+                        .fillMaxSize()
                         .padding(paddingValues)) {
                         item {
                             Row(
@@ -103,13 +102,7 @@ class MainActivity: AppCompatActivity() {
                         }
                         todoItemsList?.itemsList?.let {
                             items(it) { todoItem ->
-                                Row(modifier = Modifier.fillMaxWidth(),
-                                    horizontalArrangement = Arrangement.Center) {
-                                    Text(todoItem.itemDescription,
-                                        textAlign = TextAlign.Center,
-                                        fontWeight = FontWeight.Bold,
-                                        fontSize = 20.sp)
-                                }
+                                TodoItemView(todoItem = todoItem)
                             }
                         }
                     }
