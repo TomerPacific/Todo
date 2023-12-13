@@ -28,8 +28,10 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -38,7 +40,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.tomerpacific.todo.TodoItems
+import com.tomerpacific.todo.TodoItem
 
 class MainActivity: AppCompatActivity() {
 
@@ -57,10 +59,12 @@ class MainActivity: AppCompatActivity() {
                 mutableStateOf(false)
             }
 
-            var todoItemsList: TodoItems? = null
+            var todoItemsList: List<TodoItem> by remember {
+                mutableStateOf(listOf())
+            }
 
             mainViewModel.todoItemsFlow.observe(LocalLifecycleOwner.current) { todoItems ->
-                todoItemsList = todoItems
+                todoItemsList = todoItems.itemsList
             }
 
             MaterialTheme {
@@ -100,10 +104,9 @@ class MainActivity: AppCompatActivity() {
                                 )
                             }
                         }
-                        todoItemsList?.itemsList?.let {
-                            items(it) { todoItem ->
-                                TodoItemView(todoItem = todoItem)
-                            }
+
+                        items(todoItemsList) { todoItem ->
+                            TodoItemView(todoItem, mainViewModel)
                         }
                     }
 
