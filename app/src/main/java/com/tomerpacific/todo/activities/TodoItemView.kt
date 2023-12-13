@@ -15,12 +15,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
 import com.tomerpacific.todo.TodoItem
 
 @Composable
-fun TodoItemView(todoItem: TodoItem) {
+fun TodoItemView(todoItem: TodoItem, viewModel: MainViewModel) {
     Card(modifier = Modifier.fillMaxSize()) {
         Row(modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
@@ -32,7 +31,7 @@ fun TodoItemView(todoItem: TodoItem) {
             IconButton(
                 modifier = Modifier.fillMaxHeight(),
                 onClick = {
-
+                    viewModel.removeTodoItem(todoItem)
             }) {
                 Icon(Icons.Default.Close, "Delete Todo")
             }
