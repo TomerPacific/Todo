@@ -46,5 +46,11 @@ class MainViewModel(application: Application): AndroidViewModel(application) {
         }
     }
 
+    fun removeTodoItem(todoItemToRemove: TodoItem) {
+        viewModelScope.launch {
+            todoItemsRepository.removeTodoItem(todoItemToRemove)
+        }
+    }
+
 
 }
