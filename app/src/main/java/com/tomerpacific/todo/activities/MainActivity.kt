@@ -109,7 +109,7 @@ class MainActivity: AppCompatActivity() {
                         items(todoItemsList) { todoItem ->
                             TodoItemView(todoItem, mainViewModel)
                             Spacer(modifier = Modifier.padding(5.dp))
-                        }v
+                        }
                     }
 
                     if (shouldShowTodoDialog.value) {
