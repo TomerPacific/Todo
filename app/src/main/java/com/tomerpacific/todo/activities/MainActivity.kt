@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -105,9 +106,15 @@ class MainActivity: AppCompatActivity() {
                             }
                         }
 
-                        items(todoItemsList) { todoItem ->
-                            TodoItemView(todoItem, mainViewModel)
+                        itemsIndexed(todoItemsList) { index, todoItem ->
+                            val backgroundColor = when (index % 2 == 0) {
+                                true ->  Color(0xFFACD370)
+                                false ->  Color(0xFF90a8c9)
+                            }
+
+                            TodoItemView(todoItem, mainViewModel, backgroundColor)
                         }
+
                     }
 
                     if (shouldShowTodoDialog.value) {

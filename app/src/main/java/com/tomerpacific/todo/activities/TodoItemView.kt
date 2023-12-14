@@ -22,9 +22,12 @@ import androidx.compose.ui.unit.sp
 import com.tomerpacific.todo.TodoItem
 
 @Composable
-fun TodoItemView(todoItem: TodoItem, viewModel: MainViewModel) {
+fun TodoItemView(todoItem: TodoItem,
+                 viewModel: MainViewModel,
+                 backgroundColor: Color) {
     Card(modifier = Modifier.fillMaxSize()) {
-        Row(modifier = Modifier.fillMaxWidth(),
+        Row(modifier = Modifier.fillMaxWidth()
+            .background(backgroundColor),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween) {
             Text(modifier = Modifier.fillMaxHeight(),
