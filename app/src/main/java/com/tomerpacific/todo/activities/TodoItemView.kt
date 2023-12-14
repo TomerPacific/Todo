@@ -1,8 +1,8 @@
 package com.tomerpacific.todo.activities
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -28,14 +28,17 @@ fun TodoItemView(todoItem: TodoItem,
                  viewModel: MainViewModel,
                  backgroundColor: Color) {
     Card(modifier = Modifier.fillMaxSize()) {
-        Row(modifier = Modifier.fillMaxWidth()
+        Row(modifier = Modifier
+            .fillMaxWidth()
             .background(backgroundColor),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween) {
-            Text(modifier = Modifier.fillMaxHeight().padding(start = 5.dp),
+            verticalAlignment = Alignment.CenterVertically) {
+            Text(modifier = Modifier
+                .fillMaxHeight()
+                .padding(start = 5.dp),
                 text = todoItem.itemDescription,
                 fontWeight = FontWeight.Bold,
                 fontSize = 20.sp)
+            Spacer(modifier = Modifier.weight(1f))
             IconButton(
                 modifier = Modifier.fillMaxHeight(),
                 onClick = {
