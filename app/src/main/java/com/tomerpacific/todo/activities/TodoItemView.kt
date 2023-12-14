@@ -25,12 +25,11 @@ import com.tomerpacific.todo.TodoItem
 
 @Composable
 fun TodoItemView(todoItem: TodoItem,
-                 viewModel: MainViewModel,
-                 backgroundColor: Color) {
+                 viewModel: MainViewModel) {
     Card(modifier = Modifier.fillMaxSize()) {
         Row(modifier = Modifier
             .fillMaxWidth()
-            .background(backgroundColor),
+            .background(Color(0xFF90a8c9)),
             verticalAlignment = Alignment.CenterVertically) {
             Text(modifier = Modifier
                 .fillMaxHeight()

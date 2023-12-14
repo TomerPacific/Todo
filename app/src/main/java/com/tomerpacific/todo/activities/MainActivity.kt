@@ -6,13 +6,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -106,15 +106,10 @@ class MainActivity: AppCompatActivity() {
                             }
                         }
 
-                        itemsIndexed(todoItemsList) { index, todoItem ->
-                            val backgroundColor = when (index % 2 == 0) {
-                                true ->  Color(0xFFACD370)
-                                false ->  Color(0xFF90a8c9)
-                            }
-
-                            TodoItemView(todoItem, mainViewModel, backgroundColor)
-                        }
-
+                        items(todoItemsList) { todoItem ->
+                            TodoItemView(todoItem, mainViewModel)
+                            Spacer(modifier = Modifier.padding(5.dp))
+                        }v
                     }
 
                     if (shouldShowTodoDialog.value) {
