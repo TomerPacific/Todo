@@ -10,9 +10,12 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.tomerpacific.todo.TodoItem
 import com.tomerpacific.todo.TodoItems
+import com.tomerpacific.todo.TodoListPreferences
 import kotlinx.coroutines.launch
 import service.TodoItemsRepository
 import service.TodoItemsSerializer
+import service.TodoListPreferencesRepository
+import service.todoListPreferencesDatastore
 import java.util.UUID
 
 
@@ -26,8 +29,11 @@ private val Context.todoItemsStore: DataStore<TodoItems> by dataStore(
 class MainViewModel(application: Application): AndroidViewModel(application) {
 
     private val todoItemsRepository: TodoItemsRepository = TodoItemsRepository(application.todoItemsStore)
+    private val todoListPreferencesRepository: TodoListPreferencesRepository = TodoListPreferencesRepository(application.todoListPreferencesDatastore)
 
     val todoItemsFlow: LiveData<TodoItems> = todoItemsRepository.todoItemsFlow.asLiveData()
+
+    val todoListPreferencesFlow: LiveData<TodoListPreferences> = todoListPreferencesRepository.todoListPreferencesFlow.asLiveData()
     init {
         getTodoItems()
     }
@@ -35,6 +41,12 @@ class MainViewModel(application: Application): AndroidViewModel(application) {
     private fun getTodoItems() {
         viewModelScope.launch {
             todoItemsRepository.fetchCachedTodoItems()
+        }
+    }
+
+    private fun getTodoListPreferences() {
+        viewModelScope.launch {
+            todoListPreferencesRepository.fetchCachedTodoListPreferences()
         }
     }
 
