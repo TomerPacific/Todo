@@ -11,3 +11,7 @@ message TodoItem {
 message TodoItems {
   repeated TodoItem items = 1;
 }
+
+message TodoListPreferences {
+  string title = 1;
+}
