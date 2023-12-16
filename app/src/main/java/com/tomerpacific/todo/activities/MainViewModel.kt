@@ -36,6 +36,7 @@ class MainViewModel(application: Application): AndroidViewModel(application) {
     val todoListPreferencesFlow: LiveData<TodoListPreferences> = todoListPreferencesRepository.todoListPreferencesFlow.asLiveData()
     init {
         getTodoItems()
+        getTodoListPreferences()
     }
 
     private fun getTodoItems() {
@@ -61,6 +62,12 @@ class MainViewModel(application: Application): AndroidViewModel(application) {
     fun removeTodoItem(todoItemToRemove: TodoItem) {
         viewModelScope.launch {
             todoItemsRepository.removeTodoItem(todoItemToRemove)
+        }
+    }
+
+    fun updateTodoListTitle(todoListTitle: String) {
+        viewModelScope.launch {
+            todoListPreferencesRepository.updateTodoListTitle(todoListTitle)
         }
     }
 
