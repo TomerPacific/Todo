@@ -1,4 +1,4 @@
-package com.tomerpacific.todo.activities
+package com.tomerpacific.todo.view
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Row

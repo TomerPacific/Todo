@@ -1,4 +1,4 @@
-package com.tomerpacific.todo.activities
+package com.tomerpacific.todo.view
 
 import android.os.Bundle
 import androidx.activity.compose.setContent

@@ -1,4 +1,4 @@
-package com.tomerpacific.todo.activities
+package com.tomerpacific.todo.view
 
 import android.app.Application
 import android.content.Context
