@@ -21,4 +21,10 @@ class TodoListPreferencesRepository(private val todoListPreferencesDataStore: Da
 
     suspend fun fetchCachedTodoListPreferences() = todoListPreferencesFlow.first()
 
+    suspend fun updateTodoListTitle(todoListTitle: String) {
+        todoListPreferencesDataStore.updateData { todoListPreferences ->
+            todoListPreferences.toBuilder().setTitle(todoListTitle).build()
+        }
+    }
+
 }
