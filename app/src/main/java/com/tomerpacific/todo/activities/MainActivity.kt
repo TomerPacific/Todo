@@ -52,8 +52,8 @@ class MainActivity: AppCompatActivity() {
 
             val mainViewModel: MainViewModel = viewModel()
 
-            val todoListTitle = remember {
-                mutableStateOf("Your Todo List Title")
+            var todoListTitle by remember {
+                mutableStateOf("")
             }
 
             val shouldShowTodoDialog = remember {
@@ -66,6 +66,11 @@ class MainActivity: AppCompatActivity() {
 
             mainViewModel.todoItemsFlow.observe(LocalLifecycleOwner.current) { todoItems ->
                 todoItemsList = todoItems.itemsList
+            }
+
+            mainViewModel.todoListPreferencesFlow.observe(LocalLifecycleOwner.current) { todoListPreferences ->
+                todoListTitle = todoListPreferences.title
+
             }
 
             MaterialTheme {
@@ -91,9 +96,13 @@ class MainActivity: AppCompatActivity() {
                         ) {
                                 OutlinedTextField(
                                     textStyle = LocalTextStyle.current.copy(textAlign = TextAlign.Center),
-                                    value = todoListTitle.value,
+                                    value = todoListTitle,
                                     onValueChange = {
-                                        todoListTitle.value = it
+                                        todoListTitle = it
+                                        mainViewModel.updateTodoListTitle(todoListTitle)
+                                    },
+                                    placeholder = {
+                                      Text("Your Todo List Title")
                                     },
                                     colors = OutlinedTextFieldDefaults.colors(
                                         focusedBorderColor = Color.Black,
