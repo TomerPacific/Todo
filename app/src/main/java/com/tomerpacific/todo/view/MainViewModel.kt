@@ -19,7 +19,7 @@ import service.todoListPreferencesDatastore
 import java.util.UUID
 
 
-private const val DATA_STORE_FILE_NAME = "todoItemsList.proto"
+private const val DATA_STORE_FILE_NAME = "todoItemsList.pb"
 
 private val Context.todoItemsStore: DataStore<TodoItems> by dataStore(
     fileName = DATA_STORE_FILE_NAME,
