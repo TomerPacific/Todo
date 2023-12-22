@@ -3,6 +3,7 @@ package com.tomerpacific.todo.view
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -19,6 +20,7 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.Card
 import androidx.compose.material3.DismissState
+import androidx.compose.material3.DismissValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -123,14 +125,22 @@ class MainActivity: AppCompatActivity() {
                         items(todoItemsList) { todoItem ->
                             val dismissState = rememberDismissState(
                                 confirmValueChange = {
-                                    mainViewModel.removeTodoItem(todoItem)
-                                    true
+                                    if (it == DismissValue.DismissedToStart || it == DismissValue.DismissedToEnd) {
+                                        mainViewModel.removeTodoItem(todoItem)
+                                        true
+                                    } else {
+                                        false
+                                    }
                                 }
                             )
                             SwipeToDismiss(
                                 state = dismissState,
                                 background = {
-
+                                    Row(modifier = Modifier
+                                        .fillMaxWidth()
+                                        .background(Color.Red)) {
+                                        Text("Delete?")
+                                    }
                                 },
                             dismissContent = {
                                 TodoItemView(todoItem, mainViewModel)
