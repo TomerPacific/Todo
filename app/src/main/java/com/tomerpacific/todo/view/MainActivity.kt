@@ -18,6 +18,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.Card
+import androidx.compose.material3.DismissState
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalTextStyle
@@ -25,9 +27,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SwipeToDismiss
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
+import androidx.compose.material3.rememberDismissState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -45,6 +49,7 @@ import com.tomerpacific.todo.TodoItem
 
 class MainActivity: AppCompatActivity() {
 
+    @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -116,7 +121,20 @@ class MainActivity: AppCompatActivity() {
                         }
 
                         items(todoItemsList) { todoItem ->
-                            TodoItemView(todoItem, mainViewModel)
+                            val dismissState = rememberDismissState(
+                                confirmValueChange = {
+                                    mainViewModel.removeTodoItem(todoItem)
+                                    true
+                                }
+                            )
+                            SwipeToDismiss(
+                                state = dismissState,
+                                background = {
+
+                                },
+                            dismissContent = {
+                                TodoItemView(todoItem, mainViewModel)
+                            })
                             Spacer(modifier = Modifier.padding(5.dp))
                         }
                     }
