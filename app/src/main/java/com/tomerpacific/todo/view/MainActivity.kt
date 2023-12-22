@@ -17,6 +17,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.Card
 import androidx.compose.material3.DismissState
@@ -131,15 +132,26 @@ class MainActivity: AppCompatActivity() {
                                     } else {
                                         false
                                     }
-                                }
+                                }, positionalThreshold = { 150.dp.toPx() }
                             )
                             SwipeToDismiss(
                                 state = dismissState,
                                 background = {
-                                    Row(modifier = Modifier
-                                        .fillMaxWidth()
-                                        .background(Color.Red)) {
-                                        Text("Delete?")
+                                    Card(
+                                        modifier = Modifier
+                                            .fillMaxSize()
+                                    ) {
+                                        Row(
+                                            modifier = Modifier
+                                                .fillMaxSize()
+                                                .background(Color.Red),
+                                            verticalAlignment = Alignment.CenterVertically
+                                        ) {
+                                            Icon(
+                                                Icons.Default.Delete,
+                                                contentDescription = "delete"
+                                            )
+                                        }
                                     }
                                 },
                             dismissContent = {
