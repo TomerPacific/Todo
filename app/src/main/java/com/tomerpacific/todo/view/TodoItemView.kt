@@ -26,7 +26,9 @@ import com.tomerpacific.todo.TodoItem
 @Composable
 fun TodoItemView(todoItem: TodoItem,
                  viewModel: MainViewModel) {
-    Card(modifier = Modifier.fillMaxSize()) {
+
+    Card(modifier = Modifier
+        .fillMaxSize()) {
         Row(modifier = Modifier
             .fillMaxWidth()
             .background(Color(0xFF90a8c9)),
