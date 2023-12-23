@@ -126,7 +126,7 @@ class MainActivity: AppCompatActivity() {
                         items(todoItemsList) { todoItem ->
                             val dismissState = rememberDismissState(
                                 confirmValueChange = {
-                                    if (it == DismissValue.DismissedToStart || it == DismissValue.DismissedToEnd) {
+                                    if (it == DismissValue.DismissedToEnd) {
                                         mainViewModel.removeTodoItem(todoItem)
                                         true
                                     } else {
