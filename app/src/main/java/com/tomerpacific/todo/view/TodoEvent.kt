@@ -1,9 +1,11 @@
 package com.tomerpacific.todo.view
 
+import com.tomerpacific.todo.TodoItem
+
 sealed interface TodoEvent {
     object SaveTodo: TodoEvent
-    data class SetTodo(val todoDescription: String): TodoEvent
+    data class SetTodoDescription(val todoDescription: String): TodoEvent
     object ShowAddTodoDialog: TodoEvent
     object HideAddTodoDialog: TodoEvent
-    object DeleteTodo: TodoEvent
+    data class DeleteTodo(val todo: TodoItem): TodoEvent
 }
