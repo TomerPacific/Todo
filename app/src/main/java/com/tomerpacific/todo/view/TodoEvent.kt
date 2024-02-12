@@ -8,4 +8,5 @@ sealed interface TodoEvent {
     object ShowAddTodoDialog: TodoEvent
     object HideAddTodoDialog: TodoEvent
     data class DeleteTodo(val todo: TodoItem): TodoEvent
+    data class SetTodoListTitle(val todoListTitle: String): TodoEvent
 }
