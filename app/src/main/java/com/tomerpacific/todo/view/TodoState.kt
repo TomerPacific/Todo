@@ -5,5 +5,6 @@ import com.tomerpacific.todo.TodoItem
 data class TodoState(
     val todoItems: List<TodoItem> = emptyList(),
     val todoItemDescription: String = "",
-    val isAddingTodo: Boolean = false
+    val isAddingTodo: Boolean = false,
+    val todoListTitle: String = "",
 )
