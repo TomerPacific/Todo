@@ -91,7 +91,7 @@ fun TodoScreen(viewModel: MainViewModel,
                 val dismissState = rememberDismissState(
                     confirmValueChange = {
                         if (it == DismissValue.DismissedToEnd) {
-                            viewModel.removeTodoItem(todoItem)
+                            onEvent(TodoEvent.DeleteTodo(todoItem))
                             true
                         } else {
                             false
@@ -130,7 +130,7 @@ fun TodoScreen(viewModel: MainViewModel,
                 onEvent(TodoEvent.HideAddTodoDialog)
             },
                 onConfirmation = {
-                    viewModel.addTodoItem(it)
+                    onEvent(TodoEvent.SaveTodo)
                     onEvent(TodoEvent.HideAddTodoDialog)
                 })
         }
