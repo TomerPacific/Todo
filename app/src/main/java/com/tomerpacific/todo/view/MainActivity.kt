@@ -12,7 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 
 class MainActivity: AppCompatActivity() {
 
-    private val mainViewModel: MainViewModel by viewModels<MainViewModel>(
+    private val mainViewModel: MainViewModel by viewModels(
         factoryProducer = {
             object : ViewModelProvider.Factory {
                 override fun <T : ViewModel> create(modelClass: Class<T>): T {
@@ -27,8 +27,11 @@ class MainActivity: AppCompatActivity() {
 
         setContent {
             MaterialTheme {
-                val state by mainViewModel._state.collectAsState()
-                TodoScreen(viewModel = mainViewModel, state = state, mainViewModel::onEvent)
+                val state by mainViewModel.state.collectAsState()
+                TodoScreen(
+                    viewModel = mainViewModel,
+                    state = state,
+                    mainViewModel::onEvent)
             }
         }
     }
