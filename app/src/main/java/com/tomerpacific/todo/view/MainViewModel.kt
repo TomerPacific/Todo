@@ -5,13 +5,12 @@ import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.dataStore
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.tomerpacific.todo.TodoItem
 import com.tomerpacific.todo.TodoItems
-import com.tomerpacific.todo.TodoListPreferences
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import service.TodoItemsRepository
@@ -32,12 +31,8 @@ class MainViewModel(application: Application): AndroidViewModel(application) {
 
     private val todoItemsRepository: TodoItemsRepository = TodoItemsRepository(application.todoItemsStore)
     private val todoListPreferencesRepository: TodoListPreferencesRepository = TodoListPreferencesRepository(application.todoListPreferencesDatastore)
-
-    val todoItemsFlow: LiveData<TodoItems> = todoItemsRepository.todoItemsFlow.asLiveData()
-
-    val todoListPreferencesFlow: LiveData<TodoListPreferences> = todoListPreferencesRepository.todoListPreferencesFlow.asLiveData()
-
     private val _state = MutableStateFlow(TodoState())
+    val state: StateFlow<TodoState> = _state.asStateFlow()
 
     init {
         getTodoItems()
@@ -56,7 +51,7 @@ class MainViewModel(application: Application): AndroidViewModel(application) {
             }
             is TodoEvent.SaveTodo -> {
 
-                val itemDescription: String = _state.value.todoItemDescription
+                val itemDescription: String = state.value.todoItemDescription
                 if (itemDescription.isBlank()) {
                     return
                 }
@@ -72,13 +67,21 @@ class MainViewModel(application: Application): AndroidViewModel(application) {
             }
             is TodoEvent.SetTodoDescription -> {
                 _state.update { it.copy(
-                    todoItemDescription = it.todoItemDescription
+                    todoItemDescription = event.todoDescription
                 ) }
             }
             is TodoEvent.ShowAddTodoDialog ->  {
                 _state.update { it.copy(
                     isAddingTodo = true
                 ) }
+            }
+            is TodoEvent.SetTodoListTitle -> {
+                _state.update { it.copy(
+                    todoListTitle = event.todoListTitle
+                ) }
+                viewModelScope.launch {
+                    todoListPreferencesRepository.updateTodoListTitle(state.value.todoListTitle)
+                }
             }
         }
     }
@@ -91,15 +94,12 @@ class MainViewModel(application: Application): AndroidViewModel(application) {
 
     private fun getTodoListPreferences() {
         viewModelScope.launch {
-            todoListPreferencesRepository.fetchCachedTodoListPreferences()
-        }
-    }
-
-    fun addTodoItem(todoItemDescription: String) {
-        val todoItem = TodoItem.newBuilder().setItemId(UUID.randomUUID().toString())
-            .setItemDescription(todoItemDescription).build()
-        viewModelScope.launch {
-            todoItemsRepository.updateTodoItems(todoItem)
+            val todoListPreferences = todoListPreferencesRepository.fetchCachedTodoListPreferences()
+            if (todoListPreferences.title.isNotEmpty()) {
+                _state.update { it.copy(
+                    todoListTitle = todoListPreferences.title
+                )}
+            }
         }
     }
 
@@ -108,12 +108,4 @@ class MainViewModel(application: Application): AndroidViewModel(application) {
             todoItemsRepository.removeTodoItem(todoItemToRemove)
         }
     }
-
-    fun updateTodoListTitle(todoListTitle: String) {
-        viewModelScope.launch {
-            todoListPreferencesRepository.updateTodoListTitle(todoListTitle)
-        }
-    }
-
-
 }
