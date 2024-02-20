@@ -31,8 +31,6 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.material3.rememberDismissState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -126,25 +124,23 @@ fun TodoScreen(viewModel: MainViewModel,
         }
 
         if (state.isAddingTodo) {
-            ShowAddTodoItemDialog(onDismissRequest = {
+            ShowAddTodoItemDialog(state,
+                onEvent,
+                onDismissRequest = {
                 onEvent(TodoEvent.HideAddTodoDialog)
-            },
+                },
                 onConfirmation = {
                     onEvent(TodoEvent.SaveTodo)
-                    onEvent(TodoEvent.HideAddTodoDialog)
                 })
         }
     }
 }
 
 @Composable
-fun ShowAddTodoItemDialog(onDismissRequest: () -> Unit,
-                          onConfirmation: (String) -> Unit) {
-
-    val todoItemDescription = remember {
-        mutableStateOf("")
-    }
-
+fun ShowAddTodoItemDialog(state: TodoState,
+                          onEvent: (TodoEvent) -> Unit,
+                          onDismissRequest: () -> Unit,
+                          onConfirmation: () -> Unit) {
 
     Dialog(onDismissRequest = { onDismissRequest() }) {
         Card(
@@ -162,10 +158,10 @@ fun ShowAddTodoItemDialog(onDismissRequest: () -> Unit,
             ) {
                 Row(modifier = Modifier.fillMaxWidth()) {
                     TextField(
-                        value = todoItemDescription.value,
+                        value =state.todoItemDescription,
                         onValueChange = { userInput: String ->
                             if (userInput.isNotEmpty()) {
-                                todoItemDescription.value = userInput
+                                onEvent(TodoEvent.SetTodoDescription(userInput))
                             }
                         },
                         label = {
@@ -188,7 +184,7 @@ fun ShowAddTodoItemDialog(onDismissRequest: () -> Unit,
                         Text("Cancel")
                     }
                     TextButton(
-                        onClick = { onConfirmation(todoItemDescription.value) },
+                        onClick = { onConfirmation() },
                         modifier = Modifier.padding(8.dp),
                     ) {
                         Text("Add")
