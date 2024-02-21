@@ -5,7 +5,6 @@ import com.tomerpacific.todo.TodoItem
 import com.tomerpacific.todo.TodoItems
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.first
 import java.io.IOException
 
 class TodoItemsRepository(private val todoItemsDataStore: DataStore<TodoItems>) {
