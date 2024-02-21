@@ -19,8 +19,6 @@ class TodoItemsRepository(private val todoItemsDataStore: DataStore<TodoItems>) 
             }
         }
 
-    suspend fun fetchCachedTodoItems() = todoItemsFlow.first()
-
     suspend fun updateTodoItems(todoItem: TodoItem) {
         todoItemsDataStore.updateData { items ->
             items.toBuilder().addItems(todoItem).build()
