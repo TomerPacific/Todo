@@ -9,8 +9,10 @@ import androidx.lifecycle.viewModelScope
 import com.tomerpacific.todo.TodoItem
 import com.tomerpacific.todo.TodoItems
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import service.TodoItemsRepository
@@ -32,11 +34,20 @@ class MainViewModel(application: Application): AndroidViewModel(application) {
     private val todoItemsRepository: TodoItemsRepository = TodoItemsRepository(application.todoItemsStore)
     private val todoListPreferencesRepository: TodoListPreferencesRepository = TodoListPreferencesRepository(application.todoListPreferencesDatastore)
     private val _state = MutableStateFlow(TodoState())
-    private var _todoItems = listOf<TodoItem>()
-    val state: StateFlow<TodoState> = _state.asStateFlow()
+    private val _todoItems = todoItemsRepository.todoItemsFlow.stateIn(
+        viewModelScope, SharingStarted.WhileSubscribed(), emptyList<TodoItem>())
+    val state: StateFlow<TodoState> = combine(_state, _todoItems) { state, todoItems ->
+        val items = when (todoItems) {
+            is List<*> -> todoItems
+            is TodoItems -> todoItems.itemsList
+            else -> listOf()
+        }
+        state.copy(
+            todoItems = items as List<TodoItem>
+        )
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), TodoState())
 
     init {
-        getTodoItems()
         getTodoListPreferences()
     }
 
@@ -88,17 +99,6 @@ class MainViewModel(application: Application): AndroidViewModel(application) {
                 viewModelScope.launch {
                     todoListPreferencesRepository.updateTodoListTitle(state.value.todoListTitle)
                 }
-            }
-        }
-    }
-
-    private fun getTodoItems() {
-        viewModelScope.launch {
-            todoItemsRepository.todoItemsFlow.collect {
-                _todoItems = it.itemsList
-                _state.update { it.copy(
-                    todoItems = _todoItems
-                ) }
             }
         }
     }
