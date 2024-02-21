@@ -94,9 +94,8 @@ class MainViewModel(application: Application): AndroidViewModel(application) {
 
     private fun getTodoItems() {
         viewModelScope.launch {
-            val todoItems = todoItemsRepository.fetchCachedTodoItems()
-            if (todoItems.itemsList.isNotEmpty()) {
-                _todoItems = todoItems.itemsList
+            todoItemsRepository.todoItemsFlow.collect {
+                _todoItems = it.itemsList
                 _state.update { it.copy(
                     todoItems = _todoItems
                 ) }
