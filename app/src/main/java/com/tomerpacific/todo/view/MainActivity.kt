@@ -29,7 +29,6 @@ class MainActivity: AppCompatActivity() {
             MaterialTheme {
                 val state by mainViewModel.state.collectAsState()
                 TodoScreen(
-                    viewModel = mainViewModel,
                     state = state,
                     mainViewModel::onEvent)
             }
