@@ -25,7 +25,7 @@ import com.tomerpacific.todo.TodoItem
 
 @Composable
 fun TodoItemView(todoItem: TodoItem,
-                 viewModel: MainViewModel) {
+                 onEvent: (TodoEvent) -> Unit) {
 
     Card(modifier = Modifier
         .fillMaxSize()) {
@@ -43,7 +43,7 @@ fun TodoItemView(todoItem: TodoItem,
             IconButton(
                 modifier = Modifier.fillMaxHeight(),
                 onClick = {
-                    viewModel.removeTodoItem(todoItem)
+                    onEvent(TodoEvent.DeleteTodo(todoItem))
                 }) {
                 Icon(Icons.Default.Check,
                     "Complete Todo",
@@ -52,7 +52,7 @@ fun TodoItemView(todoItem: TodoItem,
             IconButton(
                 modifier = Modifier.fillMaxHeight(),
                 onClick = {
-                    viewModel.removeTodoItem(todoItem)
+                    onEvent(TodoEvent.DeleteTodo(todoItem))
             }) {
                 Icon(
                     Icons.Default.Close,
