@@ -40,8 +40,7 @@ import androidx.compose.ui.window.Dialog
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TodoScreen(viewModel: MainViewModel,
-               state: TodoState,
+fun TodoScreen(state: TodoState,
                onEvent: (TodoEvent) -> Unit) {
 
     Scaffold(floatingActionButton = {
@@ -117,7 +116,7 @@ fun TodoScreen(viewModel: MainViewModel,
                         }
                     },
                     dismissContent = {
-                        TodoItemView(todoItem, viewModel)
+                        TodoItemView(todoItem, onEvent)
                     })
                 Spacer(modifier = Modifier.padding(5.dp))
             }
