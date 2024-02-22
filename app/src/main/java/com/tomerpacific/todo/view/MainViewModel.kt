@@ -54,7 +54,9 @@ class MainViewModel(application: Application): AndroidViewModel(application) {
     fun onEvent(event: TodoEvent) {
         when(event) {
             is TodoEvent.DeleteTodo -> {
-
+                viewModelScope.launch {
+                    todoItemsRepository.removeTodoItem(event.todo)
+                }
             }
             is TodoEvent.HideAddTodoDialog -> {
                 _state.update { it.copy(
@@ -111,12 +113,6 @@ class MainViewModel(application: Application): AndroidViewModel(application) {
                     todoListTitle = todoListPreferences.title
                 )}
             }
-        }
-    }
-
-    fun removeTodoItem(todoItemToRemove: TodoItem) {
-        viewModelScope.launch {
-            todoItemsRepository.removeTodoItem(todoItemToRemove)
         }
     }
 }
