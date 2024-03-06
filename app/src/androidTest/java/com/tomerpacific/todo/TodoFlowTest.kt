@@ -44,4 +44,19 @@ class TodoFlowTest {
         composeTestRule.onNodeWithText("Something").assertExists()
     }
 
+    @Test
+    fun removeTodoItemTest() {
+        composeTestRule.setContent {
+            val state by mainViewModel.state.collectAsState()
+            TodoScreen(
+                state = state,
+                mainViewModel::onEvent)
+        }
+
+        composeTestRule.onNodeWithText("Something").assertExists()
+        composeTestRule.onNodeWithContentDescription("Delete Todo").assertExists()
+        composeTestRule.onNodeWithContentDescription("Delete Todo").performClick()
+        composeTestRule.onNodeWithText("Something").assertDoesNotExist()
+    }
+
 }
