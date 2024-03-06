@@ -2,9 +2,13 @@ package com.tomerpacific.todo
 
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
+import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performKeyInput
+import androidx.compose.ui.test.performTextInput
 import androidx.test.core.app.ApplicationProvider
 import com.tomerpacific.todo.view.MainViewModel
 import com.tomerpacific.todo.view.TodoScreen
@@ -28,10 +32,16 @@ class TodoFlowTest {
                 mainViewModel::onEvent)
         }
 
-        composeTestRule.onNodeWithContentDescription("Floating action button.").assertExists()
-        composeTestRule.onNodeWithContentDescription("Floating action button.").performClick()
+        composeTestRule.onNodeWithContentDescription("Add Todo Item").assertExists()
+        composeTestRule.onNodeWithContentDescription("Add Todo Item").performClick()
 
+        composeTestRule.onNodeWithText("What do you want to do?").assertExists()
+        composeTestRule.onNodeWithText("What do you want to do?").performTextInput("Something")
 
+        composeTestRule.onNodeWithText("Add").assertExists()
+        composeTestRule.onNodeWithText("Add").performClick()
+
+        composeTestRule.onNodeWithText("Something").assertExists()
     }
 
 }
