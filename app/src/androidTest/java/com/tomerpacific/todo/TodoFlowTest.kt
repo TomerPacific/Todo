@@ -19,7 +19,7 @@ class TodoFlowTest {
     val composeTestRule = createComposeRule()
 
     @Test
-    fun myTest() {
+    fun addTodoItemTest() {
 
         composeTestRule.setContent {
             val state by mainViewModel.state.collectAsState()
