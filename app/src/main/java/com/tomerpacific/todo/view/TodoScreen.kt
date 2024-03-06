@@ -52,7 +52,7 @@ fun TodoScreen(state: TodoState,
             containerColor = Color.Black,
             contentColor = Color.White
         ) {
-            Icon(Icons.Filled.Add, "Floating action button.")
+            Icon(Icons.Filled.Add, "Add Todo Item")
         }
 
     }) { paddingValues ->
