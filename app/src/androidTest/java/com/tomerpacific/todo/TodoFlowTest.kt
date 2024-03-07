@@ -7,6 +7,8 @@ import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
+import androidx.compose.ui.test.performTouchInput
+import androidx.compose.ui.test.swipeRight
 import androidx.test.core.app.ApplicationProvider
 import com.tomerpacific.todo.view.MainViewModel
 import com.tomerpacific.todo.view.TodoScreen
@@ -63,6 +65,19 @@ class TodoFlowTest {
         composeTestRule.onNodeWithContentDescription(TODO_DELETE_BUTTON_CONTENT_DESCRIPTION).assertExists()
         composeTestRule.onNodeWithContentDescription(TODO_DELETE_BUTTON_CONTENT_DESCRIPTION).performClick()
         composeTestRule.onNodeWithText(TODO_TEST_ITEM_DESCRIPTION).assertDoesNotExist()
+    }
+
+    @Test
+    fun swipeToDismissTodoItemTest() {
+        addTodoItemTest()
+
+        composeTestRule.onNodeWithText(TODO_TEST_ITEM_DESCRIPTION).assertExists()
+        composeTestRule.onNodeWithText(TODO_TEST_ITEM_DESCRIPTION).performTouchInput {
+            swipeRight()
+        }
+
+        composeTestRule.onNodeWithText(TODO_TEST_ITEM_DESCRIPTION).assertDoesNotExist()
+
     }
 
 }
