@@ -19,6 +19,7 @@ import org.junit.Test
 private const val FAB_BUTTON_CONTENT_DESCRIPTION = "Add Todo Item"
 private const val TODO_TEXT_FIELD_TEXT = "What do you want to do?"
 private const val TODO_ADD_BUTTON_TEXT = "Add"
+private const val TODO_COMPLETE_BUTTON_CONTENT_DESCRIPTION = "Complete Todo"
 private const val TODO_DELETE_BUTTON_CONTENT_DESCRIPTION = "Delete Todo"
 private const val TODO_TEST_ITEM_DESCRIPTION = "Something"
 
@@ -64,6 +65,16 @@ class TodoFlowTest {
         composeTestRule.onNodeWithText(TODO_TEST_ITEM_DESCRIPTION).assertExists()
         composeTestRule.onNodeWithContentDescription(TODO_DELETE_BUTTON_CONTENT_DESCRIPTION).assertExists()
         composeTestRule.onNodeWithContentDescription(TODO_DELETE_BUTTON_CONTENT_DESCRIPTION).performClick()
+        composeTestRule.onNodeWithText(TODO_TEST_ITEM_DESCRIPTION).assertDoesNotExist()
+    }
+
+    @Test
+    fun completeTodoItemTest() {
+        addTodoItemTest()
+
+        composeTestRule.onNodeWithText(TODO_TEST_ITEM_DESCRIPTION).assertExists()
+        composeTestRule.onNodeWithContentDescription(TODO_COMPLETE_BUTTON_CONTENT_DESCRIPTION).assertExists()
+        composeTestRule.onNodeWithContentDescription(TODO_COMPLETE_BUTTON_CONTENT_DESCRIPTION).performClick()
         composeTestRule.onNodeWithText(TODO_TEST_ITEM_DESCRIPTION).assertDoesNotExist()
     }
 
