@@ -2,12 +2,10 @@ package com.tomerpacific.todo
 
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
-import androidx.compose.ui.test.performKeyInput
 import androidx.compose.ui.test.performTextInput
 import androidx.test.core.app.ApplicationProvider
 import com.tomerpacific.todo.view.MainViewModel
@@ -15,9 +13,17 @@ import com.tomerpacific.todo.view.TodoScreen
 import org.junit.Rule
 import org.junit.Test
 
+
+private const val FAB_BUTTON_CONTENT_DESCRIPTION = "Add Todo Item"
+private const val TODO_TEXT_FIELD_TEXT = "What do you want to do?"
+private const val TODO_ADD_BUTTON_TEXT = "Add"
+private const val TODO_DELETE_BUTTON_CONTENT_DESCRIPTION = "Delete Todo"
+private const val TODO_TEST_ITEM_DESCRIPTION = "Something"
+
 class TodoFlowTest {
 
     private val mainViewModel = MainViewModel(ApplicationProvider.getApplicationContext())
+
 
     @get:Rule
     val composeTestRule = createComposeRule()
@@ -32,16 +38,16 @@ class TodoFlowTest {
                 mainViewModel::onEvent)
         }
 
-        composeTestRule.onNodeWithContentDescription("Add Todo Item").assertExists()
-        composeTestRule.onNodeWithContentDescription("Add Todo Item").performClick()
+        composeTestRule.onNodeWithContentDescription(FAB_BUTTON_CONTENT_DESCRIPTION).assertExists()
+        composeTestRule.onNodeWithContentDescription(FAB_BUTTON_CONTENT_DESCRIPTION).performClick()
 
-        composeTestRule.onNodeWithText("What do you want to do?").assertExists()
-        composeTestRule.onNodeWithText("What do you want to do?").performTextInput("Something")
+        composeTestRule.onNodeWithText(TODO_TEXT_FIELD_TEXT).assertExists()
+        composeTestRule.onNodeWithText(TODO_TEXT_FIELD_TEXT).performTextInput(TODO_TEST_ITEM_DESCRIPTION)
 
-        composeTestRule.onNodeWithText("Add").assertExists()
-        composeTestRule.onNodeWithText("Add").performClick()
+        composeTestRule.onNodeWithText(TODO_ADD_BUTTON_TEXT).assertExists()
+        composeTestRule.onNodeWithText(TODO_ADD_BUTTON_TEXT).performClick()
 
-        composeTestRule.onNodeWithText("Something").assertExists()
+        composeTestRule.onNodeWithText(TODO_TEST_ITEM_DESCRIPTION).assertExists()
     }
 
     @Test
@@ -53,10 +59,10 @@ class TodoFlowTest {
                 mainViewModel::onEvent)
         }
 
-        composeTestRule.onNodeWithText("Something").assertExists()
-        composeTestRule.onNodeWithContentDescription("Delete Todo").assertExists()
-        composeTestRule.onNodeWithContentDescription("Delete Todo").performClick()
-        composeTestRule.onNodeWithText("Something").assertDoesNotExist()
+        composeTestRule.onNodeWithText(TODO_TEST_ITEM_DESCRIPTION).assertExists()
+        composeTestRule.onNodeWithContentDescription(TODO_DELETE_BUTTON_CONTENT_DESCRIPTION).assertExists()
+        composeTestRule.onNodeWithContentDescription(TODO_DELETE_BUTTON_CONTENT_DESCRIPTION).performClick()
+        composeTestRule.onNodeWithText(TODO_TEST_ITEM_DESCRIPTION).assertDoesNotExist()
     }
 
 }
