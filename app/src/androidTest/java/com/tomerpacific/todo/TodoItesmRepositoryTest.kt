@@ -16,6 +16,7 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import service.TodoItemsRepository
 import service.TodoItemsSerializer
+import java.util.UUID
 
 
 @RunWith(AndroidJUnit4::class)
@@ -47,6 +48,17 @@ class TodoItemsRepositoryTest {
         runTest {
             val items = repository.todoItemsFlow.first().itemsList
             assert(items.size == 0)
+        }
+    }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @Test
+    fun repository_testAdditionOfTodoItem() {
+        runTest {
+            val todoItem: TodoItem = TodoItem.newBuilder().setItemId(UUID.randomUUID().toString())
+            .setItemDescription("test todo item").build()
+            repository.updateTodoItems(todoItem)
+            assert(repository.todoItemsFlow.first().itemsList.size == 1)
         }
     }
 
