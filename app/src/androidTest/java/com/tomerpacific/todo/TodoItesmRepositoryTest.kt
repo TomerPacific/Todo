@@ -13,34 +13,46 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.TestCoroutineDispatcher
 import kotlinx.coroutines.test.TestCoroutineScope
 import kotlinx.coroutines.test.runTest
+import org.junit.After
+import org.junit.Before
 import org.junit.Test
 import service.TodoItemsRepository
 import service.TodoItemsSerializer
+import java.io.File
 import java.util.UUID
+import kotlin.random.Random
 
+val TEST_DATA_STORE_FILE_NAME = "testStore.pb"
+private val testCoroutineDispatcher: TestCoroutineDispatcher =
+    TestCoroutineDispatcher()
+private val testCoroutineScope =
+    TestCoroutineScope(testCoroutineDispatcher + Job())
+
+private val testContext: Context = ApplicationProvider.getApplicationContext()
 
 @RunWith(AndroidJUnit4::class)
 class TodoItemsRepositoryTest {
 
-    val TEST_DATA_STORE_FILE_NAME = "testStore.pb"
-    private val testContext: Context = ApplicationProvider.getApplicationContext()
 
-    private val testCoroutineDispatcher: TestCoroutineDispatcher =
-        TestCoroutineDispatcher()
-    private val testCoroutineScope =
-        TestCoroutineScope(testCoroutineDispatcher + Job())
-
+    private lateinit var dataStore: DataStore<TodoItems>
+    private lateinit var repository: TodoItemsRepository
     @OptIn(ExperimentalCoroutinesApi::class)
-    private val dataStore: DataStore<TodoItems> = DataStoreFactory.create(
-        scope = testCoroutineScope,
-        produceFile = {
-            testContext.dataStoreFile(TEST_DATA_STORE_FILE_NAME)
-        },
-        serializer = TodoItemsSerializer
-    )
+    private fun createDataStore() {
+        val randomDataStoreIndex: Int = Random.nextInt()
+        dataStore = DataStoreFactory.create(
+            scope = testCoroutineScope,
+            produceFile = {
+                testContext.dataStoreFile(TEST_DATA_STORE_FILE_NAME + randomDataStoreIndex)
+            },
+            serializer = TodoItemsSerializer
+        )
+        repository = TodoItemsRepository(dataStore)
+    }
 
-    private val repository: TodoItemsRepository =
-        TodoItemsRepository(dataStore)
+    @Before
+    fun setup() {
+        createDataStore()
+    }
 
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test
@@ -60,6 +72,12 @@ class TodoItemsRepositoryTest {
             repository.updateTodoItems(todoItem)
             assert(repository.todoItemsFlow.first().itemsList.size == 1)
         }
+    }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @After
+    fun cleanup() {
+        File(testContext.filesDir, "datastore").deleteRecursively()
     }
 
 }
