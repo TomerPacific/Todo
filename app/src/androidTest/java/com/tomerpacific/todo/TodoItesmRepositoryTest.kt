@@ -73,8 +73,7 @@ class TodoItemsRepositoryTest {
             assert(repository.todoItemsFlow.first().itemsList.size == 1)
         }
     }
-
-    @OptIn(ExperimentalCoroutinesApi::class)
+    
     @After
     fun cleanup() {
         File(testContext.filesDir, "datastore").deleteRecursively()
