@@ -22,7 +22,7 @@ import java.io.File
 import java.util.UUID
 import kotlin.random.Random
 
-val TEST_DATA_STORE_FILE_NAME = "testStore.pb"
+const val TEST_DATA_STORE_FILE_NAME = "testStore.pb"
 private val testCoroutineDispatcher: TestCoroutineDispatcher =
     TestCoroutineDispatcher()
 private val testCoroutineScope =
