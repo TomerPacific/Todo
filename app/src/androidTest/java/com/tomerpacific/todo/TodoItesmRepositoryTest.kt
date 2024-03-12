@@ -70,10 +70,14 @@ class TodoItemsRepositoryTest {
             val todoItem: TodoItem = TodoItem.newBuilder().setItemId(UUID.randomUUID().toString())
             .setItemDescription("test todo item").build()
             repository.updateTodoItems(todoItem)
-            assert(repository.todoItemsFlow.first().itemsList.size == 1)
+
+            val todoItems = repository.todoItemsFlow.first().itemsList
+            assert(todoItems.size == 1)
+
+            assert(todoItems[0].itemDescription.equals("test todo item"))
         }
     }
-    
+
     @After
     fun cleanup() {
         File(testContext.filesDir, "datastore").deleteRecursively()
