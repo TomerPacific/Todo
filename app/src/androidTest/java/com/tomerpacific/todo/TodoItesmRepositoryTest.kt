@@ -78,6 +78,24 @@ class TodoItemsRepositoryTest {
         }
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @Test
+    fun repository_testRemovalOfTodoItem() {
+        runTest {
+            val todoItem: TodoItem = TodoItem.newBuilder().setItemId(UUID.randomUUID().toString())
+                .setItemDescription("test todo item").build()
+            repository.updateTodoItems(todoItem)
+
+            var todoItems = repository.todoItemsFlow.first().itemsList
+            assert(todoItems.size == 1)
+
+            repository.removeTodoItem(todoItem)
+
+            todoItems = repository.todoItemsFlow.first().itemsList
+            assert(todoItems.size == 0)
+        }
+    }
+
     @After
     fun cleanup() {
         File(testContext.filesDir, "datastore").deleteRecursively()
