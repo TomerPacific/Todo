@@ -7,12 +7,15 @@ import androidx.datastore.dataStoreFile
 import androidx.test.core.app.ApplicationProvider
 import org.junit.runner.RunWith
 import androidx.test.runner.AndroidJUnit4
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.TestCoroutineDispatcher
 import kotlinx.coroutines.test.TestCoroutineScope
+import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.test.setMain
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -23,12 +26,12 @@ import java.util.UUID
 import kotlin.random.Random
 
 const val TEST_DATA_STORE_FILE_NAME = "testStore.pb"
-private val testCoroutineDispatcher: TestCoroutineDispatcher =
-    TestCoroutineDispatcher()
-private val testCoroutineScope =
-    TestCoroutineScope(testCoroutineDispatcher + Job())
-
 private val testContext: Context = ApplicationProvider.getApplicationContext()
+
+@OptIn(ExperimentalCoroutinesApi::class)
+private val dispatcher = TestCoroutineDispatcher()
+@OptIn(ExperimentalCoroutinesApi::class)
+private val testScope = TestCoroutineScope(dispatcher)
 
 @RunWith(AndroidJUnit4::class)
 class TodoItemsRepositoryTest {
@@ -40,7 +43,7 @@ class TodoItemsRepositoryTest {
     private fun createDataStore() {
         val randomDataStoreIndex: Int = Random.nextInt()
         dataStore = DataStoreFactory.create(
-            scope = testCoroutineScope,
+            scope = testScope,
             produceFile = {
                 testContext.dataStoreFile(TEST_DATA_STORE_FILE_NAME + randomDataStoreIndex)
             },
@@ -49,8 +52,10 @@ class TodoItemsRepositoryTest {
         repository = TodoItemsRepository(dataStore)
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     @Before
     fun setup() {
+        Dispatchers.setMain(dispatcher)
         createDataStore()
     }
 
@@ -58,8 +63,10 @@ class TodoItemsRepositoryTest {
     @Test
     fun repository_testFetchInitialTodoItems() {
         runTest {
-            val items = repository.todoItemsFlow.first().itemsList
-            assert(items.size == 0)
+            testScope.launch {
+                val items = repository.todoItemsFlow.first().itemsList
+                assert(items.size == 0)
+            }
         }
     }
 
@@ -67,14 +74,16 @@ class TodoItemsRepositoryTest {
     @Test
     fun repository_testAdditionOfTodoItem() {
         runTest {
-            val todoItem: TodoItem = TodoItem.newBuilder().setItemId(UUID.randomUUID().toString())
-            .setItemDescription("test todo item").build()
-            repository.updateTodoItems(todoItem)
+            testScope.launch {
+                val todoItem: TodoItem = TodoItem.newBuilder().setItemId(UUID.randomUUID().toString())
+                    .setItemDescription("test todo item").build()
+                repository.updateTodoItems(todoItem)
 
-            val todoItems = repository.todoItemsFlow.first().itemsList
-            assert(todoItems.size == 1)
+                val todoItems = repository.todoItemsFlow.first().itemsList
+                assert(todoItems.size == 1)
 
-            assert(todoItems[0].itemDescription.equals("test todo item"))
+                assert(todoItems[0].itemDescription.equals("test todo item"))
+            }
         }
     }
 
@@ -82,22 +91,28 @@ class TodoItemsRepositoryTest {
     @Test
     fun repository_testRemovalOfTodoItem() {
         runTest {
-            val todoItem: TodoItem = TodoItem.newBuilder().setItemId(UUID.randomUUID().toString())
-                .setItemDescription("test todo item").build()
-            repository.updateTodoItems(todoItem)
+            testScope.launch {
+                val todoItem: TodoItem = TodoItem.newBuilder().setItemId(UUID.randomUUID().toString())
+                    .setItemDescription("test todo item").build()
+                repository.updateTodoItems(todoItem)
 
-            var todoItems = repository.todoItemsFlow.first().itemsList
-            assert(todoItems.size == 1)
+                var todoItems = repository.todoItemsFlow.first().itemsList
+                assert(todoItems.size == 1)
 
-            repository.removeTodoItem(todoItem)
+                repository.removeTodoItem(todoItem)
 
-            todoItems = repository.todoItemsFlow.first().itemsList
-            assert(todoItems.size == 0)
+                todoItems = repository.todoItemsFlow.first().itemsList
+                assert(todoItems.size == 0)
+            }
+
         }
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     @After
     fun cleanup() {
+        Dispatchers.resetMain()
+        dispatcher.cleanupTestCoroutines()
         File(testContext.filesDir, "datastore").deleteRecursively()
     }
 
