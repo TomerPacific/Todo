@@ -26,6 +26,7 @@ import java.util.UUID
 import kotlin.random.Random
 
 const val TEST_DATA_STORE_FILE_NAME = "testStore.pb"
+const val TEST_TODO_ITEM_DESCRIPTION = "test todo item"
 private val testContext: Context = ApplicationProvider.getApplicationContext()
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -76,13 +77,13 @@ class TodoItemsRepositoryTest {
         runTest {
             testScope.launch {
                 val todoItem: TodoItem = TodoItem.newBuilder().setItemId(UUID.randomUUID().toString())
-                    .setItemDescription("test todo item").build()
+                    .setItemDescription(TEST_TODO_ITEM_DESCRIPTION).build()
                 repository.updateTodoItems(todoItem)
 
                 val todoItems = repository.todoItemsFlow.first().itemsList
                 assert(todoItems.size == 1)
 
-                assert(todoItems[0].itemDescription.equals("test todo item"))
+                assert(todoItems[0].itemDescription.equals(TEST_TODO_ITEM_DESCRIPTION))
             }
         }
     }
@@ -93,7 +94,7 @@ class TodoItemsRepositoryTest {
         runTest {
             testScope.launch {
                 val todoItem: TodoItem = TodoItem.newBuilder().setItemId(UUID.randomUUID().toString())
-                    .setItemDescription("test todo item").build()
+                    .setItemDescription(TEST_TODO_ITEM_DESCRIPTION).build()
                 repository.updateTodoItems(todoItem)
 
                 var todoItems = repository.todoItemsFlow.first().itemsList
