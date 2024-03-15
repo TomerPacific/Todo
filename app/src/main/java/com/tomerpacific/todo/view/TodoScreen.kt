@@ -157,7 +157,7 @@ fun ShowAddTodoItemDialog(state: TodoState,
             ) {
                 Row(modifier = Modifier.fillMaxWidth()) {
                     TextField(
-                        value =state.todoItemDescription,
+                        value = state.todoItemDescription,
                         onValueChange = { userInput: String ->
                             if (userInput.isNotEmpty()) {
                                 onEvent(TodoEvent.SetTodoDescription(userInput))
