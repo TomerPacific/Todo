@@ -5,11 +5,8 @@ import com.tomerpacific.todo.view.MainViewModel
 import com.tomerpacific.todo.view.TodoEvent
 import com.tomerpacific.todo.view.TodoState
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
-import kotlinx.coroutines.test.advanceTimeBy
-import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Before
