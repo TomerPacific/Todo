@@ -56,7 +56,7 @@ class MainViewModelTest {
         assert(results[0].todoItemDescription.isEmpty())
         Thread.sleep(50)
         assert(results[1].todoItemDescription.isNotEmpty())
-
+        assert(results[1].todoItemDescription.equals(TEST_TODO_ITEM_DESCRIPTION))
         job.cancel()
     }
 }
