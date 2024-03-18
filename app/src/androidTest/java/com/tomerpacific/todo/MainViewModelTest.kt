@@ -51,7 +51,7 @@ class MainViewModelTest {
         viewModel.onEvent(TodoEvent.SetTodoDescription(TEST_TODO_ITEM_DESCRIPTION))
 
         assert(results[0].todoItemDescription.isEmpty())
-        Thread.sleep(50)
+        Thread.sleep(20)
         assert(results[1].todoItemDescription.isNotEmpty())
         assert(results[1].todoItemDescription.equals(TEST_TODO_ITEM_DESCRIPTION))
         job.cancel()
