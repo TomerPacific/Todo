@@ -53,7 +53,36 @@ class MainViewModelTest {
         assert(results[0].todoItemDescription.isEmpty())
         Thread.sleep(20)
         assert(results[1].todoItemDescription.isNotEmpty())
-        assert(results[1].todoItemDescription.equals(TEST_TODO_ITEM_DESCRIPTION))
+        assert(results[1].todoItemDescription == TEST_TODO_ITEM_DESCRIPTION)
+        viewModel.onEvent(TodoEvent.SaveTodo)
+        Thread.sleep(20)
+        assert(results[2].todoItemDescription.isEmpty())
+        job.cancel()
+    }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @Test
+    fun removeTodoItemTest() = runTest {
+
+        val results = mutableListOf<TodoState>()
+        val job = backgroundScope.launch(UnconfinedTestDispatcher(testScheduler)) {
+            viewModel.state.collect {
+                results.add(it)
+            }
+        }
+
+        viewModel.onEvent(TodoEvent.SetTodoDescription(TEST_TODO_ITEM_DESCRIPTION))
+
+        assert(results[0].todoItemDescription.isEmpty())
+        Thread.sleep(20)
+        assert(results[1].todoItemDescription.isNotEmpty())
+        assert(results[1].todoItemDescription == TEST_TODO_ITEM_DESCRIPTION)
+        viewModel.onEvent(TodoEvent.SaveTodo)
+        Thread.sleep(500)
+        val todoItem = results[2].todoItems[0]
+        viewModel.onEvent(TodoEvent.DeleteTodo(todoItem))
+        Thread.sleep(20)
+        assert(results[2].todoItems.isEmpty())
         job.cancel()
     }
 }
