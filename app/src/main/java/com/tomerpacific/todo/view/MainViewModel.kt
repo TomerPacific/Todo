@@ -115,4 +115,14 @@ class MainViewModel(application: Application): ViewModel() {
             }
         }
     }
+
+    fun clearAllTodoItems() {
+        viewModelScope.launch {
+            todoItemsRepository.removeAllTodoItems()
+            _state.update { it.copy(
+                todoItems = listOf()
+            )}
+        }
+
+    }
 }
