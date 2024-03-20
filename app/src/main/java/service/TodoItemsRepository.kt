@@ -31,4 +31,10 @@ class TodoItemsRepository(private val todoItemsDataStore: DataStore<TodoItems>) 
         }
     }
 
+    suspend fun removeAllTodoItems() {
+        todoItemsDataStore.updateData { items ->
+            items.toBuilder().clearItems().build()
+        }
+    }
+
 }

@@ -52,7 +52,7 @@ fun TodoScreen(state: TodoState,
             containerColor = Color.Black,
             contentColor = Color.White
         ) {
-            Icon(Icons.Filled.Add, "Floating action button.")
+            Icon(Icons.Filled.Add, "Add Todo Item")
         }
 
     }) { paddingValues ->
@@ -157,7 +157,7 @@ fun ShowAddTodoItemDialog(state: TodoState,
             ) {
                 Row(modifier = Modifier.fillMaxWidth()) {
                     TextField(
-                        value =state.todoItemDescription,
+                        value = state.todoItemDescription,
                         onValueChange = { userInput: String ->
                             if (userInput.isNotEmpty()) {
                                 onEvent(TodoEvent.SetTodoDescription(userInput))

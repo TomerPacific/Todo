@@ -4,7 +4,7 @@ import android.app.Application
 import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.dataStore
-import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tomerpacific.todo.TodoItem
 import com.tomerpacific.todo.TodoItems
@@ -29,7 +29,7 @@ private val Context.todoItemsStore: DataStore<TodoItems> by dataStore(
     serializer = TodoItemsSerializer,
 )
 
-class MainViewModel(application: Application): AndroidViewModel(application) {
+class MainViewModel(application: Application): ViewModel() {
 
     private val todoItemsRepository: TodoItemsRepository = TodoItemsRepository(application.todoItemsStore)
     private val todoListPreferencesRepository: TodoListPreferencesRepository = TodoListPreferencesRepository(application.todoListPreferencesDatastore)
@@ -114,5 +114,15 @@ class MainViewModel(application: Application): AndroidViewModel(application) {
                 )}
             }
         }
+    }
+
+    fun clearAllTodoItems() {
+        viewModelScope.launch {
+            todoItemsRepository.removeAllTodoItems()
+            _state.update { it.copy(
+                todoItems = listOf()
+            )}
+        }
+
     }
 }
