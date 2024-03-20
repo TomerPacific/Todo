@@ -12,6 +12,8 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Test
 
+
+private const val TEST_TODO_ITEM_LIST_TITLE = "My Todo Items"
 class MainViewModelTest {
 
     private lateinit var viewModel: MainViewModel
@@ -99,13 +101,13 @@ class MainViewModelTest {
             }
         }
 
-        viewModel.onEvent(TodoEvent.SetTodoListTitle("My Todo Items"))
+        viewModel.onEvent(TodoEvent.SetTodoListTitle(TEST_TODO_ITEM_LIST_TITLE))
         assert(results[0].todoListTitle.isEmpty())
 
         Thread.sleep(20)
 
         assert(results[1].todoListTitle.isNotEmpty())
-        assert(results[1].todoListTitle == "My Todo Items")
+        assert(results[1].todoListTitle == TEST_TODO_ITEM_LIST_TITLE)
         job.cancel()
     }
 
