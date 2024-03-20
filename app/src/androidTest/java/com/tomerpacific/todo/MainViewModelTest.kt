@@ -87,4 +87,26 @@ class MainViewModelTest {
         assert(results[results.size - 1].todoItems.isEmpty())
         job.cancel()
     }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @Test
+    fun setTodoListTitleTest() = runTest {
+
+        val results = mutableListOf<TodoState>()
+        val job = backgroundScope.launch(UnconfinedTestDispatcher(testScheduler)) {
+            viewModel.state.collect { todoState ->
+                results.add(todoState)
+            }
+        }
+
+        viewModel.onEvent(TodoEvent.SetTodoListTitle("My Todo Items"))
+        assert(results[0].todoListTitle.isEmpty())
+
+        Thread.sleep(20)
+
+        assert(results[1].todoListTitle.isNotEmpty())
+        assert(results[1].todoListTitle == "My Todo Items")
+        job.cancel()
+    }
+
 }
