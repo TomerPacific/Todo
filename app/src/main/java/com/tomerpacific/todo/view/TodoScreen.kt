@@ -156,19 +156,19 @@ fun ShowAddTodoItemDialog(state: TodoState,
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 Row(modifier = Modifier.fillMaxWidth()) {
+                    val textFieldError = state.todoItemDescription.isEmpty()
                     TextField(
                         value = state.todoItemDescription,
                         onValueChange = { userInput: String ->
-                            if (userInput.isNotEmpty()) {
-                                onEvent(TodoEvent.SetTodoDescription(userInput))
-                            }
+                            onEvent(TodoEvent.SetTodoDescription(userInput))
                         },
                         label = {
                             Text("What do you want to do?")
                         },
                         trailingIcon = {
                             Icon(imageVector = Icons.Default.Edit, "Edit Icon")
-                        }
+                        },
+                        isError = textFieldError
                     )
                 }
                 Row(
