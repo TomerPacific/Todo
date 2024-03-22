@@ -70,6 +70,10 @@ class MainViewModel(application: Application): ViewModel() {
                     return
                 }
 
+                if (isDuplicateTodo(itemDescription)) {
+                    return
+                }
+
                 val todoItem: TodoItem = TodoItem
                     .newBuilder()
                     .setItemId(UUID.randomUUID().toString())
@@ -124,5 +128,9 @@ class MainViewModel(application: Application): ViewModel() {
             )}
         }
 
+    }
+
+    private fun isDuplicateTodo(todoDescription: String): Boolean {
+        return todoItemsRepository.doesTodoAlreadyExist(todoDescription)
     }
 }
