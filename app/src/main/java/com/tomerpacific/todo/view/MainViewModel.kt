@@ -72,11 +72,8 @@ class MainViewModel(application: Application): ViewModel() {
             is TodoEvent.SaveTodo -> {
 
                 val itemDescription: String = state.value.todoItemDescription
-                if (itemDescription.isBlank()) {
-                    return
-                }
 
-                if (isDuplicateTodo(itemDescription)) {
+                if (itemDescription.isEmpty() || isDuplicateTodo(itemDescription)) {
                     return
                 }
 
