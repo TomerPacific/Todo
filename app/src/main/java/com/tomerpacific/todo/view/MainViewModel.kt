@@ -34,6 +34,7 @@ class MainViewModel(application: Application): ViewModel() {
     private val todoItemsRepository: TodoItemsRepository = TodoItemsRepository(application.todoItemsStore)
     private val todoListPreferencesRepository: TodoListPreferencesRepository = TodoListPreferencesRepository(application.todoListPreferencesDatastore)
     private val _state = MutableStateFlow(TodoState())
+    private var todoItemsAdded = mutableListOf<TodoItem>()
     private val _todoItems = todoItemsRepository.todoItemsFlow.stateIn(
         viewModelScope, SharingStarted.WhileSubscribed(), emptyList<TodoItem>())
     val state: StateFlow<TodoState> = combine(_state, _todoItems) { state, todoItems ->
@@ -41,6 +42,10 @@ class MainViewModel(application: Application): ViewModel() {
             is List<*> -> todoItems
             is TodoItems -> todoItems.itemsList
             else -> listOf()
+        }
+        todoItemsAdded = when (items.isEmpty()) {
+            true -> mutableListOf()
+            false -> items as MutableList<TodoItem>
         }
         state.copy(
             todoItems = items as List<TodoItem>
@@ -57,6 +62,7 @@ class MainViewModel(application: Application): ViewModel() {
                 viewModelScope.launch {
                     todoItemsRepository.removeTodoItem(event.todo)
                 }
+                todoItemsAdded.remove(event.todo)
             }
             is TodoEvent.HideAddTodoDialog -> {
                 _state.update { it.copy(
@@ -87,6 +93,8 @@ class MainViewModel(application: Application): ViewModel() {
                     isAddingTodo = false,
                     todoItemDescription = ""
                 ) }
+
+                todoItemsAdded.add(todoItem)
             }
             is TodoEvent.SetTodoDescription -> {
                 _state.update { it.copy(
@@ -127,10 +135,12 @@ class MainViewModel(application: Application): ViewModel() {
                 todoItems = listOf()
             )}
         }
-
+        todoItemsAdded.clear()
     }
 
     private fun isDuplicateTodo(todoDescription: String): Boolean {
-        return todoItemsRepository.doesTodoAlreadyExist(todoDescription)
+        return todoItemsAdded.any { todoItem ->
+            todoItem.itemDescription == todoDescription
+        }
     }
 }
