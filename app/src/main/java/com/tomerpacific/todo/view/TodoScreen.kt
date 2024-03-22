@@ -31,8 +31,12 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.material3.rememberDismissState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -141,6 +145,8 @@ fun ShowAddTodoItemDialog(state: TodoState,
                           onDismissRequest: () -> Unit,
                           onConfirmation: () -> Unit) {
 
+    val focusRequester = remember { FocusRequester() }
+
     Dialog(onDismissRequest = { onDismissRequest() }) {
         Card(
             modifier = Modifier
@@ -158,6 +164,7 @@ fun ShowAddTodoItemDialog(state: TodoState,
                 Row(modifier = Modifier.fillMaxWidth()) {
                     val textFieldError = state.todoItemDescription.isEmpty()
                     TextField(
+                        modifier = Modifier.focusRequester(focusRequester),
                         value = state.todoItemDescription,
                         onValueChange = { userInput: String ->
                             onEvent(TodoEvent.SetTodoDescription(userInput))
@@ -170,6 +177,9 @@ fun ShowAddTodoItemDialog(state: TodoState,
                         },
                         isError = textFieldError
                     )
+                    LaunchedEffect(Unit) {
+                        focusRequester.requestFocus()
+                    }
                 }
                 Row(
                     modifier = Modifier
