@@ -32,6 +32,7 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.rememberDismissState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -146,6 +147,9 @@ fun ShowAddTodoItemDialog(state: TodoState,
                           onConfirmation: () -> Unit) {
 
     val focusRequester = remember { FocusRequester() }
+    val textFieldError = remember {
+        mutableStateOf(false)
+    }
 
     Dialog(onDismissRequest = { onDismissRequest() }) {
         Card(
@@ -162,11 +166,13 @@ fun ShowAddTodoItemDialog(state: TodoState,
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 Row(modifier = Modifier.fillMaxWidth()) {
-                    val textFieldError = state.todoItemDescription.isEmpty()
                     TextField(
                         modifier = Modifier.focusRequester(focusRequester),
                         value = state.todoItemDescription,
                         onValueChange = { userInput: String ->
+                            if (textFieldError.value && userInput.isNotEmpty()) {
+                                textFieldError.value = false
+                            }
                             onEvent(TodoEvent.SetTodoDescription(userInput))
                         },
                         label = {
@@ -175,7 +181,7 @@ fun ShowAddTodoItemDialog(state: TodoState,
                         trailingIcon = {
                             Icon(imageVector = Icons.Default.Edit, "Edit Icon")
                         },
-                        isError = textFieldError
+                        isError = textFieldError.value
                     )
                     LaunchedEffect(Unit) {
                         focusRequester.requestFocus()
@@ -193,7 +199,10 @@ fun ShowAddTodoItemDialog(state: TodoState,
                         Text("Cancel")
                     }
                     TextButton(
-                        onClick = { onConfirmation() },
+                        onClick = {
+                            textFieldError.value = state.todoItemDescription.isEmpty()
+                            onConfirmation()
+                       },
                         modifier = Modifier.padding(8.dp),
                     ) {
                         Text("Add")
