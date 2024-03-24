@@ -34,7 +34,7 @@ class MainViewModel(application: Application): ViewModel() {
     private val todoItemsRepository: TodoItemsRepository = TodoItemsRepository(application.todoItemsStore)
     private val todoListPreferencesRepository: TodoListPreferencesRepository = TodoListPreferencesRepository(application.todoListPreferencesDatastore)
     private val _state = MutableStateFlow(TodoState())
-    private var todoItemsAdded = mutableListOf<TodoItem>()
+    private var todoItemsAlreadyAdded = mutableListOf<TodoItem>()
     private val _todoItems = todoItemsRepository.todoItemsFlow.stateIn(
         viewModelScope, SharingStarted.WhileSubscribed(), emptyList<TodoItem>())
     val state: StateFlow<TodoState> = combine(_state, _todoItems) { state, todoItems ->
@@ -43,7 +43,7 @@ class MainViewModel(application: Application): ViewModel() {
             is TodoItems -> todoItems.itemsList
             else -> listOf()
         }
-        todoItemsAdded = when (items.isEmpty()) {
+        todoItemsAlreadyAdded = when (items.isEmpty()) {
             true -> mutableListOf()
             false -> items as MutableList<TodoItem>
         }
@@ -62,7 +62,7 @@ class MainViewModel(application: Application): ViewModel() {
                 viewModelScope.launch {
                     todoItemsRepository.removeTodoItem(event.todo)
                 }
-                todoItemsAdded.remove(event.todo)
+                todoItemsAlreadyAdded.remove(event.todo)
             }
             is TodoEvent.HideAddTodoDialog -> {
                 _state.update { it.copy(
@@ -91,7 +91,7 @@ class MainViewModel(application: Application): ViewModel() {
                     todoItemDescription = ""
                 ) }
 
-                todoItemsAdded.add(todoItem)
+                todoItemsAlreadyAdded.add(todoItem)
             }
             is TodoEvent.SetTodoDescription -> {
                 _state.update { it.copy(
@@ -132,11 +132,11 @@ class MainViewModel(application: Application): ViewModel() {
                 todoItems = listOf()
             )}
         }
-        todoItemsAdded.clear()
+        todoItemsAlreadyAdded.clear()
     }
 
     private fun isDuplicateTodo(todoDescription: String): Boolean {
-        return todoItemsAdded.any { todoItem ->
+        return todoItemsAlreadyAdded.any { todoItem ->
             todoItem.itemDescription == todoDescription
         }
     }
