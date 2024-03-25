@@ -73,7 +73,7 @@ class MainViewModel(application: Application): ViewModel() {
 
                 val itemDescription: String = state.value.todoItemDescription
 
-                if (itemDescription.isEmpty() || isDuplicateTodo(itemDescription)) {
+                if (itemDescription.isEmpty() || state.value.isTodoItemADuplicate) {
                     return
                 }
 
@@ -94,8 +94,10 @@ class MainViewModel(application: Application): ViewModel() {
                 todoItemsAlreadyAdded.add(todoItem)
             }
             is TodoEvent.SetTodoDescription -> {
+
                 _state.update { it.copy(
-                    todoItemDescription = event.todoDescription
+                    todoItemDescription = event.todoDescription,
+                    isTodoItemADuplicate = isDuplicateTodo(event.todoDescription)
                 ) }
             }
             is TodoEvent.ShowAddTodoDialog ->  {
