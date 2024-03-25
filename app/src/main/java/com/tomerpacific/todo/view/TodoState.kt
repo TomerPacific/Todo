@@ -7,4 +7,5 @@ data class TodoState(
     val todoItemDescription: String = "",
     val isAddingTodo: Boolean = false,
     val todoListTitle: String = "",
+    val isTodoItemADuplicate: Boolean = false
 )
