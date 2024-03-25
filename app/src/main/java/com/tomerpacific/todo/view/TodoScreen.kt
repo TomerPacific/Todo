@@ -147,9 +147,10 @@ fun ShowAddTodoItemDialog(state: TodoState,
                           onConfirmation: () -> Unit) {
 
     val focusRequester = remember { FocusRequester() }
-    val textFieldError = remember {
+    val todoItemDescriptionError = remember {
         mutableStateOf(false)
     }
+
 
     Dialog(onDismissRequest = { onDismissRequest() }) {
         Card(
@@ -170,9 +171,6 @@ fun ShowAddTodoItemDialog(state: TodoState,
                         modifier = Modifier.focusRequester(focusRequester),
                         value = state.todoItemDescription,
                         onValueChange = { userInput: String ->
-                            if (textFieldError.value && userInput.isNotEmpty()) {
-                                textFieldError.value = false
-                            }
                             onEvent(TodoEvent.SetTodoDescription(userInput))
                         },
                         label = {
@@ -181,7 +179,7 @@ fun ShowAddTodoItemDialog(state: TodoState,
                         trailingIcon = {
                             Icon(imageVector = Icons.Default.Edit, "Edit Icon")
                         },
-                        isError = textFieldError.value
+                        isError = state.isTodoItemADuplicate || todoItemDescriptionError.value
                     )
                     LaunchedEffect(Unit) {
                         focusRequester.requestFocus()
@@ -200,10 +198,11 @@ fun ShowAddTodoItemDialog(state: TodoState,
                     }
                     TextButton(
                         onClick = {
-                            textFieldError.value = state.todoItemDescription.isEmpty()
+                            todoItemDescriptionError.value = state.isTodoItemADuplicate
                             onConfirmation()
                        },
                         modifier = Modifier.padding(8.dp),
+                        enabled = state.todoItemDescription.isNotEmpty() && !state.isTodoItemADuplicate
                     ) {
                         Text("Add")
                     }
