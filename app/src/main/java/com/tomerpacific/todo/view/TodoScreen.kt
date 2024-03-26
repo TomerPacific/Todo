@@ -174,7 +174,11 @@ fun ShowAddTodoItemDialog(state: TodoState,
                             onEvent(TodoEvent.SetTodoDescription(userInput))
                         },
                         label = {
-                            Text("What do you want to do?")
+                            if (state.isTodoItemADuplicate) {
+                                Text("There already exists a todo item with this description")
+                            } else {
+                                Text("What do you want to do?")
+                            }
                         },
                         trailingIcon = {
                             Icon(imageVector = Icons.Default.Edit, "Edit Icon")
