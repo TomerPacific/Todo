@@ -23,6 +23,7 @@ private const val TODO_ADD_BUTTON_TEXT = "Add"
 private const val TODO_COMPLETE_BUTTON_CONTENT_DESCRIPTION = "Complete Todo"
 private const val TODO_DELETE_BUTTON_CONTENT_DESCRIPTION = "Delete Todo"
 private const val TODO_TEST_ITEM_DESCRIPTION = "Something"
+private const val TODO_LABEL_FOR_DUPLICATE_TEXT = "There already exists a todo item with this description"
 
 class TodoFlowTest {
 
@@ -104,7 +105,7 @@ class TodoFlowTest {
 
         composeTestRule.onNodeWithText(TODO_ADD_BUTTON_TEXT).assertIsNotEnabled()
 
-        composeTestRule.onNodeWithText("There already exists a todo item with this description").assertExists()
+        composeTestRule.onNodeWithText(TODO_LABEL_FOR_DUPLICATE_TEXT).assertExists()
 
     }
 
