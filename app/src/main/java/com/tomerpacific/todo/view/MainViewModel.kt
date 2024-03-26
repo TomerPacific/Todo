@@ -62,7 +62,6 @@ class MainViewModel(application: Application): ViewModel() {
                 viewModelScope.launch {
                     todoItemsRepository.removeTodoItem(event.todo)
                 }
-                todoItemsAlreadyAdded.remove(event.todo)
             }
             is TodoEvent.HideAddTodoDialog -> {
                 _state.update { it.copy(
@@ -90,8 +89,6 @@ class MainViewModel(application: Application): ViewModel() {
                     isAddingTodo = false,
                     todoItemDescription = ""
                 ) }
-
-                todoItemsAlreadyAdded.add(todoItem)
             }
             is TodoEvent.SetTodoDescription -> {
 
@@ -134,7 +131,6 @@ class MainViewModel(application: Application): ViewModel() {
                 todoItems = listOf()
             )}
         }
-        todoItemsAlreadyAdded.clear()
     }
 
     private fun isDuplicateTodo(todoDescription: String): Boolean {
