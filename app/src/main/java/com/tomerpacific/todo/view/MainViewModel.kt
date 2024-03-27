@@ -34,6 +34,7 @@ class MainViewModel(application: Application): ViewModel() {
     private val todoItemsRepository: TodoItemsRepository = TodoItemsRepository(application.todoItemsStore)
     private val todoListPreferencesRepository: TodoListPreferencesRepository = TodoListPreferencesRepository(application.todoListPreferencesDatastore)
     private val _state = MutableStateFlow(TodoState())
+    private var todoItemsAlreadyAdded = mutableListOf<TodoItem>()
     private val _todoItems = todoItemsRepository.todoItemsFlow.stateIn(
         viewModelScope, SharingStarted.WhileSubscribed(), emptyList<TodoItem>())
     val state: StateFlow<TodoState> = combine(_state, _todoItems) { state, todoItems ->
@@ -41,6 +42,10 @@ class MainViewModel(application: Application): ViewModel() {
             is List<*> -> todoItems
             is TodoItems -> todoItems.itemsList
             else -> listOf()
+        }
+        todoItemsAlreadyAdded = when (items.isEmpty()) {
+            true -> mutableListOf()
+            false -> items as MutableList<TodoItem>
         }
         state.copy(
             todoItems = items as List<TodoItem>
@@ -66,7 +71,8 @@ class MainViewModel(application: Application): ViewModel() {
             is TodoEvent.SaveTodo -> {
 
                 val itemDescription: String = state.value.todoItemDescription
-                if (itemDescription.isBlank()) {
+
+                if (itemDescription.isEmpty() || state.value.isTodoItemADuplicate) {
                     return
                 }
 
@@ -85,8 +91,10 @@ class MainViewModel(application: Application): ViewModel() {
                 ) }
             }
             is TodoEvent.SetTodoDescription -> {
+
                 _state.update { it.copy(
-                    todoItemDescription = event.todoDescription
+                    todoItemDescription = event.todoDescription,
+                    isTodoItemADuplicate = isDuplicateTodo(event.todoDescription)
                 ) }
             }
             is TodoEvent.ShowAddTodoDialog ->  {
@@ -123,6 +131,11 @@ class MainViewModel(application: Application): ViewModel() {
                 todoItems = listOf()
             )}
         }
+    }
 
+    private fun isDuplicateTodo(todoDescription: String): Boolean {
+        return todoItemsAlreadyAdded.any { todoItem ->
+            todoItem.itemDescription == todoDescription
+        }
     }
 }
