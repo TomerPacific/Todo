@@ -111,4 +111,32 @@ class MainViewModelTest {
         job.cancel()
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @Test
+    fun addDuplicateTodoTest() = runTest {
+
+        val results = mutableListOf<TodoState>()
+        val job = backgroundScope.launch(UnconfinedTestDispatcher(testScheduler)) {
+            viewModel.state.collect { todoState ->
+                results.add(todoState)
+            }
+        }
+
+        viewModel.onEvent(TodoEvent.SetTodoDescription(TEST_TODO_ITEM_DESCRIPTION))
+
+        assert(results[0].todoItemDescription.isEmpty())
+        Thread.sleep(20)
+        assert(results[results.size - 1].todoItemDescription.isNotEmpty())
+        assert(results[results.size - 1].todoItemDescription == TEST_TODO_ITEM_DESCRIPTION)
+        viewModel.onEvent(TodoEvent.SaveTodo)
+        Thread.sleep(20)
+        assert(results[results.size - 1].todoItemDescription.isEmpty())
+        Thread.sleep(20)
+        viewModel.onEvent(TodoEvent.SetTodoDescription(TEST_TODO_ITEM_DESCRIPTION))
+        Thread.sleep(20)
+        assert(results[results.size - 1].isTodoItemADuplicate)
+        
+        job.cancel()
+    }
+
 }
