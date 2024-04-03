@@ -36,7 +36,6 @@ class TodoItemsRepositoryTest {
 
     private lateinit var dataStore: DataStore<TodoItems>
     private lateinit var repository: TodoItemsRepository
-    @OptIn(ExperimentalCoroutinesApi::class)
     private fun createDataStore() {
         dataStore = DataStoreFactory.create(
             produceFile = {
