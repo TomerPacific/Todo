@@ -7,15 +7,12 @@ import androidx.datastore.dataStoreFile
 import androidx.test.core.app.ApplicationProvider
 import org.junit.runner.RunWith
 import androidx.test.runner.AndroidJUnit4
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.TestCoroutineDispatcher
 import kotlinx.coroutines.test.TestCoroutineScope
-import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
-import kotlinx.coroutines.test.setMain
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -51,10 +48,8 @@ class TodoItemsRepositoryTest {
         repository = TodoItemsRepository(dataStore)
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     @Before
     fun setup() {
-        Dispatchers.setMain(dispatcher)
         createDataStore()
     }
 
@@ -107,11 +102,8 @@ class TodoItemsRepositoryTest {
         }
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     @After
     fun cleanup() {
-        Dispatchers.resetMain()
-        dispatcher.cleanupTestCoroutines()
         File(testContext.filesDir, "datastore").deleteRecursively()
     }
 
