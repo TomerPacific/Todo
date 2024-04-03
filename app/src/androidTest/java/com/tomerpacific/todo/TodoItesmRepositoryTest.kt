@@ -23,7 +23,6 @@ import service.TodoItemsRepository
 import service.TodoItemsSerializer
 import java.io.File
 import java.util.UUID
-import kotlin.random.Random
 
 const val TEST_DATA_STORE_FILE_NAME = "testStore.pb"
 const val TEST_TODO_ITEM_DESCRIPTION = "test todo item"
@@ -42,11 +41,10 @@ class TodoItemsRepositoryTest {
     private lateinit var repository: TodoItemsRepository
     @OptIn(ExperimentalCoroutinesApi::class)
     private fun createDataStore() {
-        val randomDataStoreIndex: Int = Random.nextInt()
         dataStore = DataStoreFactory.create(
             scope = testScope,
             produceFile = {
-                testContext.dataStoreFile(TEST_DATA_STORE_FILE_NAME + randomDataStoreIndex)
+                testContext.dataStoreFile(TEST_DATA_STORE_FILE_NAME)
             },
             serializer = TodoItemsSerializer
         )
