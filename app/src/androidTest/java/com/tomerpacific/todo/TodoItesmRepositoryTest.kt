@@ -39,7 +39,6 @@ class TodoItemsRepositoryTest {
     @OptIn(ExperimentalCoroutinesApi::class)
     private fun createDataStore() {
         dataStore = DataStoreFactory.create(
-            scope = testScope,
             produceFile = {
                 testContext.dataStoreFile(TEST_DATA_STORE_FILE_NAME)
             },
