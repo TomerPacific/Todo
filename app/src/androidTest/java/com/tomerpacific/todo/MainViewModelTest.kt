@@ -5,6 +5,7 @@ import com.tomerpacific.todo.view.MainViewModel
 import com.tomerpacific.todo.view.TodoEvent
 import com.tomerpacific.todo.view.TodoState
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
@@ -43,50 +44,60 @@ class MainViewModelTest {
     @Test
     fun addTodoItemTest() = runTest {
 
-        val results = mutableListOf<TodoState>()
+        val results = Channel<TodoState>()
         val job = backgroundScope.launch(UnconfinedTestDispatcher(testScheduler)) {
             viewModel.state.collect { todoState ->
-                    results.add(todoState)
+                    results.send(todoState)
                 }
             }
 
         viewModel.onEvent(TodoEvent.SetTodoDescription(TEST_TODO_ITEM_DESCRIPTION))
 
-        assert(results[0].todoItemDescription.isEmpty())
-        Thread.sleep(20)
-        assert(results[1].todoItemDescription.isNotEmpty())
-        assert(results[1].todoItemDescription == TEST_TODO_ITEM_DESCRIPTION)
+        val initialStateResult = results.receive()
+        assert(initialStateResult.todoItemDescription.isEmpty())
+        val afterSettingTodoDescriptionResult = results.receive()
+        assert(afterSettingTodoDescriptionResult.todoItemDescription.isNotEmpty())
+        assert(afterSettingTodoDescriptionResult.todoItemDescription == TEST_TODO_ITEM_DESCRIPTION)
+
         viewModel.onEvent(TodoEvent.SaveTodo)
-        Thread.sleep(20)
-        assert(results[2].todoItemDescription.isEmpty())
+        val afterSavingTodoResult = results.receive()
+        assert(afterSavingTodoResult.todoItemDescription.isEmpty())
         job.cancel()
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     fun removeTodoItemTest() = runTest {
-        val results = mutableListOf<TodoState>()
+        val results = Channel<TodoState>()
         val job = backgroundScope.launch(UnconfinedTestDispatcher(testScheduler)) {
             viewModel.state.collect { todoState ->
-                    results.add(todoState)
+                    results.send(todoState)
                 }
             }
 
 
         viewModel.onEvent(TodoEvent.SetTodoDescription(TEST_TODO_ITEM_DESCRIPTION))
 
-        assert(results[results.size - 1].todoItemDescription.isEmpty())
-        Thread.sleep(20)
-        assert(results[results.size - 1].todoItemDescription.isNotEmpty())
-        assert(results[results.size - 1].todoItemDescription == TEST_TODO_ITEM_DESCRIPTION)
-        viewModel.onEvent(TodoEvent.SaveTodo)
-        Thread.sleep(20)
-        assert(results[results.size - 1].todoItemDescription.isEmpty())
+        val initialStateResult = results.receive()
 
-        val todoItem = results[results.size - 1].todoItems[0]
+        assert(initialStateResult.todoItemDescription.isEmpty())
+
+        val afterSettingTodoDescriptionResult = results.receive()
+
+        assert(afterSettingTodoDescriptionResult.todoItemDescription.isNotEmpty())
+        assert(afterSettingTodoDescriptionResult.todoItemDescription == TEST_TODO_ITEM_DESCRIPTION)
+
+        viewModel.onEvent(TodoEvent.SaveTodo)
+
+        val afterSavingTodoResult = results.receive()
+        assert(afterSavingTodoResult.todoItemDescription.isEmpty())
+
+        val todoItem = afterSavingTodoResult.todoItems[0]
+
         viewModel.onEvent(TodoEvent.DeleteTodo(todoItem))
-        Thread.sleep(20)
-        assert(results[results.size - 1].todoItems.isEmpty())
+        val afterRemovingTodoResult = results.receive()
+        assert(afterRemovingTodoResult.todoItems.isEmpty())
+
         job.cancel()
     }
 
@@ -94,20 +105,23 @@ class MainViewModelTest {
     @Test
     fun setTodoListTitleTest() = runTest {
 
-        val results = mutableListOf<TodoState>()
+        val results = Channel<TodoState>()
         val job = backgroundScope.launch(UnconfinedTestDispatcher(testScheduler)) {
             viewModel.state.collect { todoState ->
-                results.add(todoState)
+                results.send(todoState)
             }
         }
 
         viewModel.onEvent(TodoEvent.SetTodoListTitle(TEST_TODO_ITEM_LIST_TITLE))
-        assert(results[0].todoListTitle.isEmpty())
 
-        Thread.sleep(20)
+        val initialStateResult = results.receive()
 
-        assert(results[1].todoListTitle.isNotEmpty())
-        assert(results[1].todoListTitle == TEST_TODO_ITEM_LIST_TITLE)
+        assert(initialStateResult.todoListTitle.isEmpty())
+
+        val afterSettingTodoListTitleResult = results.receive()
+
+        assert(afterSettingTodoListTitleResult.todoListTitle.isNotEmpty())
+        assert(afterSettingTodoListTitleResult.todoListTitle == TEST_TODO_ITEM_LIST_TITLE)
         job.cancel()
     }
 
