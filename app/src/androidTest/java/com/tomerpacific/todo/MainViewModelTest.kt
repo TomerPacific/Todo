@@ -75,7 +75,6 @@ class MainViewModelTest {
                 }
             }
 
-
         viewModel.onEvent(TodoEvent.SetTodoDescription(TEST_TODO_ITEM_DESCRIPTION))
 
         val initialStateResult = results.receive()
@@ -89,13 +88,23 @@ class MainViewModelTest {
 
         viewModel.onEvent(TodoEvent.SaveTodo)
 
-        val afterSavingTodoResult = results.receive()
+        var afterSavingTodoResult = results.receive()
+
         assert(afterSavingTodoResult.todoItemDescription.isEmpty())
+
+        while (afterSavingTodoResult.todoItems.isEmpty()) {
+            afterSavingTodoResult = results.receive()
+        }
 
         val todoItem = afterSavingTodoResult.todoItems[0]
 
         viewModel.onEvent(TodoEvent.DeleteTodo(todoItem))
-        val afterRemovingTodoResult = results.receive()
+        var afterRemovingTodoResult = results.receive()
+
+        while (afterRemovingTodoResult.todoItems.isNotEmpty()) {
+            afterRemovingTodoResult = results.receive()
+        }
+
         assert(afterRemovingTodoResult.todoItems.isEmpty())
 
         job.cancel()
