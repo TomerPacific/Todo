@@ -26,8 +26,10 @@ class TodoItemsRepository(private val todoItemsDataStore: DataStore<TodoItems>) 
 
     suspend fun removeTodoItem(todoItem: TodoItem) {
         todoItemsDataStore.updateData { items ->
-            val index = items.itemsList.indexOf(todoItem)
-            items.toBuilder().removeItems(index).build()
+            when (val index = items.itemsList.indexOf(todoItem)) {
+                in 0 .. Int.MAX_VALUE -> items.toBuilder().removeItems(index).build()
+                else -> items.toBuilder().build()
+            }
         }
     }
 
