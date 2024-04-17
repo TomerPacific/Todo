@@ -138,26 +138,41 @@ class MainViewModelTest {
     @Test
     fun addDuplicateTodoTest() = runTest {
 
-        val results = mutableListOf<TodoState>()
+        val results = Channel<TodoState>()
         val job = backgroundScope.launch(UnconfinedTestDispatcher(testScheduler)) {
             viewModel.state.collect { todoState ->
-                results.add(todoState)
+                results.send(todoState)
             }
         }
 
         viewModel.onEvent(TodoEvent.SetTodoDescription(TEST_TODO_ITEM_DESCRIPTION))
 
-        assert(results[0].todoItemDescription.isEmpty())
-        Thread.sleep(20)
-        assert(results[results.size - 1].todoItemDescription.isNotEmpty())
-        assert(results[results.size - 1].todoItemDescription == TEST_TODO_ITEM_DESCRIPTION)
+        val initialStateResult = results.receive()
+
+        assert(initialStateResult.todoItemDescription.isEmpty())
+
+        val afterSettingTodoListTitleResult = results.receive()
+
+        assert(afterSettingTodoListTitleResult.todoItemDescription.isNotEmpty())
+        assert(afterSettingTodoListTitleResult.todoItemDescription == TEST_TODO_ITEM_DESCRIPTION)
         viewModel.onEvent(TodoEvent.SaveTodo)
-        Thread.sleep(20)
-        assert(results[results.size - 1].todoItemDescription.isEmpty())
-        Thread.sleep(20)
+
+        var afterSavingTodoResult = results.receive()
+
+        assert(afterSavingTodoResult.todoItemDescription.isEmpty())
+
+        while (afterSavingTodoResult.todoItems.isEmpty()) {
+            afterSavingTodoResult = results.receive()
+        }
+
+        assert(afterSavingTodoResult.todoItemDescription.isEmpty())
+
+
         viewModel.onEvent(TodoEvent.SetTodoDescription(TEST_TODO_ITEM_DESCRIPTION))
-        Thread.sleep(20)
-        assert(results[results.size - 1].isTodoItemADuplicate)
+
+        val afterSettingTodoDescriptionResult = results.receive()
+
+        assert(afterSettingTodoDescriptionResult.isTodoItemADuplicate)
         
         job.cancel()
     }
