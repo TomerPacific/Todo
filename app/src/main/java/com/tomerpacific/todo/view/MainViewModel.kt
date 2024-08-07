@@ -35,20 +35,16 @@ class MainViewModel(application: Application): ViewModel() {
     private val todoListPreferencesRepository: TodoListPreferencesRepository = TodoListPreferencesRepository(application.todoListPreferencesDatastore)
     private val _state = MutableStateFlow(TodoState())
     private var todoItemsAlreadyAdded = mutableListOf<TodoItem>()
-    private val _todoItems = todoItemsRepository.todoItemsFlow.stateIn(
-        viewModelScope, SharingStarted.WhileSubscribed(), emptyList<TodoItem>())
-    val state: StateFlow<TodoState> = combine(_state, _todoItems) { state, todoItems ->
-        val items = when (todoItems) {
-            is List<*> -> todoItems
-            is TodoItems -> todoItems.itemsList
-            else -> listOf()
-        }
-        todoItemsAlreadyAdded = when (items.isEmpty()) {
+    private val _todoItems = todoItemsRepository.todoItemsFlow
+    val state: StateFlow<TodoState> = combine(_state, _todoItems) { state: TodoState, todoItems ->
+
+        todoItemsAlreadyAdded = when (todoItems.itemsList.isEmpty()) {
             true -> mutableListOf()
-            false -> items as MutableList<TodoItem>
+            false -> todoItems.itemsList as MutableList<TodoItem>
         }
+
         state.copy(
-            todoItems = items as List<TodoItem>
+            todoItems = todoItems.itemsList as List<TodoItem>
         )
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), TodoState())
 
