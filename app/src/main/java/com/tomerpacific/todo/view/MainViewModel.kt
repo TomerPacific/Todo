@@ -29,41 +29,50 @@ private val Context.todoItemsStore: DataStore<TodoItems> by dataStore(
     serializer = TodoItemsSerializer,
 )
 
-class MainViewModel(application: Application): ViewModel() {
+class MainViewModel(application: Application) : ViewModel() {
 
-    private val todoItemsRepository: TodoItemsRepository = TodoItemsRepository(application.todoItemsStore)
-    private val todoListPreferencesRepository: TodoListPreferencesRepository = TodoListPreferencesRepository(application.todoListPreferencesDatastore)
+    private val todoItemsRepository: TodoItemsRepository =
+        TodoItemsRepository(application.todoItemsStore)
+    private val todoListPreferencesRepository: TodoListPreferencesRepository =
+        TodoListPreferencesRepository(application.todoListPreferencesDatastore)
     private val _state = MutableStateFlow(TodoState())
     private var todoItemsAlreadyAdded = mutableListOf<TodoItem>()
-    private val _todoItems = todoItemsRepository.todoItemsFlow
-    val state: StateFlow<TodoState> = combine(_state, _todoItems) { state: TodoState, todoItems ->
+    private val _todoItemsFlow = todoItemsRepository.todoItemsFlow
+    val state: StateFlow<TodoState> =
+        combine(_state, _todoItemsFlow) { state: TodoState, todoItemsFlow: TodoItems ->
 
-        todoItemsAlreadyAdded = when (todoItems.itemsList.isEmpty()) {
-            true -> mutableListOf()
-            false -> todoItems.itemsList as MutableList<TodoItem>
-        }
+            val todoItems = todoItemsFlow.itemsList
 
-        state.copy(
-            todoItems = todoItems.itemsList as List<TodoItem>
-        )
-    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), TodoState())
+            todoItemsAlreadyAdded = when (todoItems.isEmpty()) {
+                true -> mutableListOf()
+                false -> todoItems as MutableList<TodoItem>
+            }
+
+            state.copy(
+                todoItems = todoItems as List<TodoItem>
+            )
+        }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), TodoState())
 
     init {
         getTodoListPreferences()
     }
 
     fun onEvent(event: TodoEvent) {
-        when(event) {
+        when (event) {
             is TodoEvent.DeleteTodo -> {
                 viewModelScope.launch {
                     todoItemsRepository.removeTodoItem(event.todo)
                 }
             }
+
             is TodoEvent.HideAddTodoDialog -> {
-                _state.update { it.copy(
-                    isAddingTodo = false
-                ) }
+                _state.update {
+                    it.copy(
+                        isAddingTodo = false
+                    )
+                }
             }
+
             is TodoEvent.SaveTodo -> {
 
                 val itemDescription: String = state.value.todoItemDescription
@@ -81,27 +90,38 @@ class MainViewModel(application: Application): ViewModel() {
                     todoItemsRepository.updateTodoItems(todoItem)
                 }
 
-                _state.update { it.copy(
-                    isAddingTodo = false,
-                    todoItemDescription = ""
-                ) }
+                _state.update {
+                    it.copy(
+                        isAddingTodo = false,
+                        todoItemDescription = ""
+                    )
+                }
             }
+
             is TodoEvent.SetTodoDescription -> {
 
-                _state.update { it.copy(
-                    todoItemDescription = event.todoDescription,
-                    isTodoItemADuplicate = isDuplicateTodo(event.todoDescription)
-                ) }
+                _state.update {
+                    it.copy(
+                        todoItemDescription = event.todoDescription,
+                        isTodoItemADuplicate = isDuplicateTodo(event.todoDescription)
+                    )
+                }
             }
-            is TodoEvent.ShowAddTodoDialog ->  {
-                _state.update { it.copy(
-                    isAddingTodo = true
-                ) }
+
+            is TodoEvent.ShowAddTodoDialog -> {
+                _state.update {
+                    it.copy(
+                        isAddingTodo = true
+                    )
+                }
             }
+
             is TodoEvent.SetTodoListTitle -> {
-                _state.update { it.copy(
-                    todoListTitle = event.todoListTitle
-                ) }
+                _state.update {
+                    it.copy(
+                        todoListTitle = event.todoListTitle
+                    )
+                }
                 viewModelScope.launch {
                     todoListPreferencesRepository.updateTodoListTitle(state.value.todoListTitle)
                 }
@@ -113,9 +133,11 @@ class MainViewModel(application: Application): ViewModel() {
         viewModelScope.launch {
             val todoListPreferences = todoListPreferencesRepository.fetchCachedTodoListPreferences()
             if (todoListPreferences.title.isNotEmpty()) {
-                _state.update { it.copy(
-                    todoListTitle = todoListPreferences.title
-                )}
+                _state.update {
+                    it.copy(
+                        todoListTitle = todoListPreferences.title
+                    )
+                }
             }
         }
     }
@@ -123,9 +145,11 @@ class MainViewModel(application: Application): ViewModel() {
     fun clearAllTodoItems() {
         viewModelScope.launch {
             todoItemsRepository.removeAllTodoItems()
-            _state.update { it.copy(
-                todoItems = listOf()
-            )}
+            _state.update {
+                it.copy(
+                    todoItems = listOf()
+                )
+            }
         }
     }
 
