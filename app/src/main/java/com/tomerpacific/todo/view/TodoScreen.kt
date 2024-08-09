@@ -21,6 +21,7 @@ import androidx.compose.material3.DismissValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
@@ -40,13 +41,24 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TodoScreen(state: TodoState,
-               onEvent: (TodoEvent) -> Unit) {
+fun TodoScreen(
+    state: TodoState,
+    onEvent: (TodoEvent) -> Unit
+) {
+
+    val todoListTitleText = when (state.todoListTitle.isEmpty()) {
+        true -> "Your Todo List Title"
+        false -> state.todoListTitle
+    }
+
+    val shouldShowDialog = remember { mutableStateOf(false) }
 
     Scaffold(floatingActionButton = {
 
@@ -61,31 +73,61 @@ fun TodoScreen(state: TodoState,
         }
 
     }) { paddingValues ->
-        LazyColumn(modifier = Modifier
-            .fillMaxSize()
-            .padding(paddingValues)) {
+        if (shouldShowDialog.value) {
+            androidx.compose.material.AlertDialog(onDismissRequest = {
+                shouldShowDialog.value = false
+            },
+            title = {
+                Text("Choose Your Todo List Title")
+            },
+            text = {
+                OutlinedTextField(
+                    textStyle = LocalTextStyle.current.copy(textAlign = TextAlign.Center),
+                    value = state.todoListTitle,
+                    onValueChange = {
+                        onEvent(TodoEvent.SetTodoListTitle(it))
+                    },
+                    placeholder = {
+                        Text("Your Todo List Title")
+                    },
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedBorderColor = Color.Black,
+                        unfocusedBorderColor = Color.Transparent,
+                    )
+                )
+            },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        shouldShowDialog.value = false
+                    }
+                ) {
+                    Text("Confirm")
+                }
+            })
+        }
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues)
+        ) {
             item {
                 Row(
                     modifier = Modifier.fillMaxSize(),
                     horizontalArrangement = Arrangement.Center
                 ) {
-                    OutlinedTextField(
-                        textStyle = LocalTextStyle.current.copy(textAlign = TextAlign.Center),
-                        value = state.todoListTitle,
-                        onValueChange = {
-                            onEvent(TodoEvent.SetTodoListTitle(it))
-                        },
-                        placeholder = {
-                            Text("Your Todo List Title")
-                        },
-                        colors = OutlinedTextFieldDefaults.colors(
-                            focusedBorderColor = Color.Black,
-                            unfocusedBorderColor = Color.Transparent,
-                        ),
-                        trailingIcon = {
-                            Icon(Icons.Default.Edit, contentDescription = "Edit Icon")
-                        }
+                    Text(
+                        text = todoListTitleText,
+                        textAlign = TextAlign.Center,
+                        textDecoration = TextDecoration.Underline,
+                        fontSize = 25.sp
                     )
+                    IconButton(
+                        onClick = {
+                            shouldShowDialog.value = true
+                        }) {
+                        Icon(imageVector = Icons.Default.Edit, contentDescription = "Edit Icon")
+                    }
                 }
             }
 
@@ -131,7 +173,7 @@ fun TodoScreen(state: TodoState,
             ShowAddTodoItemDialog(state,
                 onEvent,
                 onDismissRequest = {
-                onEvent(TodoEvent.HideAddTodoDialog)
+                    onEvent(TodoEvent.HideAddTodoDialog)
                 },
                 onConfirmation = {
                     onEvent(TodoEvent.SaveTodo)
@@ -141,10 +183,12 @@ fun TodoScreen(state: TodoState,
 }
 
 @Composable
-fun ShowAddTodoItemDialog(state: TodoState,
-                          onEvent: (TodoEvent) -> Unit,
-                          onDismissRequest: () -> Unit,
-                          onConfirmation: () -> Unit) {
+fun ShowAddTodoItemDialog(
+    state: TodoState,
+    onEvent: (TodoEvent) -> Unit,
+    onDismissRequest: () -> Unit,
+    onConfirmation: () -> Unit
+) {
 
     val focusRequester = remember { FocusRequester() }
     val todoItemDescriptionError = remember {
@@ -204,7 +248,7 @@ fun ShowAddTodoItemDialog(state: TodoState,
                         onClick = {
                             todoItemDescriptionError.value = state.isTodoItemADuplicate
                             onConfirmation()
-                       },
+                        },
                         modifier = Modifier.padding(8.dp),
                         enabled = state.todoItemDescription.isNotEmpty() && !state.isTodoItemADuplicate
                     ) {
