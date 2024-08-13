@@ -39,6 +39,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
@@ -77,7 +78,7 @@ fun TodoScreen(
                 shouldShowDialog.value = false
             },
             title = {
-                Text("Choose Your Todo List Title")
+                Text("Choose Your Todo List Title", fontWeight = FontWeight.Bold)
             },
             text = {
                 OutlinedTextField(
@@ -90,8 +91,8 @@ fun TodoScreen(
                         Text("Your Todo List Title")
                     },
                     colors = OutlinedTextFieldDefaults.colors(
-                        focusedBorderColor = Color.Black,
-                        unfocusedBorderColor = Color.Transparent,
+                        focusedBorderColor = Color.Blue,
+                        unfocusedBorderColor = Color.Black,
                     )
                 )
             },
@@ -102,6 +103,15 @@ fun TodoScreen(
                     }
                 ) {
                     Text("Confirm")
+                }
+            },
+            dismissButton = {
+                TextButton(
+                    onClick = {
+                        shouldShowDialog.value = false
+                    }
+                ) {
+                    Text("Cancel")
                 }
             })
         }
