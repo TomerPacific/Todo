@@ -98,7 +98,7 @@ fun TodoScreen(
                         colors = OutlinedTextFieldDefaults.colors(
                             focusedBorderColor = Color.Blue,
                             unfocusedBorderColor = Color.Black,
-                        )
+                        ),
                     )
                 }
             },
@@ -107,7 +107,8 @@ fun TodoScreen(
                     onClick = {
                         onEvent(TodoEvent.SetTodoListTitle(todoTitle.value))
                         shouldShowDialog.value = false
-                    }
+                    },
+                    enabled = todoTitle.value.isNotEmpty()
                 ) {
                     Text("Confirm")
                 }
