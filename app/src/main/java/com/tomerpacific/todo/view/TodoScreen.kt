@@ -74,31 +74,38 @@ fun TodoScreen(
 
     }) { paddingValues ->
         if (shouldShowDialog.value) {
+
+            val todoTitle = remember {
+                mutableStateOf(state.todoListTitle)
+            }
+
             androidx.compose.material.AlertDialog(onDismissRequest = {
                 shouldShowDialog.value = false
             },
-            title = {
-                Text("Choose Your Todo List Title", fontWeight = FontWeight.Bold)
-            },
             text = {
-                OutlinedTextField(
-                    textStyle = LocalTextStyle.current.copy(textAlign = TextAlign.Center),
-                    value = state.todoListTitle,
-                    onValueChange = {
-                        onEvent(TodoEvent.SetTodoListTitle(it))
-                    },
-                    placeholder = {
-                        Text("Your Todo List Title")
-                    },
-                    colors = OutlinedTextFieldDefaults.colors(
-                        focusedBorderColor = Color.Blue,
-                        unfocusedBorderColor = Color.Black,
+                Column() {
+                    Text("Choose Your Todo List Title", fontWeight = FontWeight.Bold)
+                    Spacer(Modifier.height(10.dp))
+                    OutlinedTextField(
+                        textStyle = LocalTextStyle.current.copy(textAlign = TextAlign.Center),
+                        value = todoTitle.value,
+                        onValueChange = {
+                            todoTitle.value = it
+                        },
+                        placeholder = {
+                            Text("Your Todo List Title")
+                        },
+                        colors = OutlinedTextFieldDefaults.colors(
+                            focusedBorderColor = Color.Blue,
+                            unfocusedBorderColor = Color.Black,
+                        )
                     )
-                )
+                }
             },
             confirmButton = {
                 TextButton(
                     onClick = {
+                        onEvent(TodoEvent.SetTodoListTitle(todoTitle.value))
                         shouldShowDialog.value = false
                     }
                 ) {
