@@ -80,6 +80,10 @@ fun TodoScreen(
                 mutableStateOf(state.todoListTitle)
             }
 
+            val focusRequester = remember {
+                FocusRequester()
+            }
+
             AlertDialog(onDismissRequest = {
                 shouldShowDialog.value = false
             },
@@ -88,6 +92,7 @@ fun TodoScreen(
                     Text("Choose Your Todo List Title", fontWeight = FontWeight.Bold)
                     Spacer(Modifier.height(10.dp))
                     OutlinedTextField(
+                        modifier = Modifier.focusRequester(focusRequester),
                         textStyle = LocalTextStyle.current.copy(textAlign = TextAlign.Center),
                         value = todoTitle.value,
                         onValueChange = {
@@ -101,6 +106,10 @@ fun TodoScreen(
                             unfocusedBorderColor = Color.Black,
                         ),
                     )
+                }
+
+                LaunchedEffect(Unit) {
+                    focusRequester.requestFocus()
                 }
             },
             confirmButton = {
