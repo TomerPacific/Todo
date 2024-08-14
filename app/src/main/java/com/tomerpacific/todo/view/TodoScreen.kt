@@ -40,7 +40,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
@@ -77,7 +79,7 @@ fun TodoScreen(
         if (shouldShowDialog.value) {
 
             val todoTitle = remember {
-                mutableStateOf(state.todoListTitle)
+                mutableStateOf(TextFieldValue(state.todoListTitle, TextRange(state.todoListTitle.length)))
             }
 
             val focusRequester = remember {
@@ -115,10 +117,10 @@ fun TodoScreen(
             confirmButton = {
                 TextButton(
                     onClick = {
-                        onEvent(TodoEvent.SetTodoListTitle(todoTitle.value))
+                        onEvent(TodoEvent.SetTodoListTitle(todoTitle.value.text))
                         shouldShowDialog.value = false
                     },
-                    enabled = todoTitle.value.isNotEmpty()
+                    enabled = todoTitle.value.text.isNotEmpty()
                 ) {
                     Text("Confirm")
                 }
