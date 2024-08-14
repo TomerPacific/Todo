@@ -16,6 +16,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
 import androidx.compose.material3.DismissValue
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -79,7 +80,7 @@ fun TodoScreen(
                 mutableStateOf(state.todoListTitle)
             }
 
-            androidx.compose.material.AlertDialog(onDismissRequest = {
+            AlertDialog(onDismissRequest = {
                 shouldShowDialog.value = false
             },
             text = {
