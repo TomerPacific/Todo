@@ -16,15 +16,11 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
 import androidx.compose.material3.DismissValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
-import androidx.compose.material3.LocalTextStyle
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SwipeToDismiss
 import androidx.compose.material3.Text
@@ -40,9 +36,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.TextRange
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
@@ -77,63 +70,7 @@ fun TodoScreen(
 
     }) { paddingValues ->
         if (shouldShowDialog.value) {
-
-            val todoTitle = remember {
-                mutableStateOf(TextFieldValue(state.todoListTitle, TextRange(state.todoListTitle.length)))
-            }
-
-            val focusRequester = remember {
-                FocusRequester()
-            }
-
-            AlertDialog(onDismissRequest = {
-                shouldShowDialog.value = false
-            },
-            text = {
-                Column() {
-                    Text("Choose Your Todo List Title", fontWeight = FontWeight.Bold)
-                    Spacer(Modifier.height(10.dp))
-                    OutlinedTextField(
-                        modifier = Modifier.focusRequester(focusRequester),
-                        textStyle = LocalTextStyle.current.copy(textAlign = TextAlign.Center),
-                        value = todoTitle.value,
-                        onValueChange = {
-                            todoTitle.value = it
-                        },
-                        placeholder = {
-                            Text("Your Todo List Title")
-                        },
-                        colors = OutlinedTextFieldDefaults.colors(
-                            focusedBorderColor = Color.Blue,
-                            unfocusedBorderColor = Color.Black,
-                        ),
-                    )
-                }
-
-                LaunchedEffect(Unit) {
-                    focusRequester.requestFocus()
-                }
-            },
-            confirmButton = {
-                TextButton(
-                    onClick = {
-                        onEvent(TodoEvent.SetTodoListTitle(todoTitle.value.text))
-                        shouldShowDialog.value = false
-                    },
-                    enabled = todoTitle.value.text.isNotEmpty()
-                ) {
-                    Text("Confirm")
-                }
-            },
-            dismissButton = {
-                TextButton(
-                    onClick = {
-                        shouldShowDialog.value = false
-                    }
-                ) {
-                    Text("Cancel")
-                }
-            })
+            TodoListTitleAlertDialog(state.todoListTitle, shouldShowDialog, onEvent)
         }
         LazyColumn(
             modifier = Modifier
