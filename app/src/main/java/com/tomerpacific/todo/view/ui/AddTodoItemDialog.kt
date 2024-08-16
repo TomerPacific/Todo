@@ -1,4 +1,4 @@
-package com.tomerpacific.todo.view
+package com.tomerpacific.todo.view.ui
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -25,6 +25,8 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import com.tomerpacific.todo.view.TodoEvent
+import com.tomerpacific.todo.view.TodoState
 
 @Composable
 fun AddTodoItemDialog(state: TodoState,
