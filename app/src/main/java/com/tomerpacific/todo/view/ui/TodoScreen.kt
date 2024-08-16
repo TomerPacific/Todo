@@ -1,4 +1,4 @@
-package com.tomerpacific.todo.view
+package com.tomerpacific.todo.view.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -31,6 +31,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.tomerpacific.todo.view.TodoEvent
+import com.tomerpacific.todo.view.TodoState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

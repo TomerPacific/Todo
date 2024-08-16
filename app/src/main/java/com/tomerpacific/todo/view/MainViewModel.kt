@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tomerpacific.todo.TodoItem
 import com.tomerpacific.todo.TodoItems
+import com.tomerpacific.todo.TodoListPreferences
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -35,13 +36,19 @@ class MainViewModel(application: Application) : ViewModel() {
         TodoItemsRepository(application.todoItemsStore)
     private val todoListPreferencesRepository: TodoListPreferencesRepository =
         TodoListPreferencesRepository(application.todoListPreferencesDatastore)
+
     private val _state = MutableStateFlow(TodoState())
     private var todoItemsAlreadyAdded = mutableListOf<TodoItem>()
+
     private val _todoItemsFlow = todoItemsRepository.todoItemsFlow
+    private val _todoPreferencesFlow = todoListPreferencesRepository.todoListPreferencesFlow
     val state: StateFlow<TodoState> =
-        combine(_state, _todoItemsFlow) { state: TodoState, todoItemsFlow: TodoItems ->
+        combine(_state, _todoItemsFlow, _todoPreferencesFlow) { state: TodoState,
+                                                                todoItemsFlow: TodoItems,
+                                                                todoPreferencesFlow: TodoListPreferences ->
 
             val todoItems = todoItemsFlow.itemsList
+            val todoListTitle = todoPreferencesFlow.title
 
             todoItemsAlreadyAdded = when (todoItems.isEmpty()) {
                 true -> mutableListOf()
@@ -49,13 +56,10 @@ class MainViewModel(application: Application) : ViewModel() {
             }
 
             state.copy(
-                todoItems = todoItems as List<TodoItem>
+                todoItems = todoItems as List<TodoItem>,
+                todoListTitle = todoListTitle
             )
         }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), TodoState())
-
-    init {
-        getTodoListPreferences()
-    }
 
     fun onEvent(event: TodoEvent) {
         when (event) {
@@ -117,25 +121,14 @@ class MainViewModel(application: Application) : ViewModel() {
             }
 
             is TodoEvent.SetTodoListTitle -> {
+
+                viewModelScope.launch {
+                    todoListPreferencesRepository.updateTodoListTitle(event.todoListTitle)
+                }
+
                 _state.update {
                     it.copy(
                         todoListTitle = event.todoListTitle
-                    )
-                }
-                viewModelScope.launch {
-                    todoListPreferencesRepository.updateTodoListTitle(state.value.todoListTitle)
-                }
-            }
-        }
-    }
-
-    private fun getTodoListPreferences() {
-        viewModelScope.launch {
-            val todoListPreferences = todoListPreferencesRepository.fetchCachedTodoListPreferences()
-            if (todoListPreferences.title.isNotEmpty()) {
-                _state.update {
-                    it.copy(
-                        todoListTitle = todoListPreferences.title
                     )
                 }
             }

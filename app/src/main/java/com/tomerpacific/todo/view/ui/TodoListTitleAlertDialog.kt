@@ -1,4 +1,4 @@
-package com.tomerpacific.todo.view
+package com.tomerpacific.todo.view.ui
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -23,6 +23,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.tomerpacific.todo.view.TodoEvent
 
 @Composable
 fun TodoListTitleAlertDialog(todoListTitle: String,

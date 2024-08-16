@@ -9,6 +9,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.tomerpacific.todo.view.ui.TodoScreen
 
 class MainActivity: AppCompatActivity() {
 

@@ -1,4 +1,4 @@
-package com.tomerpacific.todo.view
+package com.tomerpacific.todo.view.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Row
@@ -22,6 +22,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.tomerpacific.todo.TodoItem
+import com.tomerpacific.todo.view.TodoEvent
 
 @Composable
 fun TodoItemView(todoItem: TodoItem,

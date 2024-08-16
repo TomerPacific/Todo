@@ -4,7 +4,6 @@ import androidx.datastore.core.DataStore
 import com.tomerpacific.todo.TodoListPreferences
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.first
 import java.io.IOException
 
 
@@ -18,8 +17,6 @@ class TodoListPreferencesRepository(private val todoListPreferencesDataStore: Da
                 throw exception
             }
         }
-
-    suspend fun fetchCachedTodoListPreferences() = todoListPreferencesFlow.first()
 
     suspend fun updateTodoListTitle(todoListTitle: String) {
         todoListPreferencesDataStore.updateData { todoListPreferences ->
