@@ -12,7 +12,7 @@ import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.swipeRight
 import androidx.test.core.app.ApplicationProvider
 import com.tomerpacific.todo.view.MainViewModel
-import com.tomerpacific.todo.view.TodoScreen
+import com.tomerpacific.todo.view.ui.TodoScreen
 import org.junit.Rule
 import org.junit.Test
 
