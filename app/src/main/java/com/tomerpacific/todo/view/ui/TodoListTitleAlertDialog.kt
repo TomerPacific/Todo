@@ -11,9 +11,10 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
@@ -27,22 +28,23 @@ import com.tomerpacific.todo.view.TodoEvent
 
 @Composable
 fun TodoListTitleAlertDialog(todoListTitle: String,
-                             shouldShowDialog: MutableState<Boolean>,
                              onEvent: (TodoEvent) -> Unit) {
 
     val todoTitle = remember {
         mutableStateOf(TextFieldValue(todoListTitle, TextRange(todoListTitle.length)))
     }
 
+    var shouldShowDialog by remember { mutableStateOf(true) }
+
     val focusRequester = remember {
         FocusRequester()
     }
 
     AlertDialog(onDismissRequest = {
-        shouldShowDialog.value = false
+        shouldShowDialog = false
     },
         text = {
-            Column() {
+            Column {
                 Text("Choose Your Todo List Title", fontWeight = FontWeight.Bold)
                 Spacer(Modifier.height(10.dp))
                 OutlinedTextField(
@@ -70,7 +72,7 @@ fun TodoListTitleAlertDialog(todoListTitle: String,
             TextButton(
                 onClick = {
                     onEvent(TodoEvent.SetTodoListTitle(todoTitle.value.text))
-                    shouldShowDialog.value = false
+                    shouldShowDialog = false
                 },
                 enabled = todoTitle.value.text.isNotEmpty()
             ) {
@@ -80,7 +82,7 @@ fun TodoListTitleAlertDialog(todoListTitle: String,
         dismissButton = {
             TextButton(
                 onClick = {
-                    shouldShowDialog.value = false
+                    shouldShowDialog = false
                 }
             ) {
                 Text("Cancel")

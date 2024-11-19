@@ -50,8 +50,9 @@ fun TodoScreen(
         false -> state.todoListTitle
     }
 
-    val shouldShowDialog = remember { mutableStateOf(false) }
-    var didUserCheckToCompleteAllTodos by remember { mutableStateOf(true) }
+    var shouldShowDialog by remember { mutableStateOf(false) }
+
+    var didUserCheckToCompleteAllTodos by remember { mutableStateOf(false) }
 
     Scaffold(floatingActionButton = {
 
@@ -66,8 +67,8 @@ fun TodoScreen(
         }
 
     }) { paddingValues ->
-        if (shouldShowDialog.value) {
-            TodoListTitleAlertDialog(state.todoListTitle, shouldShowDialog, onEvent)
+        if (shouldShowDialog) {
+            TodoListTitleAlertDialog(state.todoListTitle, onEvent)
         }
         LazyColumn(
             modifier = Modifier
@@ -80,7 +81,7 @@ fun TodoScreen(
                     horizontalArrangement = Arrangement.Center
                 ) {
                     TextButton(onClick = {
-                            shouldShowDialog.value = true
+                            shouldShowDialog = true
                     }) {
                         Text(
                             text = todoListTitleText,
