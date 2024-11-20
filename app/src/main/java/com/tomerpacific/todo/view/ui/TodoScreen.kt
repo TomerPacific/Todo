@@ -2,6 +2,7 @@ package com.tomerpacific.todo.view.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -11,7 +12,9 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Card
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.DismissValue
@@ -94,10 +97,14 @@ fun TodoScreen(
             }
             if (shouldShowCheckAllTodosCheckbox) {
                 item {
-                    Row(
+                    Column(
                         modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.End
+                        horizontalAlignment = Alignment.End,
+                        verticalArrangement = Arrangement.Center
                     ) {
+                        Icon(Icons.Default.Star,
+                            "Star",
+                            tint = Color.Green)
                         Checkbox(checked = didUserCheckToCompleteAllTodos, onCheckedChange = {
                             didUserCheckToCompleteAllTodos = it
                         })
