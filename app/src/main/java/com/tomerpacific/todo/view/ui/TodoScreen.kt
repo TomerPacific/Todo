@@ -51,7 +51,7 @@ fun TodoScreen(
     }
 
     var shouldShowDialog by remember { mutableStateOf(false) }
-
+    val shouldShowCheckAllTodosCheckbox = state.todoItems.isNotEmpty()
     var didUserCheckToCompleteAllTodos by remember { mutableStateOf(false) }
 
     Scaffold(floatingActionButton = {
@@ -92,14 +92,16 @@ fun TodoScreen(
                     }
                 }
             }
-            item {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.End
-                ) {
-                    Checkbox(checked = didUserCheckToCompleteAllTodos, onCheckedChange = {
-                        didUserCheckToCompleteAllTodos = it
-                    })
+            if (shouldShowCheckAllTodosCheckbox) {
+                item {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.End
+                    ) {
+                        Checkbox(checked = didUserCheckToCompleteAllTodos, onCheckedChange = {
+                            didUserCheckToCompleteAllTodos = it
+                        })
+                    }
                 }
             }
 
