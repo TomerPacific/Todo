@@ -100,7 +100,7 @@ fun TodoScreen(
                         verticalArrangement = Arrangement.Center
                     ) {
                         IconButton(onClick = {
-                            onEvent(TodoEvent.SelectAllTodos)
+                            onEvent(TodoEvent.RemoveAllTodos)
                         }) {
                             Icon(Icons.Default.Delete,
                                 "Trash can",
