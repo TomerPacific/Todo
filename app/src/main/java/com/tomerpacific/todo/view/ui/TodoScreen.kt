@@ -52,7 +52,7 @@ fun TodoScreen(
     }
 
     var shouldShowTitleDialog by remember { mutableStateOf(false) }
-    val shouldShowCheckAllTodosCheckbox = state.todoItems.isNotEmpty()
+    val shouldShowRemoveAllTodosButton = state.todoItems.isNotEmpty()
 
     Scaffold(floatingActionButton = {
 
@@ -92,7 +92,7 @@ fun TodoScreen(
                     }
                 }
             }
-            if (shouldShowCheckAllTodosCheckbox) {
+            if (shouldShowRemoveAllTodosButton) {
                 item {
                     Column(
                         modifier = Modifier.fillMaxWidth(),
