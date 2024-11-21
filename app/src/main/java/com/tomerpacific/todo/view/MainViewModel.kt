@@ -132,6 +132,12 @@ class MainViewModel(application: Application) : ViewModel() {
                     )
                 }
             }
+
+            is TodoEvent.RemoveAllTodos -> {
+                viewModelScope.launch {
+                    todoItemsRepository.removeAllTodoItems()
+                }
+            }
         }
     }
 

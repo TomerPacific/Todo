@@ -2,9 +2,11 @@ package com.tomerpacific.todo.view.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -16,14 +18,17 @@ import androidx.compose.material3.DismissValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SwipeToDismiss
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberDismissState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -34,6 +39,8 @@ import androidx.compose.ui.unit.sp
 import com.tomerpacific.todo.view.TodoEvent
 import com.tomerpacific.todo.view.TodoState
 
+
+const val DEFAULT_TODO_LIST_TITLE = "Your Todo List Title"
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TodoScreen(
@@ -42,11 +49,12 @@ fun TodoScreen(
 ) {
 
     val todoListTitleText = when (state.todoListTitle.isEmpty()) {
-        true -> "Your Todo List Title"
+        true -> DEFAULT_TODO_LIST_TITLE
         false -> state.todoListTitle
     }
 
-    val shouldShowDialog = remember { mutableStateOf(false) }
+    var shouldShowTitleDialog by remember { mutableStateOf(false) }
+    val shouldShowRemoveAllTodosButton = state.todoItems.isNotEmpty()
 
     Scaffold(floatingActionButton = {
 
@@ -61,8 +69,8 @@ fun TodoScreen(
         }
 
     }) { paddingValues ->
-        if (shouldShowDialog.value) {
-            TodoListTitleAlertDialog(state.todoListTitle, shouldShowDialog, onEvent)
+        if (shouldShowTitleDialog) {
+            TodoListTitleAlertDialog(state.todoListTitle, onEvent)
         }
         LazyColumn(
             modifier = Modifier
@@ -75,7 +83,7 @@ fun TodoScreen(
                     horizontalArrangement = Arrangement.Center
                 ) {
                     TextButton(onClick = {
-                            shouldShowDialog.value = true
+                            shouldShowTitleDialog = true
                     }) {
                         Text(
                             text = todoListTitleText,
@@ -83,6 +91,23 @@ fun TodoScreen(
                             textDecoration = TextDecoration.Underline,
                             fontSize = 25.sp
                         )
+                    }
+                }
+            }
+            if (shouldShowRemoveAllTodosButton) {
+                item {
+                    Column(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalAlignment = Alignment.End,
+                        verticalArrangement = Arrangement.Center
+                    ) {
+                        IconButton(onClick = {
+                            onEvent(TodoEvent.RemoveAllTodos)
+                        }) {
+                            Icon(Icons.Default.Delete,
+                                "Trash can",
+                                tint = Color.Red)
+                        }
                     }
                 }
             }
