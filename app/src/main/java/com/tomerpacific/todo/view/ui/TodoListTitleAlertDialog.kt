@@ -34,14 +34,14 @@ fun TodoListTitleAlertDialog(todoListTitle: String,
         mutableStateOf(TextFieldValue(todoListTitle, TextRange(todoListTitle.length)))
     }
 
-    var shouldShowDialog by remember { mutableStateOf(true) }
+    var shouldShowTitleDialog by remember { mutableStateOf(true) }
 
     val focusRequester = remember {
         FocusRequester()
     }
 
     AlertDialog(onDismissRequest = {
-        shouldShowDialog = false
+        shouldShowTitleDialog = false
     },
         text = {
             Column {
@@ -72,7 +72,7 @@ fun TodoListTitleAlertDialog(todoListTitle: String,
             TextButton(
                 onClick = {
                     onEvent(TodoEvent.SetTodoListTitle(todoTitle.value.text))
-                    shouldShowDialog = false
+                    shouldShowTitleDialog = false
                 },
                 enabled = todoTitle.value.text.isNotEmpty()
             ) {
@@ -82,7 +82,7 @@ fun TodoListTitleAlertDialog(todoListTitle: String,
         dismissButton = {
             TextButton(
                 onClick = {
-                    shouldShowDialog = false
+                    shouldShowTitleDialog = false
                 }
             ) {
                 Text("Cancel")
