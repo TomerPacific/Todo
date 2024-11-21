@@ -39,6 +39,8 @@ import androidx.compose.ui.unit.sp
 import com.tomerpacific.todo.view.TodoEvent
 import com.tomerpacific.todo.view.TodoState
 
+
+const val DEFAULT_TODO_LIST_TITLE = "Your Todo List Title"
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TodoScreen(
@@ -47,7 +49,7 @@ fun TodoScreen(
 ) {
 
     val todoListTitleText = when (state.todoListTitle.isEmpty()) {
-        true -> "Your Todo List Title"
+        true -> DEFAULT_TODO_LIST_TITLE
         false -> state.todoListTitle
     }
 
