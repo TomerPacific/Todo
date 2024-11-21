@@ -12,7 +12,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Card
 import androidx.compose.material3.DismissValue
@@ -52,7 +51,7 @@ fun TodoScreen(
         false -> state.todoListTitle
     }
 
-    var shouldShowDialog by remember { mutableStateOf(false) }
+    var shouldShowTitleDialog by remember { mutableStateOf(false) }
     val shouldShowCheckAllTodosCheckbox = state.todoItems.isNotEmpty()
 
     Scaffold(floatingActionButton = {
@@ -68,7 +67,7 @@ fun TodoScreen(
         }
 
     }) { paddingValues ->
-        if (shouldShowDialog) {
+        if (shouldShowTitleDialog) {
             TodoListTitleAlertDialog(state.todoListTitle, onEvent)
         }
         LazyColumn(
@@ -82,7 +81,7 @@ fun TodoScreen(
                     horizontalArrangement = Arrangement.Center
                 ) {
                     TextButton(onClick = {
-                            shouldShowDialog = true
+                            shouldShowTitleDialog = true
                     }) {
                         Text(
                             text = todoListTitleText,
