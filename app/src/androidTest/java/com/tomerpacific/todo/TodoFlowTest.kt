@@ -109,4 +109,26 @@ class TodoFlowTest {
 
     }
 
+    @Test
+    fun removeAllTodosTest() {
+
+        composeTestRule.setContent {
+            val state by mainViewModel.state.collectAsState()
+            TodoScreen(
+                state = state,
+                mainViewModel::onEvent)
+        }
+
+        addTodoItemTest()
+        composeTestRule.onNodeWithContentDescription(FAB_BUTTON_CONTENT_DESCRIPTION).assertExists()
+        composeTestRule.onNodeWithContentDescription("Trash can").assertExists()
+
+        composeTestRule.onNodeWithContentDescription("Trash can").performClick()
+
+        composeTestRule.onNodeWithContentDescription("Trash can").assertDoesNotExist()
+
+        composeTestRule.onNodeWithText(TODO_TEST_ITEM_DESCRIPTION).assertDoesNotExist()
+
+    }
+
 }
