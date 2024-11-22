@@ -177,4 +177,44 @@ class MainViewModelTest {
         job.cancel()
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @Test
+    fun removeAllTodosTest() = runTest {
+        val results = Channel<TodoState>()
+        val job = backgroundScope.launch(UnconfinedTestDispatcher(testScheduler)) {
+            viewModel.state.collect { todoState ->
+                results.send(todoState)
+            }
+        }
+
+        viewModel.onEvent(TodoEvent.SetTodoDescription(TEST_TODO_ITEM_DESCRIPTION))
+
+        val initialStateResult = results.receive()
+
+        assert(initialStateResult.todoItemDescription.isEmpty())
+
+        val afterSettingTodoListTitleResult = results.receive()
+
+        assert(afterSettingTodoListTitleResult.todoItemDescription.isNotEmpty())
+        assert(afterSettingTodoListTitleResult.todoItemDescription == TEST_TODO_ITEM_DESCRIPTION)
+        viewModel.onEvent(TodoEvent.SaveTodo)
+
+        var afterSavingTodoResult = results.receive()
+
+        assert(afterSavingTodoResult.todoItemDescription.isEmpty())
+
+        while (afterSavingTodoResult.todoItems.isEmpty()) {
+            afterSavingTodoResult = results.receive()
+        }
+
+        viewModel.onEvent(TodoEvent.RemoveAllTodos)
+
+
+        val afterRemovingAllTodosResult = results.receive()
+
+        assert(afterRemovingAllTodosResult.todoItems.isEmpty())
+
+        job.cancel()
+    }
+
 }
