@@ -120,9 +120,10 @@ class TodoFlowTest {
     @Test
     fun removeAllTodosTest() {
 
+        composeTestRule.onNodeWithContentDescription(TODO_CLEAR_ALL_TODOS_ICON_CONTENT_DESCRIPTION).assertDoesNotExist()
+
         addTodoItemTest()
 
-        composeTestRule.onNodeWithContentDescription(FAB_BUTTON_CONTENT_DESCRIPTION).assertExists()
         composeTestRule.onNodeWithContentDescription(TODO_CLEAR_ALL_TODOS_ICON_CONTENT_DESCRIPTION).assertExists()
 
         composeTestRule.onNodeWithContentDescription(TODO_CLEAR_ALL_TODOS_ICON_CONTENT_DESCRIPTION).performClick()
