@@ -24,6 +24,7 @@ private const val TODO_COMPLETE_BUTTON_CONTENT_DESCRIPTION = "Complete Todo"
 private const val TODO_DELETE_BUTTON_CONTENT_DESCRIPTION = "Delete Todo"
 private const val TODO_TEST_ITEM_DESCRIPTION = "Something"
 private const val TODO_LABEL_FOR_DUPLICATE_TEXT = "There already exists a todo item with this description"
+private const val TODO_CLEAR_ALL_TODOS_ICON_CONTENT_DESCRIPTION = "Trash can"
 
 class TodoFlowTest {
 
@@ -57,6 +58,7 @@ class TodoFlowTest {
 
     @Test
     fun removeTodoItemTest() {
+
         composeTestRule.setContent {
             val state by mainViewModel.state.collectAsState()
             TodoScreen(
@@ -72,6 +74,7 @@ class TodoFlowTest {
 
     @Test
     fun completeTodoItemTest() {
+
         addTodoItemTest()
 
         composeTestRule.onNodeWithText(TODO_TEST_ITEM_DESCRIPTION).assertExists()
@@ -82,6 +85,7 @@ class TodoFlowTest {
 
     @Test
     fun swipeToDismissTodoItemTest() {
+
         addTodoItemTest()
 
         composeTestRule.onNodeWithText(TODO_TEST_ITEM_DESCRIPTION).assertExists()
@@ -95,6 +99,7 @@ class TodoFlowTest {
 
     @Test
     fun addDuplicateTodoTest() {
+
         addTodoItemTest()
 
         composeTestRule.onNodeWithContentDescription(FAB_BUTTON_CONTENT_DESCRIPTION).assertExists()
@@ -106,6 +111,26 @@ class TodoFlowTest {
         composeTestRule.onNodeWithText(TODO_ADD_BUTTON_TEXT).assertIsNotEnabled()
 
         composeTestRule.onNodeWithText(TODO_LABEL_FOR_DUPLICATE_TEXT).assertExists()
+
+        composeTestRule.onNodeWithContentDescription(TODO_DELETE_BUTTON_CONTENT_DESCRIPTION).assertExists()
+        composeTestRule.onNodeWithContentDescription(TODO_DELETE_BUTTON_CONTENT_DESCRIPTION).performClick()
+
+    }
+
+    @Test
+    fun removeAllTodosTest() {
+
+        composeTestRule.onNodeWithContentDescription(TODO_CLEAR_ALL_TODOS_ICON_CONTENT_DESCRIPTION).assertDoesNotExist()
+
+        addTodoItemTest()
+
+        composeTestRule.onNodeWithContentDescription(TODO_CLEAR_ALL_TODOS_ICON_CONTENT_DESCRIPTION).assertExists()
+
+        composeTestRule.onNodeWithContentDescription(TODO_CLEAR_ALL_TODOS_ICON_CONTENT_DESCRIPTION).performClick()
+
+        composeTestRule.onNodeWithContentDescription(TODO_CLEAR_ALL_TODOS_ICON_CONTENT_DESCRIPTION).assertDoesNotExist()
+
+        composeTestRule.onNodeWithText(TODO_TEST_ITEM_DESCRIPTION).assertDoesNotExist()
 
     }
 
