@@ -78,7 +78,6 @@ class MainViewModel(application: Application) : ViewModel() {
             }
 
             is TodoEvent.SaveTodo -> {
-
                 val itemDescription: String = state.value.todoItemDescription
 
                 if (itemDescription.isEmpty() || state.value.isTodoItemADuplicate) {
@@ -103,7 +102,6 @@ class MainViewModel(application: Application) : ViewModel() {
             }
 
             is TodoEvent.SetTodoDescription -> {
-
                 _state.update {
                     it.copy(
                         todoItemDescription = event.todoDescription,
@@ -120,8 +118,23 @@ class MainViewModel(application: Application) : ViewModel() {
                 }
             }
 
-            is TodoEvent.SetTodoListTitle -> {
+            is TodoEvent.ShowEditTodoListTitleDialog -> {
+                _state.update {
+                    it.copy(
+                        isEditingTodoListTitle = true
+                    )
+                }
+            }
 
+            is TodoEvent.HideEditTodoListTitleDialog -> {
+                _state.update {
+                    it.copy(
+                        isEditingTodoListTitle = false
+                    )
+                }
+            }
+
+            is TodoEvent.SetTodoListTitle -> {
                 viewModelScope.launch {
                     todoListPreferencesRepository.updateTodoListTitle(event.todoListTitle)
                 }
