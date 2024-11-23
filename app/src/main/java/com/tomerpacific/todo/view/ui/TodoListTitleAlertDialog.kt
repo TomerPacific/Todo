@@ -11,10 +11,8 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
@@ -34,14 +32,12 @@ fun TodoListTitleAlertDialog(todoListTitle: String,
         mutableStateOf(TextFieldValue(todoListTitle, TextRange(todoListTitle.length)))
     }
 
-    var shouldShowTitleDialog by remember { mutableStateOf(true) }
-
     val focusRequester = remember {
         FocusRequester()
     }
 
     AlertDialog(onDismissRequest = {
-        shouldShowTitleDialog = false
+        onEvent(TodoEvent.HideEditTodoListTitleDialog)
     },
         text = {
             Column {
@@ -72,7 +68,7 @@ fun TodoListTitleAlertDialog(todoListTitle: String,
             TextButton(
                 onClick = {
                     onEvent(TodoEvent.SetTodoListTitle(todoTitle.value.text))
-                    shouldShowTitleDialog = false
+                    onEvent(TodoEvent.HideEditTodoListTitleDialog)
                 },
                 enabled = todoTitle.value.text.isNotEmpty()
             ) {
@@ -82,7 +78,7 @@ fun TodoListTitleAlertDialog(todoListTitle: String,
         dismissButton = {
             TextButton(
                 onClick = {
-                    shouldShowTitleDialog = false
+                    onEvent(TodoEvent.HideEditTodoListTitleDialog)
                 }
             ) {
                 Text("Cancel")
