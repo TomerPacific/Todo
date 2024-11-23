@@ -146,11 +146,7 @@ fun TodoScreen(
         }
 
         if (state.isAddingTodo) {
-            AddTodoItemDialog(state = state, onEvent = onEvent, onDismissRequest = {
-                onEvent(TodoEvent.HideAddTodoDialog)
-            }, onConfirmation = {
-                onEvent(TodoEvent.SaveTodo)
-            })
+            AddTodoItemDialog(state = state, onEvent = onEvent)
         }
     }
 }
