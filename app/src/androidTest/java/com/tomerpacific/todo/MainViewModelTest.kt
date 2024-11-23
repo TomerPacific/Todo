@@ -193,10 +193,10 @@ class MainViewModelTest {
 
         assert(initialStateResult.todoItemDescription.isEmpty())
 
-        val afterSettingTodoListTitleResult = results.receive()
+        val afterSettingTodoDescriptionResult = results.receive()
 
-        assert(afterSettingTodoListTitleResult.todoItemDescription.isNotEmpty())
-        assert(afterSettingTodoListTitleResult.todoItemDescription == TEST_TODO_ITEM_DESCRIPTION)
+        assert(afterSettingTodoDescriptionResult.todoItemDescription.isNotEmpty())
+        assert(afterSettingTodoDescriptionResult.todoItemDescription == TEST_TODO_ITEM_DESCRIPTION)
         viewModel.onEvent(TodoEvent.SaveTodo)
 
         var afterSavingTodoResult = results.receive()
