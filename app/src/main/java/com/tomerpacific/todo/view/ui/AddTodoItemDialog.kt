@@ -37,7 +37,10 @@ fun AddTodoItemDialog(state: TodoState,
     }
 
 
-    Dialog(onDismissRequest = { onEvent(TodoEvent.HideAddTodoDialog) }) {
+    Dialog(onDismissRequest = {
+        onEvent(TodoEvent.SetTodoDescription(""))
+        onEvent(TodoEvent.HideAddTodoDialog)
+    }) {
         Card(
             modifier = Modifier
                 .fillMaxWidth()
@@ -80,7 +83,9 @@ fun AddTodoItemDialog(state: TodoState,
                     horizontalArrangement = Arrangement.Center,
                 ) {
                     TextButton(
-                        onClick = { onEvent(TodoEvent.HideAddTodoDialog) },
+                        onClick = {
+                            onEvent(TodoEvent.SetTodoDescription(""))
+                            onEvent(TodoEvent.HideAddTodoDialog) },
                         modifier = Modifier.padding(8.dp),
                     ) {
                         Text("Cancel")
