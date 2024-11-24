@@ -25,10 +25,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberDismissState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -53,7 +49,6 @@ fun TodoScreen(
         false -> state.todoListTitle
     }
 
-    var shouldShowTitleDialog by remember { mutableStateOf(false) }
     val shouldShowRemoveAllTodosButton = state.todoItems.isNotEmpty()
 
     Scaffold(floatingActionButton = {
@@ -69,7 +64,7 @@ fun TodoScreen(
         }
 
     }) { paddingValues ->
-        if (shouldShowTitleDialog) {
+        if (state.isEditingTodoListTitle) {
             TodoListTitleAlertDialog(state.todoListTitle, onEvent)
         }
         LazyColumn(
@@ -83,7 +78,7 @@ fun TodoScreen(
                     horizontalArrangement = Arrangement.Center
                 ) {
                     TextButton(onClick = {
-                            shouldShowTitleDialog = true
+                            onEvent(TodoEvent.ShowEditTodoListTitleDialog)
                     }) {
                         Text(
                             text = todoListTitleText,
@@ -151,11 +146,7 @@ fun TodoScreen(
         }
 
         if (state.isAddingTodo) {
-            AddTodoItemDialog(state = state, onEvent = onEvent, onDismissRequest = {
-                onEvent(TodoEvent.HideAddTodoDialog)
-            }, onConfirmation = {
-                onEvent(TodoEvent.SaveTodo)
-            })
+            AddTodoItemDialog(state = state, onEvent = onEvent)
         }
     }
 }

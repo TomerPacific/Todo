@@ -30,16 +30,17 @@ import com.tomerpacific.todo.view.TodoState
 
 @Composable
 fun AddTodoItemDialog(state: TodoState,
-                      onEvent: (TodoEvent) -> Unit,
-                      onDismissRequest: () -> Unit,
-                      onConfirmation: () -> Unit) {
+                      onEvent: (TodoEvent) -> Unit) {
     val focusRequester = remember { FocusRequester() }
     val todoItemDescriptionError = remember {
         mutableStateOf(false)
     }
 
 
-    Dialog(onDismissRequest = { onDismissRequest() }) {
+    Dialog(onDismissRequest = {
+        onEvent(TodoEvent.SetTodoDescription(""))
+        onEvent(TodoEvent.HideAddTodoDialog)
+    }) {
         Card(
             modifier = Modifier
                 .fillMaxWidth()
@@ -82,7 +83,9 @@ fun AddTodoItemDialog(state: TodoState,
                     horizontalArrangement = Arrangement.Center,
                 ) {
                     TextButton(
-                        onClick = { onDismissRequest() },
+                        onClick = {
+                            onEvent(TodoEvent.SetTodoDescription(""))
+                            onEvent(TodoEvent.HideAddTodoDialog) },
                         modifier = Modifier.padding(8.dp),
                     ) {
                         Text("Cancel")
@@ -90,7 +93,7 @@ fun AddTodoItemDialog(state: TodoState,
                     TextButton(
                         onClick = {
                             todoItemDescriptionError.value = state.isTodoItemADuplicate
-                            onConfirmation()
+                            onEvent(TodoEvent.SaveTodo)
                         },
                         modifier = Modifier.padding(8.dp),
                         enabled = state.todoItemDescription.isNotEmpty() && !state.isTodoItemADuplicate
