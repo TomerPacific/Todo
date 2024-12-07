@@ -5,4 +5,4 @@
 </a>
 
 
-![Gif of Application](https://github.com/TomerPacific/Todo/blob/main/todo_preview.gif?raw=true)
+![Gif of Application](https://github.com/TomerPacific/Todo/blob/master/todo_preview.gif?raw=true)
