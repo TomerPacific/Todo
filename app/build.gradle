@@ -11,7 +11,7 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'com.google.gms.google-services'
 
 android {
-    compileSdkVersion 35
+    compileSdk 35
     defaultConfig {
         applicationId "com.tomerpacific.todo"
         minSdkVersion 21
@@ -38,6 +38,7 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion compose_version
     }
+    namespace 'com.tomerpacific.todo'
 }
 
 dependencies {
