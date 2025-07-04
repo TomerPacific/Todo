@@ -1,0 +1,92 @@
+plugins {
+    id("com.google.protobuf") version "0.9.4"
+    id("org.jetbrains.kotlin.android")
+    id("com.android.application")
+    id("kotlin-android-extensions")
+    id("com.google.gms.google-services")
+}
+
+android {
+    namespace = "com.tomerpacific.todo"
+    compileSdk = 35
+    defaultConfig {
+        applicationId = "com.tomerpacific.todo"
+        minSdk = 21
+        targetSdk = 35
+        versionCode = 11
+        versionName = "2.4.0"
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        vectorDrawables.useSupportLibrary = true
+    }
+    buildTypes {
+        release {
+            isMinifyEnabled = false
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
+        }
+    }
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+    buildFeatures {
+        compose = true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.4.0-alpha01"
+    }
+}
+
+dependencies {
+
+    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
+    implementation("androidx.coordinatorlayout:coordinatorlayout:1.2.0")
+    constraints {
+        constraints {
+            implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.0") {
+                because("kotlin-stdlib-jdk7 is now a part of kotlin-stdlib")
+            }
+            implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.0") {
+                because("kotlin-stdlib-jdk8 is now a part of kotlin-stdlib")
+            }
+        }
+    }
+
+    implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
+
+    implementation("androidx.core:core-ktx:1.7.0")
+    implementation("androidx.compose.ui:ui:1.4.0-alpha01")
+    implementation("androidx.compose.material:material:1.4.0-alpha01")
+    implementation("androidx.compose.ui:ui-tooling-preview:1.4.0-alpha01")
+    implementation("androidx.activity:activity-compose:1.3.1")
+    implementation("androidx.datastore:datastore:1.0.0")
+    implementation("com.google.protobuf:protobuf-javalite:3.18.0")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.1")
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.6.2")
+    implementation("androidx.compose.material3:material3:1.1.1")
+    implementation("androidx.appcompat:appcompat:1.6.1")
+    testImplementation("junit:junit:4.12")
+    androidTestImplementation("androidx.test.ext:junit:1.1.0")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.1.1")
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.4.0-alpha01")
+    debugImplementation("androidx.compose.ui:ui-test-manifest:1.4.0-alpha01")
+}
+
+protobuf {
+    protoc {
+        artifact = "com.google.protobuf:protoc:3.14.0"
+    }
+
+    generateProtoTasks {
+        all().forEach { task ->
+            task.builtins {
+                maybeCreate("java").apply {
+                    option("lite")
+                }
+            }
+        }
+    }
+}
