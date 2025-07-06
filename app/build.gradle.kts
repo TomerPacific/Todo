@@ -42,38 +42,40 @@ android {
 
 dependencies {
 
-    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-    implementation("androidx.coordinatorlayout:coordinatorlayout:1.2.0")
-    constraints {
-        constraints {
-            implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.0") {
-                because("kotlin-stdlib-jdk7 is now a part of kotlin-stdlib")
-            }
-            implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.0") {
-                because("kotlin-stdlib-jdk8 is now a part of kotlin-stdlib")
-            }
-        }
-    }
+    implementation(libs.constraintlayout)
+    implementation(libs.coordinatorlayout)
+    implementation(libs.corektx)
+    implementation(libs.compose.ui)
+    implementation(libs.compose.material)
+    implementation(libs.compose.ui.tooling.preview)
+    implementation(libs.activity.compose)
+    implementation(libs.datastore)
+    implementation(libs.protobuf.javalite)
+    implementation(libs.lifecycle.viewmodel.compose)
+    implementation(libs.lifecycle.livedata.ktx)
+    implementation(libs.compose.material3)
+    implementation(libs.appcompat)
+
+    // Test dependencies
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.test.ext.junit)
+    androidTestImplementation(libs.espresso.core)
+    androidTestImplementation(libs.compose.ui.test.junit4)
+    debugImplementation(libs.compose.ui.test.manifest)
 
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
 
-    implementation("androidx.core:core-ktx:1.7.0")
-    implementation("androidx.compose.ui:ui:1.4.0-alpha01")
-    implementation("androidx.compose.material:material:1.4.0-alpha01")
-    implementation("androidx.compose.ui:ui-tooling-preview:1.4.0-alpha01")
-    implementation("androidx.activity:activity-compose:1.3.1")
-    implementation("androidx.datastore:datastore:1.0.0")
-    implementation("com.google.protobuf:protobuf-javalite:3.18.0")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.1")
-    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.6.2")
-    implementation("androidx.compose.material3:material3:1.1.1")
-    implementation("androidx.appcompat:appcompat:1.6.1")
-    testImplementation("junit:junit:4.12")
-    androidTestImplementation("androidx.test.ext:junit:1.1.0")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.1.1")
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.4.0-alpha01")
-    debugImplementation("androidx.compose.ui:ui-test-manifest:1.4.0-alpha01")
+    // Constraints
+    constraints {
+        implementation(libs.kotlin.stdlib.jdk7) {
+            because("kotlin-stdlib-jdk7 is now part of kotlin-stdlib")
+        }
+        implementation(libs.kotlin.stdlib.jdk8) {
+            because("kotlin-stdlib-jdk8 is now part of kotlin-stdlib")
+        }
+    }
 }
+
 
 protobuf {
     protoc {
