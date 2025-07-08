@@ -1,0 +1,46 @@
+[versions]
+kotlin = "2.0.0"
+constraintlayout = "2.1.4"
+coordinatorlayout = "1.2.0"
+corektx = "1.7.0"
+compose_ui = "1.4.0"
+compose_material = "1.4.0"
+compose_material3 = "1.1.1"
+activity_compose = "1.3.1"
+datastore = "1.0.0"
+protobuf_javalite = "3.18.0"
+lifecycle_viewmodel_compose = "2.6.1"
+lifecycle_livedata_ktx = "2.6.2"
+appcompat = "1.6.1"
+junit4 = "4.12"
+androidx_test_ext_junit = "1.1.0"
+espresso_core = "3.1.1"
+
+[libraries]
+constraintlayout = { module = "androidx.constraintlayout:constraintlayout", version.ref = "constraintlayout" }
+coordinatorlayout = { module = "androidx.coordinatorlayout:coordinatorlayout", version.ref = "coordinatorlayout" }
+corektx = { module = "androidx.core:core-ktx", version.ref = "corektx" }
+compose-ui = { module = "androidx.compose.ui:ui", version.ref = "compose_ui" }
+compose-material = { module = "androidx.compose.material:material", version.ref = "compose_material" }
+compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "compose_ui" }
+compose-material3 = { module = "androidx.compose.material3:material3", version.ref = "compose_material3" }
+activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activity_compose" }
+datastore = { module = "androidx.datastore:datastore", version.ref = "datastore" }
+protobuf-javalite = { module = "com.google.protobuf:protobuf-javalite", version.ref = "protobuf_javalite" }
+lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycle_viewmodel_compose" }
+lifecycle-livedata-ktx = { module = "androidx.lifecycle:lifecycle-livedata-ktx", version.ref = "lifecycle_livedata_ktx" }
+appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
+
+# Test dependencies
+junit = { module = "junit:junit", version.ref = "junit4" }
+androidx-test-ext-junit = { module = "androidx.test.ext:junit", version.ref = "androidx_test_ext_junit" }
+espresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "espresso_core" }
+compose-ui-test-junit4 = { module = "androidx.compose.ui:ui-test-junit4", version.ref = "compose_ui" }
+compose-ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest", version.ref = "compose_ui" }
+
+[plugins]
+protobuf = { id = "com.google.protobuf", version = "0.9.4" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version = "2.0.0" }
+android-application = { id = "com.android.application", version = "8.9.1" }
+google-services = { id = "com.google.gms.google-services", version = "4.3.14" }
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
