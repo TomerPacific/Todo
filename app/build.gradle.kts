@@ -1,9 +1,8 @@
 plugins {
-    id("com.google.protobuf") version "0.9.4"
-    id("org.jetbrains.kotlin.android")
-    id("com.android.application")
-    id("kotlin-android-extensions")
-    id("com.google.gms.google-services")
+    alias(libs.plugins.protobuf)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.google.services)
 }
 
 android {
@@ -28,15 +27,15 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     buildFeatures {
         compose = true
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.0-alpha01"
+        kotlinCompilerExtensionVersion = "1.4.0"
     }
 }
 
@@ -64,15 +63,11 @@ dependencies {
     debugImplementation(libs.compose.ui.test.manifest)
 
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
+}
 
-    // Constraints
-    constraints {
-        implementation(libs.kotlin.stdlib.jdk7) {
-            because("kotlin-stdlib-jdk7 is now part of kotlin-stdlib")
-        }
-        implementation(libs.kotlin.stdlib.jdk8) {
-            because("kotlin-stdlib-jdk8 is now part of kotlin-stdlib")
-        }
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
+    kotlinOptions {
+        jvmTarget = "17"
     }
 }
 
