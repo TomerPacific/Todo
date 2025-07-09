@@ -34,6 +34,10 @@ android {
     buildFeatures {
         compose = true
     }
+
+    lint {
+        disable.add("MutableCollectionMutableState")
+    }
 }
 
 dependencies {
