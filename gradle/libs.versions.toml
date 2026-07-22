@@ -42,6 +42,6 @@ compose-ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest", ve
 [plugins]
 protobuf = { id = "com.google.protobuf", version = "0.9.4" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version = "2.0.0" }
-android-application = { id = "com.android.application", version = "8.9.1" }
+android-application = { id = "com.android.application", version = "8.13.2" }
 google-services = { id = "com.google.gms.google-services", version = "4.3.14" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
