@@ -8,11 +8,11 @@ plugins {
 
 android {
     namespace = "com.tomerpacific.todo"
-    compileSdk = 35
+    compileSdk = 37
     defaultConfig {
         applicationId = "com.tomerpacific.todo"
         minSdk = 21
-        targetSdk = 35
+        targetSdk = 37
         versionCode = 12
         versionName = "2.5.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -47,6 +47,7 @@ dependencies {
     implementation(libs.corektx)
     implementation(libs.compose.ui)
     implementation(libs.compose.material)
+    implementation(libs.compose.icons.core)
     implementation(libs.compose.ui.tooling.preview)
     implementation(libs.activity.compose)
     implementation(libs.datastore)
