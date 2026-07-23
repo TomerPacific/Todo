@@ -25,6 +25,8 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberSwipeToDismissBoxState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -107,11 +109,13 @@ fun TodoScreen(
                 }
             }
 
-            items(state.todoItems) { todoItem ->
+            items(state.todoItems, key = { it.itemId }) { todoItem ->
+                val currentOnEvent by rememberUpdatedState(onEvent)
+                val currentTodoItem by rememberUpdatedState(todoItem)
                 val dismissState = rememberSwipeToDismissBoxState(
                     confirmValueChange = {
                         if (it == SwipeToDismissBoxValue.StartToEnd) {
-                            onEvent(TodoEvent.DeleteTodo(todoItem))
+                            currentOnEvent(TodoEvent.DeleteTodo(currentTodoItem))
                             true
                         } else {
                             false
