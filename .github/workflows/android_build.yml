@@ -1,10 +1,6 @@
 name: Android Build
 
-on:
-  pull_request:
-    branches: [feature/*, release/*]
-  push :
-    branches : [ master, feature/*, release/*]
+on: pull_request
 
 jobs:
   build:
@@ -12,17 +8,20 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v4
       - run: echo "The ${{ github.repository }} repository has been cloned."
       - run: echo "Setting up JDK"
       - name: Set Up JDK
-        uses: actions/setup-java@v1
+        uses: actions/setup-java@v3
         with:
-          java-version: 21
+          distribution: 'temurin'
+          java-version: '17'
+          cache: 'gradle'
 
       - name: Change wrapper permissions
         run: chmod +x ./gradlew
       - run: echo "START running tests"
+
       - name: Run Tests
         run: ./gradlew test
 
