@@ -13,8 +13,8 @@ android {
         applicationId = "com.tomerpacific.todo"
         minSdk = 21
         targetSdk = 37
-        versionCode = 12
-        versionName = "2.5.0"
+        versionCode = 13
+        versionName = "2.5.1"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
     }
