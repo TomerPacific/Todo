@@ -14,17 +14,19 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Card
-import androidx.compose.material3.DismissValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SwipeToDismiss
+import androidx.compose.material3.SwipeToDismissBox
+import androidx.compose.material3.SwipeToDismissBoxValue
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.rememberDismissState
+import androidx.compose.material3.rememberSwipeToDismissBoxState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -107,20 +109,22 @@ fun TodoScreen(
                 }
             }
 
-            items(state.todoItems) { todoItem ->
-                val dismissState = rememberDismissState(
+            items(state.todoItems, key = { it.itemId }) { todoItem ->
+                val currentOnEvent by rememberUpdatedState(onEvent)
+                val currentTodoItem by rememberUpdatedState(todoItem)
+                val dismissState = rememberSwipeToDismissBoxState(
                     confirmValueChange = {
-                        if (it == DismissValue.DismissedToEnd) {
-                            onEvent(TodoEvent.DeleteTodo(todoItem))
+                        if (it == SwipeToDismissBoxValue.StartToEnd) {
+                            currentOnEvent(TodoEvent.DeleteTodo(currentTodoItem))
                             true
                         } else {
                             false
                         }
-                    }, positionalThreshold = { 150.dp.toPx() }
+                    }
                 )
-                SwipeToDismiss(
+                SwipeToDismissBox(
                     state = dismissState,
-                    background = {
+                    backgroundContent = {
                         Card(
                             modifier = Modifier
                                 .fillMaxSize()
@@ -138,7 +142,7 @@ fun TodoScreen(
                             }
                         }
                     },
-                    dismissContent = {
+                    content = {
                         TodoItemView(todoItem, onEvent)
                     })
                 Spacer(modifier = Modifier.padding(5.dp))
